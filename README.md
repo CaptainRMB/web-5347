@@ -9,6 +9,7 @@
 
 - [Installation](##Installation)
 - [Main Page](#Main Page)
+- [Demo](##Checkout_Page)
 ## Installation
 The server is tested on [Node.js](https://nodejs.org/) **V12.13.0** only yet.
 1. First, you have to import the [provided data](https://canvas.sydney.edu.au/courses/39701/files/21997637/download?download_frd=1) to your local mongoDB.
@@ -80,7 +81,7 @@ The user will be redirected to this page if the user tries to add an item to the
 
  
 
-## Checkout Page
+## Checkout_Page
 This page will be shown when the user clicks the checkout button on the top bar of the Main Page. This page will show these details:
 - A back button to go back to the previous shown page.
 - All of added items in the cart with these information
@@ -112,25 +113,6 @@ Each group must demo their application during ==week 12==. Note the demo will ==
 - If you are using external libraries not discussed in the tutorials, discuss it with your tutor. Your tutor maybe unfamiliar with the library you're using. Expect to answer questions about the usage of the library in your assignment. e.g. reasons for using the library and alternative solutions.
 ### Contribution
 If members of your group do not contribute sufficiently you should alert your tutor as soon as possible. The contributions of each group member will be checked from the project's GitHub repository. Failure to join and use the provided GitHub organization account (using your uni email) might result in 0% contribution. All group members must contribute ==effectively and equally== to the project. The contributions will be evident by the GitHub repo. and logs related to each project.
-
-
-Markdown is a lightweight markup language based on the formatting conventions
-that people naturally use in email.
-As [John Gruber] writes on the [Markdown site][df1]
-
-> The overriding design goal for Markdown's
-> formatting syntax is to make it as readable
-> as possible. The idea is that a
-> Markdown-formatted document should be
-> publishable as-is, as plain text, without
-> looking like it's been marked up with tags
-> or formatting instructions.
-
-This text you see here is *actually- written in Markdown! To get a feel
-for Markdown's syntax, type some text into the left window and
-watch the results in the right.
-
-
 
 
 
