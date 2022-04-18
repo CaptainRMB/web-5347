@@ -6,6 +6,7 @@
 - [MongoDB doc](https://www.mongodb.com/docs/manual/crud/)
 - [Express doc](https://expressjs.com/en/4x/api.html)
 - [Node.js doc](https://nodejs.org/docs/latest-v12.x/api/)
+- [Requirements](#Assignment-Requirement)
 
 ## Installation
 The server is tested on [Node.js](https://nodejs.org/) **V12.13.0** only yet.
@@ -22,9 +23,18 @@ The server is tested on [Node.js](https://nodejs.org/) **V12.13.0** only yet.
 3. Run server.js located at the root path.
 
 Read the swagger document to figure out what the api requires and returns.
-Read the note below **carefully** to comprehend the assignment requirment.
+Read the note below **carefully** to comprehend the assignment requirement.
+Do NOT fore push your commits!
 
-# Assignment Requirment
+# Contribution
+| Name       | Developing |
+| ----------- | ----------- |
+| Bojia Zhang | Sign In/Out page |
+| Linrui Chen | User Page        |
+| Yubo Zhang  | Main Page        |
+| Yizhen Xu   | Checkout Page    |
+
+# Assignment Requirement
 ## Main Page
 
 - The main page should display key items about the web application that are always shown in the top bar, such as: the name of the website, SellPhone.
@@ -100,7 +110,7 @@ This page will be shown when the user has logged in and click the “profile” 
 - View comments: the page shows a list of comments for each phone listing. The user can only read the comments, but there is no delete button provided.
 - This page also has a Sign-out button regardless the tab/mode selected. After signing out, the user will be redirected to the Main Page with “Home” state active.
 
-## Additonal Note
+## Additional Note
 ### Demo
 Each group must demo their application during ==week 12==. Note the demo will ==use another dataset== that conforms to structure of the dataset included in this assignment. A demo set will be provided and all team members must prepare and participate in the demo. Each team member will be required to demo one part of the application, and they should be able to answer any question about the application design and implementation. In preparation for your demo:
 - Expect to discuss edge cases.
@@ -108,31 +118,4 @@ Each group must demo their application during ==week 12==. Note the demo will ==
 - Each member should have complete understanding of how the overall system works. i.e. someone worked delicately on the frontend must also be able to answer database questions. It is highly recommended to follow the bus factor.
 - Following good software design principles is recommended.
 - If you are using external libraries not discussed in the tutorials, discuss it with your tutor. Your tutor maybe unfamiliar with the library you're using. Expect to answer questions about the usage of the library in your assignment. e.g. reasons for using the library and alternative solutions.
-### Contribution
-If members of your group do not contribute sufficiently you should alert your tutor as soon as possible. The contributions of each group member will be checked from the project's GitHub repository. Failure to join and use the provided GitHub organization account (using your uni email) might result in 0% contribution. All group members must contribute ==effectively and equally== to the project. The contributions will be evident by the GitHub repo. and logs related to each project.
-
-
-Markdown is a lightweight markup language based on the formatting conventions
-that people naturally use in email.
-As [John Gruber] writes on the [Markdown site][df1]
-
-> The overriding design goal for Markdown's
-> formatting syntax is to make it as readable
-> as possible. The idea is that a
-> Markdown-formatted document should be
-> publishable as-is, as plain text, without
-> looking like it's been marked up with tags
-> or formatting instructions.
-
-This text you see here is *actually- written in Markdown! To get a feel
-for Markdown's syntax, type some text into the left window and
-watch the results in the right.
-
-
-
-
-
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-
-[Canvas]: <https://canvas.sydney.edu.au/courses/39701/assignments/358046>
 
