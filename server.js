@@ -12,7 +12,7 @@ const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
 
-const _config = require("./config/config")
+const _config = require("./config/server")
 const _pageRouter = require("./routers/pageRouter")
 const _router = require("./routers/router")
 const _mongo = require("./dao/mongo")
@@ -49,8 +49,8 @@ app.use(function (req,res){
 
 
 app.listen(_config.port, ()=>{
-    console.log('Express Server running at http://127.0.0.1:' + _config.port + '/');
-    console.log(`Swagger APIs documents at: http://127.0.0.1:${_config.port}/${_config.swagger_path}`);
+    console.log('Express Server running at http://localhost:' + _config.port + '/');
+    console.log(`Swagger APIs documents at: http://localhost:${_config.port}/${_config.swagger_path}`);
 });
 
 /**
