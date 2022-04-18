@@ -1,5 +1,3 @@
-
-
 const users = [{username: "admin", password: "admin"}]
 const _mongo = require("../dao/mongo")
 const _phonesQuery = require("../dao/phonesQuery")
@@ -12,26 +10,37 @@ module.exports = {
         res.send(doc)
     },
 
-    async getPhoneByTitle(req, res) {
-        let title = req.query.title;
-        let doc = await _phonesQuery.getPhoneByTitle(title);
-        let ret = doc[0];
-        console.log(ret)
-        res.send(ret)
+    async getPhoneByID(req, res) {
+        let id = req.query.id;
+        let doc = await _phonesQuery.getPhoneByID(id);
+        if (doc.length > 0) {
+            res.send(200, doc[0])
+        }
+        else {
+            res.send(403, "ID not found")
+        }
     },
 
     async getPhoneBySeller(req, res) {
         let seller = req.query.seller;
         let doc = await _phonesQuery.getPhoneBySeller(seller);
-        console.log(doc)
-        res.send(doc)
+        if (doc.length > 0) {
+            res.send(200, doc)
+        }
+        else {
+            res.send(403, "Seller not found")
+        }
     },
 
     async getPhoneByBrand(req, res) {
         let brand = req.query.brand;
         let doc = await _phonesQuery.getPhoneByBrand(brand);
-        console.log(doc)
-        res.send(doc)
+        if (doc.length > 0) {
+            res.send(200, doc)
+        }
+        else {
+            res.send(403, "Brand not found")
+        }
     },
 
     async getAllBrands(req, res) {
@@ -40,18 +49,46 @@ module.exports = {
         res.send(doc)
     },
 
-    async getReviewByTitle(req, res) {
-        let title = req.query.title;
-        let doc = await _phonesQuery.getReviewByTitle(title);
+    async getReviewByID(req, res) {
+        let id = req.query.id;
+        let doc = await _phonesQuery.getReviewByID(id);
+        if (doc.length > 0) {
+            res.send(200, doc)
+        }
+        else {
+            res.send(403, "ID not found")
+        }
+    },
+
+    async getAvgRatingByID(req, res) {
+        let id = req.query.id;
+        let doc = await _phonesQuery.getAvgRatingByID(id);
+        if (doc.length > 0) {
+            let avgRating = doc[0].rating;
+            res.send(200, avgRating)
+        }
+        else {
+            res.send(403, "ID not found")
+        }
+
+    },
+
+    async getTopFivePhonesByIDs(req, res) {
+        // let titles = req.body.titles;
+        let ids = ["625ac107dd15756133d73fd9",
+            "625ac107dd15756133d73fd9",
+            "625ac107dd15756133d73fda",
+            "625ac107dd15756133d73fdc",
+            "625ac107dd15756133d73fdd",
+            "625ac107dd15756133d73fde",
+            "625ac107dd15756133d73fdf",
+            "625ac107dd15756133d73fe0",
+            "625ac107dd15756133d73fe1"];
+        let doc = await _phonesQuery.getTopFivePhonesByIDs(ids);
         console.log(doc)
+        // console.log(avgRating)
         res.send(doc)
     },
 
-    async getAvgRatingByTitle(req, res) {
-        let title = req.query.title;
-        let doc = await _phonesQuery.getAvgRatingByTitle(title);
-        let avgRating = doc[0].rating;
-        // console.log(avgRating)
-        res.send(200,avgRating)
-    },
+
 }

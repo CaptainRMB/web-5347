@@ -1,5 +1,7 @@
 let phonesModel = require("../dao/phonesModel");
+const _mongoose = require("mongoose");
 const mongoose = require("mongoose");
+const ObjectId = require('mongodb').ObjectID;
 
 module.exports = {
 
@@ -15,10 +17,10 @@ module.exports = {
         })
     },
 
-    getPhoneByTitle(title) {
+    getPhoneByID(id) {
         return new Promise((resolve, reject) => {
             phonesModel.find({
-                title: title
+                _id: id
             })
                 .then(doc => {
                     resolve(doc);
@@ -77,10 +79,10 @@ module.exports = {
         })
     },
 
-    getReviewByTitle(title) {
+    getReviewByID(id) {
         return new Promise((resolve, reject) => {
             phonesModel.find({
-                title: title
+                _id: id
             })
                 .select({
                     reviews: true
@@ -94,30 +96,22 @@ module.exports = {
         })
     },
 
-    getAvgRatingByTitle(title) {
+    getAvgRatingByID(id) {
+        console.log(id)
         return new Promise((resolve, reject) => {
             phonesModel
                 .aggregate([
                     {
-                        $match: {title: title}
+                        $match: {_id: ObjectId(id)}
                     },
                     {$unwind: "$reviews"},
                     {
                         $group: {
-                            _id: title,
+                            _id: id,
                             rating: {$avg: "$reviews.rating"}
                         }
 
                     }])
-                //     .find({
-                //         title: title
-                //     })
-                //     .select({
-                //         reviews: {
-                //             rating: true
-                //         }
-                //     })
-
                 .then(doc => {
                     console.log(doc)
                     resolve(doc);
@@ -127,6 +121,49 @@ module.exports = {
                 })
         })
     },
+
+    getTopFivePhonesByIDs(ids) {
+        let ObjectIDs = new Array(ids.length)
+        ids.forEach((v, i) => {
+            ObjectIDs[i] = _mongoose.Types.ObjectId(v);
+        })
+
+        return new Promise((resolve, reject) => {
+            // five phone,
+            // that have the highest average rating
+            // not disabled
+            // at least two ratings given
+            phonesModel.aggregate([
+                {
+                    $match: {
+                        // _id: {$in : ObjectIDs},
+                        'reviews.1': {$exists: true}
+                    }
+                },
+                {$unwind: "$reviews"},
+                {
+                    $group: {
+                        _id: '$_id',
+                        rating: {$avg: "$reviews.rating"}
+                    }
+                },
+                {
+                    $sort: {
+                        rating: -1
+                    }
+                }, {
+                    $limit: 5
+                }
+            ])
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
 }
 
 

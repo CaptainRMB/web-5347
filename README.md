@@ -15,6 +15,7 @@
 | Linrui Chen | [User Page](#User-Page)              |
 | Yubo Zhang  | [Main Page](#Main-Page)              |
 | Yizhen Xu   | [Checkout Page](#Checkout-Page)      |
+
 [Additional Note](#Additional-Note)
 
 ## Installation

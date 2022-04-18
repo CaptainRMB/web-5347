@@ -56,16 +56,18 @@ router.get("/getUserByEmail",_userController.getUserByEmail);
 router.get("/getAllPhones",_phoneController.getAllPhones);
 
 /**
- * @route GET /getPhonesByTitle
+ * @route GET /getPhonesByID
  * @group phone - Operations about phone
+ * @param {string} id.query.required - phone id
  * @returns {boolean} 200 - Phone object in json
  * @returns {Error}  403 - Server Rejected
  */
-router.get("/getPhonesByTitle",_phoneController.getPhoneByTitle);
+router.get("/getPhoneByID", _phoneController.getPhoneByID);
 
 /**
  * @route GET /getPhonesBySeller
  * @group phone - Operations about phone
+ * @param {string} seller.query.required - seller id
  * @returns {boolean} 200 - Array of Phone objects in json
  * @returns {Error}  403 - Server Rejected
  */
@@ -74,6 +76,7 @@ router.get("/getPhonesBySeller",_phoneController.getPhoneBySeller);
 /**
  * @route GET /getPhonesByBrand
  * @group phone - Operations about phone
+ * @param {string} brand.query.required - brand name
  * @returns {boolean} 200 - Array of Phone objects in json
  * @returns {Error}  403 - Server Rejected
  */
@@ -90,17 +93,29 @@ router.get("/getAllBrands",_phoneController.getAllBrands);
 /**
  * @route GET /getReviewByTitle
  * @group phone - Operations about phone
+ * @param {string} id.query.required - phone id
  * @returns {boolean} 200 - Array of Review objects in json
  * @returns {Error}  403 - Server Rejected
  */
-router.get("/getReviewByTitle",_phoneController.getReviewByTitle);
+router.get("/getReviewByID", _phoneController.getReviewByID);
 
 /**
- * @route GET /getRatingByTitle
+ * @route GET /getRatingByID
  * @group phone - Operations about phone
- * @returns {boolean} 200 - Double type
+ * @param {string} id.query.required - phone id
+ * @returns {boolean} 200 - Double type average rating
  * @returns {Error}  403 - Server Rejected
  */
-router.get("/getRatingByTitle",_phoneController.getAvgRatingByTitle);
+router.get("/getRatingByID", _phoneController.getAvgRatingByID);
+
+/**
+ * @route POST /getTopFiveRatedPhonesByIDs
+ * @group phone - Operations about phone
+ * @param {Array} ids.query - array of phone ids which is available in the website, currently it doesn't accept any parameter(i.e. returns the ranked rating of all phones), if you want to filter with your IDs array, please uncomment "_id: {$in : ObjectIDs}," line in the source code of query function
+ * @returns {boolean} 200 - Array of id and corresponding average rating
+ * @returns {Error}  403 - Server Rejected
+ */
+router.post("/getTopFiveRatedPhonesByIDs", _phoneController.getTopFivePhonesByIDs);
+
 
 module.exports = router;
