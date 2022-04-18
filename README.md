@@ -8,6 +8,15 @@
 - [Node.js doc](https://nodejs.org/docs/latest-v12.x/api/)
 - [Requirements](#Assignment-Requirement)
 
+## Contribution
+| Name        | Developing(Requirement)              |
+|-------------|--------------------------------------|
+| Bojia Zhang | [Sign In/Out page](#Sign-in/up-Page) |
+| Linrui Chen | [User Page](#User-Page)              |
+| Yubo Zhang  | [Main Page](#Main-Page)              |
+| Yizhen Xu   | [Checkout Page](#Checkout-Page)      |
+[Additional Note](#Additional-Note)
+
 ## Installation
 The server is tested on [Node.js](https://nodejs.org/) **V12.13.0** only yet.
 1. First, you have to import the [provided data](https://canvas.sydney.edu.au/courses/39701/files/21997637/download?download_frd=1) to your local mongoDB.
@@ -25,14 +34,6 @@ The server is tested on [Node.js](https://nodejs.org/) **V12.13.0** only yet.
 Read the swagger document to figure out what the api requires and returns.
 Read the note below **carefully** to comprehend the assignment requirement.
 Do NOT fore push your commits!
-
-# Contribution
-| Name       | Developing |
-| ----------- | ----------- |
-| Bojia Zhang | Sign In/Out page |
-| Linrui Chen | User Page        |
-| Yubo Zhang  | Main Page        |
-| Yizhen Xu   | Checkout Page    |
 
 # Assignment Requirement
 ## Main Page
@@ -66,7 +67,7 @@ Do NOT fore push your commits!
         - A text input or textfield to accept comments from the users, rating selection, and a button to post the comment. When the comment is submitted, it will be stored in the database and it will be shown to other users.
 
 > Each image will be used to replace each hardcoded “imageurl” in the phone listing dataset depending on the brand, e.g., use “Apple.jpeg” for all initial listing with brand Apple. Hint: you can run a mongodb command to update this field using Robo 3T.
-## Sign-in and/or Sign-up Page
+## Sign in/up Page
 The user will be redirected to this page if the user tries to add an item to the cart without logging in first or if the user clicks the “sign in” button on the top bar in the Main Page. This page provides two options: Sign-up and Login.
 
 - All users must sign-up/sign-in before they can add any item to the cart and go to the Checkout Page.
