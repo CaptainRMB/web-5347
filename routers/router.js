@@ -55,10 +55,52 @@ router.get("/getUserByEmail",_userController.getUserByEmail);
  */
 router.get("/getAllPhones",_phoneController.getAllPhones);
 
+/**
+ * @route GET /getPhonesByTitle
+ * @group phone - Operations about phone
+ * @returns {boolean} 200 - Phone object in json
+ * @returns {Error}  403 - Server Rejected
+ */
 router.get("/getPhonesByTitle",_phoneController.getPhoneByTitle);
+
+/**
+ * @route GET /getPhonesBySeller
+ * @group phone - Operations about phone
+ * @returns {boolean} 200 - Array of Phone objects in json
+ * @returns {Error}  403 - Server Rejected
+ */
 router.get("/getPhonesBySeller",_phoneController.getPhoneBySeller);
+
+/**
+ * @route GET /getPhonesByBrand
+ * @group phone - Operations about phone
+ * @returns {boolean} 200 - Array of Phone objects in json
+ * @returns {Error}  403 - Server Rejected
+ */
 router.get("/getPhonesByBrand",_phoneController.getPhoneByBrand);
+
+/**
+ * @route GET /getAllBrands
+ * @group phone - Operations about phone
+ * @returns {boolean} 200 - Array of Phone objects in json
+ * @returns {Error}  403 - Server Rejected
+ */
 router.get("/getAllBrands",_phoneController.getAllBrands);
+
+/**
+ * @route GET /getReviewByTitle
+ * @group phone - Operations about phone
+ * @returns {boolean} 200 - Array of Review objects in json
+ * @returns {Error}  403 - Server Rejected
+ */
 router.get("/getReviewByTitle",_phoneController.getReviewByTitle);
+
+/**
+ * @route GET /getRatingByTitle
+ * @group phone - Operations about phone
+ * @returns {boolean} 200 - Double type
+ * @returns {Error}  403 - Server Rejected
+ */
 router.get("/getRatingByTitle",_phoneController.getAvgRatingByTitle);
+
 module.exports = router;

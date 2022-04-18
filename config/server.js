@@ -5,6 +5,8 @@ module.exports = {
     port : 8080,
     mongoDB_port: 27017,
     mongoDB_name: "COMP5347",
+    mongoDB_usersCollection: "users",
+    mongoDB_phonesCollection: "phones",
     // mongoDB_url:`mongodb://localhost:${(this.mongoDB_port)}/${this.mongoDB_name}`
     mongoDB_url: `mongodb://localhost:27017/COMP5347`,
     swagger_path:`apis`,

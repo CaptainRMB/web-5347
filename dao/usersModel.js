@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("js-validator")
+const _config = require("../config/server");
 let usersModel = new mongoose.Schema({
     firstname:{
         type: String,
@@ -36,4 +37,4 @@ function isEmail(obj) {
 function notNull(str){
     return str.length !== 0;
 }
-module.exports = mongoose.model('user',usersModel,'users');
+module.exports = mongoose.model('user',usersModel,`${_config.mongoDB_usersCollection}`);

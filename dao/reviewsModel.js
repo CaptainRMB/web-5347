@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("js-validator")
+const _config = require("../config/server");
 let usersModel = new mongoose.Schema({
     reviewer:{
         type: String,
@@ -15,4 +16,4 @@ let usersModel = new mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model('review',usersModel,'phones');
+module.exports = mongoose.model('review',usersModel,`${_config.mongoDB_phonesCollection}`);

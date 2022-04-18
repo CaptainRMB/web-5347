@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const _config = require("../config/server");
 let reviewModel = new mongoose.Schema({
     reviewer:{
         type: String,
@@ -53,4 +53,4 @@ let phonesModel = new mongoose.Schema({
 function notNull(str){
     return str.length !== 0;
 }
-module.exports = mongoose.model('phone',phonesModel,'phones');
+module.exports = mongoose.model('phone',phonesModel,`${_config.mongoDB_phonesCollection}`);
