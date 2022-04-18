@@ -58,6 +58,7 @@ router.get("/getAllPhones",_phoneController.getAllPhones);
 router.get("/getPhonesByTitle",_phoneController.getPhoneByTitle);
 router.get("/getPhonesBySeller",_phoneController.getPhoneBySeller);
 router.get("/getPhonesByBrand",_phoneController.getPhoneByBrand);
-
-
+router.get("/getAllBrands",_phoneController.getAllBrands);
+router.get("/getReviewByTitle",_phoneController.getReviewByTitle);
+router.get("/getRatingByTitle",_phoneController.getAvgRatingByTitle);
 module.exports = router;

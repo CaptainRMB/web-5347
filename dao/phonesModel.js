@@ -1,9 +1,25 @@
 const mongoose = require("mongoose");
 
+let reviewModel = new mongoose.Schema({
+    reviewer:{
+        type: String,
+        require: true
+    },
+    rating:{
+        type: Number,
+        require: true
+    },
+    comment:{
+        type: String,
+        require: true,
+    },
+})
+
 let phonesModel = new mongoose.Schema({
     title:{
         type: String,
-        require: true
+        require: true,
+        unique:true,
     },
     brand:{
         type: String,
@@ -11,7 +27,7 @@ let phonesModel = new mongoose.Schema({
     },
     image:{
         type: String,
-        require: true,
+        require: false,
     },
     stock:{
         type: Number,
@@ -19,18 +35,20 @@ let phonesModel = new mongoose.Schema({
     },
     seller:{
         type: String,
-        require: true,
+        require: false,
     },
     price:{
         type: Number,
-        require: true,
+        require: false,
+        default: 0
     },
     reviews:{
-        type: Array,
-        require: true,
+        type: [reviewModel],
+        require: false,
     },
 
 })
+
 
 function notNull(str){
     return str.length !== 0;
