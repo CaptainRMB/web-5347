@@ -1,6 +1,8 @@
 const _express = require("express");
-const _userController = require("../controller/userController")
 const _bodyParser = require('body-parser');
+const _userController = require("../controller/userController")
+const _phoneController = require("../controller/phoneController")
+
 
 const jsonParser = _bodyParser.json();
 const urlencodedParser = _bodyParser.urlencoded({ extended: false })
@@ -43,6 +45,19 @@ router.get("/getAllUsers",_userController.getAllUsers);
  * @returns {Error}  403 - Server Rejected
  */
 router.get("/getUserByEmail",_userController.getUserByEmail);
+
+
+/**
+ * @route GET /getAllPhones
+ * @group phone - Operations about phone
+ * @returns {boolean} 200 - All phone objects in Json
+ * @returns {Error}  403 - Server Rejected
+ */
+router.get("/getAllPhones",_phoneController.getAllPhones);
+
+router.get("/getPhonesByTitle",_phoneController.getPhoneByTitle);
+router.get("/getPhonesBySeller",_phoneController.getPhoneBySeller);
+router.get("/getPhonesByBrand",_phoneController.getPhoneByBrand);
 
 
 module.exports = router;

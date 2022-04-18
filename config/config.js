@@ -1,5 +1,8 @@
+const mongoose = require("mongoose");
+
+
 module.exports = {
-    port: 8080,
+    port : 8080,
     mongoDB_port: 27017,
     mongoDB_name: "COMP5347",
     // mongoDB_url:`mongodb://localhost:${(this.mongoDB_port)}/${this.mongoDB_name}`
@@ -41,4 +44,4 @@ module.exports = {
         files: ['./routers/router.js'] //Path to the API handle folder
     }
 }
-console.log(__dirname+'/..')
+// console.log(__dirname+'/..')
