@@ -1,9 +1,11 @@
 let usersModel = require("../dao/usersModel");
 const mongoose = require("mongoose");
+const phonesModel = require("./phonesModel");
+const {ObjectID: ObjectId} = require("mongodb");
 
 module.exports = {
     getUserByEmail(email) {
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             usersModel.find({
                 email: email
             })
@@ -64,6 +66,26 @@ module.exports = {
             usersModel.find({
                 _id: id
             })
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    getUsersNamesIDs() {
+        return new Promise((resolve, reject) => {
+            usersModel
+                .find({})
+                .select({
+                    _id: true,
+                    firstname: true,
+                    lastname: true,
+                    email: true,
+                })
+
                 .then(doc => {
                     resolve(doc);
                 })

@@ -18,9 +18,11 @@ module.exports = {
 
     async getMainPageData(req, res) {
         let products = await _phonesQuery.getAllPhones();
-        // console.log(products)
+        let sellers = await _usersQuery.getUsersNamesIDs();
+        // console.log(products, users)
         res.render('main.ejs', {
             'doc': products,
+            'users': sellers,
             'test': "DOOOOOONE!"
         })
         // res.render('user.ejs', {

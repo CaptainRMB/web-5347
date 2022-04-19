@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="css/main.css"/>
     <script type='text/javascript'>
         const products = <%- JSON.stringify(doc) %>
-            console.log("This is ejs!")
+            console.log("Loading phones")
+    </script>
+    <script type='text/javascript'>
+        const sellers = <%- JSON.stringify(users) %>
+            console.log("Loading sellers")
     </script>
     <script type="text/javascript" src="js/main.js"></script>
 </head>
@@ -15,7 +19,7 @@
 <body onload="onLoad()">
 <form method="get" action="">
     <p id="theme_toggle" onclick="theme_toggle()">Turn off the light</p>
-    <p id="website_name">John Doe's Bookstore<%- test %></p>
+    <p id="website_name">John Doe's Phone Store</p>
 
     <div id="searchBox">
         <div id="div_search">
@@ -37,7 +41,7 @@
     </div>
 
     <div id="listBox">
-        <table id="table_books" border="1">
+        <table class="table-sort" id="table_books" border="1">
 
             <thead>
             <th><input type="checkbox"></th>

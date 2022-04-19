@@ -12,6 +12,7 @@ function onLoad() {
     console.log('Main.js is running!')
     // console.log(document.querySelector('.plan-title').innerHTML);
     console.log('JS: ', products[0])
+    console.log('JS: ', sellers[0])
     updateCartQty();
     // document.documentElement.className = 'light'
     productList = products;
@@ -58,17 +59,23 @@ function loadBooks(list, filterWord) {
         let title = row.insertCell(2);
         title.innerHTML = list[i].title;
 
-        let authors = row.insertCell(3);
-        authors.innerHTML = list[i].brand;
+        let brand = row.insertCell(3);
+        brand.innerHTML = list[i].brand;
 
-        let year = row.insertCell(4);
-        year.innerHTML = list[i].seller;
+
+        let seller = sellers.find(function (obj, index) {
+            if (obj._id === list[i].seller)
+                return true;
+        });
+        let sellerName = row.insertCell(4);
+        sellerName.innerHTML = `<a href="#" title="${seller.email}\n${seller._id}">${seller.firstname} ${seller.lastname}</a>`;
+        // sellerName.innerHTML = seller.firstname + " " + seller.lastname;
 
         let price = row.insertCell(5);
         price.innerHTML = list[i].price;
 
-        let publisher = row.insertCell(6);
-        publisher.innerHTML = list[i].stock;
+        let stock = row.insertCell(6);
+        stock.innerHTML = list[i].stock;
         id++;
     }
 
