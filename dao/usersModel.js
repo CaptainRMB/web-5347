@@ -1,21 +1,21 @@
 const mongoose = require("mongoose");
-const validator = require("js-validator")
 const _config = require("../config/server");
+const _util = require("../utils/validator")
 let usersModel = new mongoose.Schema({
-    firstname:{
+    firstname: {
         type: String,
         require: false
     },
-    lastname:{
+    lastname: {
         type: String,
         require: false
     },
-    email:{
+    email: {
         type: String,
         require: true,
         unique: true,
         // validate: (value) => {
-        //     return isEmail()
+        //     return _util.isEmail()
         // }
 
     },
@@ -23,18 +23,11 @@ let usersModel = new mongoose.Schema({
         type: String,
         require: true,
         validate: (value) => {
-            return notNull(value)
+            return _util.notNull(value)
         }
     },
 
 })
 
-function isEmail(obj) {
-    let email = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-    return email.test(obj);
-}
 
-function notNull(str){
-    return str.length !== 0;
-}
 module.exports = mongoose.model('user',usersModel,`${_config.mongoDB_usersCollection}`);

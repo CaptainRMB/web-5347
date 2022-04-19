@@ -74,16 +74,16 @@ module.exports = {
     },
 
     async getTopFivePhonesByIDs(req, res) {
-        // let titles = req.body.titles;
-        let ids = ["625ac107dd15756133d73fd9",
-            "625ac107dd15756133d73fd9",
-            "625ac107dd15756133d73fda",
-            "625ac107dd15756133d73fdc",
-            "625ac107dd15756133d73fdd",
-            "625ac107dd15756133d73fde",
-            "625ac107dd15756133d73fdf",
-            "625ac107dd15756133d73fe0",
-            "625ac107dd15756133d73fe1"];
+        let ids = req.body.ids;
+        // let ids = ["625ac107dd15756133d73fd9",
+        //     "625ac107dd15756133d73fd9",
+        //     "625ac107dd15756133d73fda",
+        //     "625ac107dd15756133d73fdc",
+        //     "625ac107dd15756133d73fdd",
+        //     "625ac107dd15756133d73fde",
+        //     "625ac107dd15756133d73fdf",
+        //     "625ac107dd15756133d73fe0",
+        //     "625ac107dd15756133d73fe1"];
         let doc = await _phonesQuery.getTopFivePhonesByIDs(ids);
         console.log(doc)
         // console.log(avgRating)

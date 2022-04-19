@@ -10,13 +10,13 @@ const favicon = require("serve-favicon")
 const _bodyParser = require('body-parser');
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-
-
+const _session = require("express-session")
+const _cookie = require("cookie-parser")
 const _config = require("./config/server")
 const _pageRouter = require("./routers/pageRouter")
 const _router = require("./routers/router")
 const _mongo = require("./dao/mongo")
-
+let _cookieParser = require('cookie-parser');
 
 const app = _express();
 
@@ -26,15 +26,25 @@ expressSwagger(_config.swagger_options)
 // app.use('/api/swagger_ui', _express.static(path.join(__dirname, 'public')))
 //logger
 app.use(_logger("dev"));
+// app.use(_cookieParser('sessiontest'));
+app.use(_cookie())
+app.use(_session({
+    id: "comp_5347",
+    secret: "1234",
+    resave: true,
+    rolling: true,
+    cookie: {maxAge: 10 * 1000},
+    saveUninitialized: true,
+}))
 //parsing middleware
 app.use(_express.urlencoded({extended: false}))
 app.use(_express.json())
 //default rendering config
 app.engine('html', _ejs.renderFile);
-app.set("view engine","ejs");
+app.set("view engine", "ejs");
 app.engine('ejs', _ejs.__express);
 //default main page
-app.use('/', _express.static('app', {index:"index.html"}));
+app.use('/', _express.static('app', {index: "index.html"}));
 app.use(_router)
 //default static resource direction
 app.use(_express.static(__dirname+"/views"));

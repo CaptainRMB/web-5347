@@ -5,8 +5,26 @@ const _phoneController = require("../controller/phoneController")
 
 
 const jsonParser = _bodyParser.json();
-const urlencodedParser = _bodyParser.urlencoded({ extended: false })
+const urlencodedParser = _bodyParser.urlencoded({extended: false})
 const router = _express.Router()
+
+router.get("/*", function (res, req, next) {
+    // console.log(res.url)
+    // console.log("Session: ",req.session)
+    next();
+
+});
+
+/**
+ * @route GET /getUserByID
+ * @group user - Operations about user
+ * @param {string} id.query.required - user id
+ * @returns {object} 200 - user object in json
+ * @returns {Error}  403 - Server Rejected
+ */
+router.get("/getUserByID", _userController.getUserByID);
+
+
 /**
  * @route POST /login.do
  * @group user - Operations about user
@@ -15,7 +33,7 @@ const router = _express.Router()
  * @returns {object} 200 - An object of user
  * @returns {Error}  403 - Server Rejected
  */
-router.post("/login.do",_userController.userLogin);
+router.post("/login.do", _userController.userLogin);
 
 /**
  * @route POST /signup.do
@@ -44,7 +62,36 @@ router.get("/getAllUsers",_userController.getAllUsers);
  * @returns {boolean} 200 - true
  * @returns {Error}  403 - Server Rejected
  */
-router.get("/getUserByEmail",_userController.getUserByEmail);
+router.get("/getUserByEmail", _userController.getUserByEmail);
+
+router.get("/user/*", function (req, res, next) {
+    let flag = true;
+    // console.log(req.session)
+    if (req.session.data) {
+        if (req.session.data.id === req.query.id) {
+            next();
+        }
+        else {
+            res.send(
+                '<body>' +
+                "<h2>Illegal request!<br></h2>" +
+                '<a href="/login.html">Login</a>' +
+                '</body></html>')
+        }
+    }
+    else {
+        res.redirect(302, "/login.html")
+    }
+});
+
+/**
+ * @route GET /user
+ * @group user - Operations about user
+ * @param {string} id.query.required - user id
+ * @returns {object} 200 - An html of user page(ajax)
+ * @returns {Error}  403 - Server Rejected
+ */
+router.get("/user/detail", _userController.userPage);
 
 
 /**
@@ -53,7 +100,7 @@ router.get("/getUserByEmail",_userController.getUserByEmail);
  * @returns {boolean} 200 - All phone objects in Json
  * @returns {Error}  403 - Server Rejected
  */
-router.get("/getAllPhones",_phoneController.getAllPhones);
+router.get("/getAllPhones", _phoneController.getAllPhones);
 
 /**
  * @route GET /getPhonesByID

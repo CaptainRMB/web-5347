@@ -45,17 +45,33 @@ module.exports = {
                 },function (err,small){
                     if (err){
                         reject(err);
-                    } else {
+                    }
+                    else {
                         resolve(true);
                     }
                 })
         })
-            .catch(err =>{
+            .catch(err => {
                 console.log(err);
                 console.log(err.code);
-               return err;
+                return err;
             })
-    }
+    },
+
+
+    getUserByID(id) {
+        return new Promise((resolve, reject) => {
+            usersModel.find({
+                _id: id
+            })
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
 }
 
 

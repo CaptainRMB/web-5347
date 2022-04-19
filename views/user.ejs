@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>INDEX.test</title>
-    <link rel="stylesheet" href = "css/user.css">
+    <link rel="stylesheet" href="/css/user.css">
 </head>
 <body onload="onLoad()">
-<script src="js/user.js"></script>
+<script src="/js/user.js"></script>
 <h1 id="text_title">
     Hello, <%=title_firstName%>!
 </h1>
@@ -16,19 +16,24 @@
 <table id="table_userInfo" border="1">
     <tr>
         <th>Name:</th>
-        <td><%=table_name%></td>
+        <td><%= table_name %></td>
     </tr>
     <tr>
         <th>Email:</th>
-        <td><%=table_email%></td>
+        <td><%= table_email %></td>
     </tr>
     <tr>
         <th>Password:</th>
-        <td><%=table_password%></td>
+        <td><%= table_password %></td>
     </tr>
-</table><br>
+    <tr>
+        <th>Password:</th>
+        <td><%= table_id %></td>
+    </tr>
+</table>
+<br>
 
-<img src="img/Apple.jpeg" alt="Apple" width="100" height="100"><br>
+<img src="/img/Apple.jpeg" alt="Apple" width="100" height="100"><br>
 <a href="index.html">Return to index page.</a>
 </body>
 </html>
