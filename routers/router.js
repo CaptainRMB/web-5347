@@ -2,7 +2,7 @@ const _express = require("express");
 const _bodyParser = require('body-parser');
 const _userController = require("../controller/userController")
 const _phoneController = require("../controller/phoneController")
-
+const _pageController = require("../controller/pageController")
 
 const jsonParser = _bodyParser.json();
 const urlencodedParser = _bodyParser.urlencoded({extended: false})
@@ -164,5 +164,6 @@ router.get("/getRatingByID", _phoneController.getAvgRatingByID);
  */
 router.post("/getTopFiveRatedPhonesByIDs", _phoneController.getTopFivePhonesByIDs);
 
+router.get("/main", _pageController.getMainPageData);
 
 module.exports = router;

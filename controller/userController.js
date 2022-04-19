@@ -6,15 +6,14 @@ module.exports = {
 
     //TODO session and cookie
     async userLogin(req, res) {
-        let email = req.body.email;
-        // let password =_util.md5(req.body.password); //TODO currently it's using unhashed password for testing
-        let password = req.body.password;
+        let {email, password} = req.body;
+        // let password =_util.md5(req.body.password); //TODO currently it's using unhashed password for testing, not sure if I can add salt in the case of the new data set during demo
         let result = await _usersQuery.getUserByEmail(email);
         try {
             if (result[0].password === password && result[0].password !== undefined) {//TODO wrong condition, boundary case might exist
-                await setTimeout( function() {
+                await setTimeout(function () {
                     req.session.data = {id: result[0]._id.toString()};
-                    console.log(req.session, 'SAVED!')
+                    // console.log(req.session, 'SAVED!')
                     res.redirect(302, _url.format({
                         pathname: "/user/detail",
                         query: {
@@ -41,13 +40,8 @@ module.exports = {
     },
 
     async userSignUp(req, res) {
-        console.log(req.body)
-        let firstName = req.body.firstName;
-        let lastName = req.body.lastName;
-        let email = req.body.email;
-        let password = _util.md5(req.body.password);
-        console.log(password)
-        console.log(req.body)
+        let {firstName, lastName, email, password} = req.body
+        password = _util.md5(password);
         let result = await _usersQuery.signUp(email, password, firstName, lastName);
         if (result === true) {
             res.send("Sign Up Successfully!")

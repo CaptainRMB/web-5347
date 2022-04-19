@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html class="light">
+
+<head lang="en">
+    <meta charset="utf-8">
+    <title>COMP5347 Assignment One</title>
+    <link rel="stylesheet" href="css/main.css"/>
+    <script type='text/javascript'>
+        const products = <%- JSON.stringify(doc) %>
+            console.log("This is ejs!")
+    </script>
+    <script type="text/javascript" src="js/main.js"></script>
+</head>
+
+<body onload="onLoad()">
+<form method="get" action="">
+    <p id="theme_toggle" onclick="theme_toggle()">Turn off the light</p>
+    <p id="website_name">John Doe's Bookstore<%- test %></p>
+
+    <div id="searchBox">
+        <div id="div_search">
+            <input type="text" id="inputBox_search" autocomplete="on">
+            <input type="button" id="btn_search" value="Search" onclick="search_books()"/>
+            <select id="list_select" value="All Categories">
+            </select>
+            <input type="button" id="btn_filter" value="Filter" onclick="filter_books()"/>
+            <input type="button" id="btn_reset_search" value="Reset Search and Filter"
+                   onclick="reset_search()"/>
+        </div>
+        <div id="div_cart">
+            <input type="button" id="btn_addToCart" value="Add to cart" onclick="addCart()"/>
+            <input type="button" id="btn_resetCart" value="Reset the cart" onclick="resetCart()"/>
+            <img src="img/shopping_cart.png" onclick="displayDate()"
+                 onClick="onCartClicked()" width="5%" height="auto"/>
+            <b id="cart_qty">QTY</b>
+        </div>
+    </div>
+
+    <div id="listBox">
+        <table id="table_books" border="1">
+
+            <thead>
+            <th><input type="checkbox"></th>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Brand</th>
+            <th>Seller</th>
+            <th>Price</th>
+            <th>Stock</th>
+            </thead>
+            <tfoot>
+
+            </tfoot>
+            <tbody>
+            <!--            <% for(var i = 0; i < doc.length; i++) { %>-->
+            <!--                <tr>-->
+            <!--                    <th><input type="checkbox"></th>-->
+            <!--                    <th></th>-->
+            <!--                    <th><%= doc[i].title %></th>-->
+            <!--                    <th><%= doc[i].brand %></th>-->
+            <!--                    <th><%= doc[i].seller %></th>-->
+            <!--                    <th><%= doc[i].price %></th>-->
+            <!--                    <th><%= doc[i].stock %></th>-->
+            <!--                </tr>-->
+            <!--            <% } %>-->
+            </tbody>
+        </table>
+    </div>
+
+
+</form>
+</body>
+</html>
