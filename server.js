@@ -33,7 +33,7 @@ app.use(_session({
     secret: "1234",
     resave: true,
     rolling: true,
-    cookie: {maxAge: 10 * 1000},
+    cookie: {maxAge: 30 * 1000},
     saveUninitialized: true,
 }))
 //parsing middleware
@@ -44,7 +44,7 @@ app.engine('html', _ejs.renderFile);
 app.set("view engine", "ejs");
 app.engine('ejs', _ejs.__express);
 //default main page
-app.use('/', _express.static('app', {index: "index.html"}));
+app.use('/', _express.static('app', {index: "main.ejs"}));
 app.use(_router)
 //default static resource direction
 app.use(_express.static(__dirname+"/views"));

@@ -11,8 +11,9 @@ function onLoad() {
     // document.getElementById("p_test").innerHTML = Date();
     console.log('Main.js is running!')
     // console.log(document.querySelector('.plan-title').innerHTML);
-    console.log('JS: ', products[0])
-    console.log('JS: ', sellers[0])
+    // console.log('JS: ', products[0])
+    // console.log('JS: ', sellers[0])
+    console.log('JS: ', user)
     updateCartQty();
     // document.documentElement.className = 'light'
     productList = products;
@@ -26,7 +27,21 @@ function onLoad() {
 
     loadBooks(productList, "All Categories")
     loadSelectList(brandList)
+    if (!user.isLogin) {
+        document.getElementById("login_toggle").innerHTML = `<a href="../login.html">Login in</a>`
+    }
+    else {
+        console.log(window.location.origin + "/user/detail")
+        let userPageUrl = new URL(window.location.origin + "/user/detail");
+        userPageUrl.searchParams.append("id", user.data._id.toString())
+        // console.log(userPageUrl.toString())
+        document.getElementById("login_toggle").innerHTML = `<a id="userLink" href=${userPageUrl}>Hi, ${user.data.firstname}</a>`
+        // // document.getElementById("login_toggle").innerHTML = `<a id="userLink">`;
+        let userLink = document.getElementById("userLink")
+        userLink.setAttribute("href", userPageUrl);
 
+        // toggle.setAttribute("tag")
+    }
 
 }
 
@@ -335,6 +350,12 @@ function theme_toggle() {
     console.log("Switch to " + document.documentElement.className + " theme!")
     document.getElementById("btn_search").disabled = true;
 }
+
+
+function user_toggle() {
+
+}
+
 
 //should not be used for api security
 function getJsonObject(path, success, error) {

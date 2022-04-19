@@ -42,6 +42,19 @@ div#searchBox, div#listBox {
     width: 80%;
 }
 
+#theme_toggle {
+    float: left;
+}
+
+#login_toggle {
+    float: right;
+}
+
+#website_name {
+    padding-top: 2em;
+    font-size: xx-large;
+}
+
 div#div_search {
     float: left;
     width: 80%;

@@ -3,7 +3,7 @@
 
 <head lang="en">
     <meta charset="utf-8">
-    <title>COMP5347 Assignment One</title>
+    <title>COMP5347_Assignment2_Group32</title>
     <link rel="stylesheet" href="css/main.css"/>
     <script type='text/javascript'>
         const products = <%- JSON.stringify(doc) %>
@@ -13,12 +13,20 @@
         const sellers = <%- JSON.stringify(users) %>
             console.log("Loading sellers")
     </script>
+    <script type='text/javascript'>
+        const user = <%- JSON.stringify(user) %>
+            console.log("Loading user data")
+    </script>
     <script type="text/javascript" src="js/main.js"></script>
 </head>
 
 <body onload="onLoad()">
 <form method="get" action="">
-    <p id="theme_toggle" onclick="theme_toggle()">Turn off the light</p>
+    <div id="div_verytop">
+        <p id="theme_toggle" onclick="theme_toggle()">Turn off the light</p>
+        <p id="login_toggle" onclick="user_toggle()">Login</p>
+    </div>
+
     <p id="website_name">John Doe's Phone Store</p>
 
     <div id="searchBox">

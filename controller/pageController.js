@@ -18,12 +18,28 @@ module.exports = {
 
     async getMainPageData(req, res) {
         let products = await _phonesQuery.getAllPhones();
-        let sellers = await _usersQuery.getUsersNamesIDs();
+        let users = await _usersQuery.getUsersNamesIDs();
+        // console.log(req.session.data)
+        let user = {
+            isLogin: false,
+            data: {},
+        };
+        if (req.session.data) {
+            users.forEach(v => {
+                if (v._id.toString() === req.session.data.id) {
+                    console.log("FOUND!")
+                    user.isLogin = true;
+                    user.data = v;
+                }
+            })
+        }
+
+        console.log(user)
         // console.log(products, users)
         res.render('main.ejs', {
             'doc': products,
-            'users': sellers,
-            'test': "DOOOOOONE!"
+            'users': users,
+            'user': user,
         })
         // res.render('user.ejs', {
         //     products : doc

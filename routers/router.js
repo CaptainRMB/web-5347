@@ -8,11 +8,15 @@ const jsonParser = _bodyParser.json();
 const urlencodedParser = _bodyParser.urlencoded({extended: false})
 const router = _express.Router()
 
-router.get("/*", function (res, req, next) {
+router.get("/*", function (req, res, next) {
     // console.log(res.url)
     // console.log("Session: ",req.session)
     next();
 
+});
+
+router.get("/", function (req, res, next) {
+    res.redirect('/main')
 });
 
 /**
