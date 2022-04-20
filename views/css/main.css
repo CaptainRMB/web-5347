@@ -145,6 +145,10 @@ caption {
     overflow: auto;
 }
 
+#listBox tr > *:nth-child(7) {
+    display: none;
+}
+
 .loginDialogOuter {
     display: table;
     position: absolute;

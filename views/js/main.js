@@ -109,6 +109,13 @@ function loadBooks(list, filterWord) {
 
         let stock = row.insertCell(6);
         stock.innerHTML = list[i].stock;
+
+        //hidden column of ids
+        let _id = row.insertCell(7);
+        _id.innerHTML = `<td style="visibility:collapse;">${list[i]._id}</td>`;
+        document.getElementById("table_books").getElementsByTagName('tbody')[0]
+            .getElementsByTagName('tr')[id].getElementsByTagName('td')[7]
+            .style.display = 'none';
         id++;
     }
 
@@ -139,6 +146,8 @@ function loadBooks(list, filterWord) {
         }
 
     }
+    // var tbl = document.getElementById('listBox');
+    // var col = tbl.getElementsByTagName('col')[col_no];
 }
 
 function loadSelectList(categoryList) {
@@ -241,9 +250,24 @@ function selectOneBook(index) {
 }
 
 function onRowClicked(row) {
+    let phoneID = document.querySelectorAll('tr')[row.rowIndex].querySelectorAll('td')[7].innerHTML;
+
+    let url = new URL(window.location.origin + "/getPhoneByID")
+    url.searchParams.append("id", phoneID)
+    fetch(url)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (doc) {
+            console.log(JSON.stringify(doc));
+            console.log(doc.reviews);
+            alert(doc._id)
+        });
     // console.log(row.rowIndex);
     // let checkbox = row.getElementsByTagName('input')[0];
     // checkbox.checked = !checkbox.checked;
+
+
     selectOneBook(row.rowIndex);
 }
 

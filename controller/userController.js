@@ -9,6 +9,7 @@ module.exports = {
 
     //TODO session and cookie
     async userLogin(req, res) {
+        console.log(_ws)
         let {email, password} = req.body;
         // let password =_util.md5(req.body.password); //TODO currently it's using unhashed password for testing, not sure if I can add salt in the case of the new data set during demo
         let result = await _usersQuery.getUserByEmail(email);
@@ -38,15 +39,16 @@ module.exports = {
             // res.send(`<script>alert("your alert message"); window.location.href = '/main'; </script>`);
             // res.status(403)
             // let ws = new _webSocket.Server({port: 8000});\
+            console.log(_ws)//stored websocket object is lost due to the post action
             // _ws.send( "test")
 
 
             // _ws.send(JSON.stringify({
             //     msg :"Login Failed:" + e.name + e.message
             // }))
-            res.json({
-                msg: "Login Failed:" + e.name + e.message
-            })
+            // res.json({
+            //     msg: "Login Failed:" + e.name + e.message
+            // })
 
         }
     },

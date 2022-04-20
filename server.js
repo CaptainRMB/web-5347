@@ -58,6 +58,7 @@ app.use(function (req,res){
     res.redirect("/404.html")
 })
 
+console.log(_ws)
 
 app.listen(_config.port, ()=>{
     console.log('Express Server running at http://localhost:' + _config.port + '/');
