@@ -6,7 +6,6 @@ let productList = [];
 let brandList = [];
 let cart = [];
 
-
 function onLoad() {
     // document.getElementById("p_test").innerHTML = Date();
     console.log('Main.js is running!')
@@ -40,9 +39,28 @@ function onLoad() {
     }
     else {
         document.getElementById("login_toggle").innerHTML =
-            `<a href="../login.html">Login in</a>&nbsp&nbsp&nbsp&nbsp<a href="../sign_up.html">Sign Up</a>`
+            `<p><a href="../login.html">Login</a>&nbsp&nbsp&nbsp&nbsp<a href="../sign_up.html">Sign Up</a><br>
+
+            <a id='loginLink' href="#">Login2</a> </p>`;
+        document.getElementById("loginLink").setAttribute("href", "JavaScript:void(0)");
+        document.getElementById("loginLink").setAttribute("onclick", "openLoginDialog()");
     }
 
+    const ws = new WebSocket("ws://localhost:8000");
+    ws.onopen = function () {
+        console.log('Websocket is listening on: ', ws.url)
+    }
+
+//多个回调函数用
+    ws.addEventListener('open', function (event) {
+        ws.send('Hello Server!');
+    });
+    ws.addEventListener('message', function (event) {
+        console.log(event)
+    });
+    ws.onmessage = function (event) {
+        console.log(event.data)
+    }
 }
 
 function loadBooks(list, filterWord) {
@@ -351,7 +369,18 @@ function theme_toggle() {
     // document.getElementById("btn_search").disabled = true;
 }
 
+function openLoginDialog() {
 
+    document.getElementById('loginDialog').style.display = 'block';
+    let userLoginUrl = new URL(window.location.origin + "/login");
+    // console.log(userLoginUrl.toString())
+    document.getElementById('dialog_login_form').action = userLoginUrl;
+    // console.log('test', document.getElementById('dialog_login_form').getAttribute('action'))
+}
+
+function closeLoginDialog() {
+    document.getElementById('loginDialog').style.display = 'none';
+}
 
 //should not be used for api security
 function getJsonObject(path, success, error) {

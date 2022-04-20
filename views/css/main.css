@@ -130,3 +130,38 @@ caption {
     text-align: left;
     text-transform: uppercase;
 }
+
+.loginDialog {
+    display: none;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 25%;
+    height: 25%;
+    padding: 20px;
+    border: 10px solid dodgerblue;
+    background-color: lightskyblue;
+    z-index: 9527;
+    overflow: auto;
+}
+
+.loginDialogOuter {
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.loginDialogMiddle {
+    background-color: #95BEF0;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.loginDialogInner {
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+}

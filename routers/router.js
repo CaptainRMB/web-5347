@@ -38,6 +38,7 @@ router.get("/sign_out", _userController.signOut);
  * @returns {Error}  403 - Server Rejected
  */
 router.post("/login.do", _userController.userLogin);
+router.post("/login", _userController.userLogin);
 
 /**
  * @route POST /signup.do

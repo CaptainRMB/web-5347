@@ -17,13 +17,15 @@
         const user = <%- JSON.stringify(user) %>
             console.log("Loading user data")
     </script>
+
     <script type="text/javascript" src="js/main.js"></script>
+
 </head>
 
 <body onload="onLoad()">
 <form method="get" action="">
     <div id="div_verytop">
-        <a id="theme_toggle" href="javascript:theme_toggle()">Turn off the light</a>
+        <a id="theme_toggle" href="javascript:void(0)" onclick="theme_toggle()">Turn off the light</a>
         <p id="login_toggle">login_toggle</p>
     </div>
 
@@ -81,5 +83,30 @@
 
 
 </form>
+<div id="loginDialog" class="loginDialog">
+    <div class="loginDialogOuter">
+        <div class="loginDialogMiddle">
+            <div class="loginDialogInner">
+                <h1>LOGIN</h1>
+                <form id="dialog_login_form" action="" method="post">
+                    E-mail: <input name="email" type="text"><br>
+                    Password: <input name="password" type="password"><br>
+                    <button>Submit</button>
+                </form>
+                <!--            <a href="index.html">Return to index page.</a><br>-->
+                <a href="sign_up.html">Sign Up</a><br><br>
+                <a href="javascript:void(0)" onclick="closeLoginDialog()">Close This Window</a>
+                <!--                <script src="/socket.io/socket.io.js"></script>-->
+                <!--                <script>-->
+                <!--                    let socket = io.connect('http://localhost');-->
+                <!--                    socket.on('for_client', function (data) {-->
+                <!--                        console.log(data);-->
+                <!--                        socket.emit('for_server', { data: 'data' });-->
+                <!--                    });-->
+                <!--                </script>-->
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

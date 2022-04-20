@@ -17,8 +17,10 @@ const _pageRouter = require("./routers/pageRouter")
 const _router = require("./routers/router")
 const _mongo = require("./dao/mongo")
 let _cookieParser = require('cookie-parser');
-
+const _socket = require('socket.io')
+const _ws = require('./websocketServer')
 const app = _express();
+// const ws = require('express-ws')(app);
 
 //swagger config
 const expressSwagger = require('express-swagger-generator')(app)
@@ -55,7 +57,6 @@ app.use(function (req,res){
     res.status(404);
     res.redirect("/404.html")
 })
-
 
 
 app.listen(_config.port, ()=>{

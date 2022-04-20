@@ -2,6 +2,9 @@ const _mongo = require("../dao/mongo")
 const _usersQuery = require("../dao/usersQuery")
 const _url = require('url');
 const _util = require('../utils/hashing')
+const _ws = require('../websocketServer')
+const _webSocket = require("ws");
+
 module.exports = {
 
     //TODO session and cookie
@@ -14,28 +17,37 @@ module.exports = {
                 await setTimeout(function () {
                     req.session.data = {id: result[0]._id.toString()};
                     // console.log(req.session, 'SAVED!')
-                    res.redirect(302, _url.format({
-                        pathname: "/user/detail",
-                        query: {
-                            id: result[0]._id.toString()
-                        }
-                    }))
-                    // res.render('user.ejs',{
-                    //     title_firstName:result[0].firstname,
-                    //     table_name:result[0].firstname+" "+result[0].lastname,
-                    //     table_email:result[0].email,
-                    //     table_password:result[0].password,
-                    //     table_id:result[0]._id.toString()
-                    // })
+                    // res.redirect(302, _url.format({
+                    //     pathname: "/user/detail",
+                    //     query: {
+                    //         id: result[0]._id.toString()
+                    //     }
+                    // }))
+                    res.redirect(302, "/main")
                 }, 0 * 1000 );
             }
             else {
                 res.status(403)
+                res.render("main.ejs",)
                 res.send("Login Failed:" + "Wrong Password")
+
             }
         } catch (e) {
-            res.status(403)
-            res.send("Login Failed:" + e.name + e.message)
+            // res.redirect(403,'main.ejs','<script>alert("Hello")</script>')
+            //TODO send alert instead
+            // res.send(`<script>alert("your alert message"); window.location.href = '/main'; </script>`);
+            // res.status(403)
+            // let ws = new _webSocket.Server({port: 8000});\
+            // _ws.send( "test")
+
+
+            // _ws.send(JSON.stringify({
+            //     msg :"Login Failed:" + e.name + e.message
+            // }))
+            res.json({
+                msg: "Login Failed:" + e.name + e.message
+            })
+
         }
     },
 
