@@ -18,7 +18,7 @@
 
 [Additional Note](#Additional-Note)
 
-## Installation
+## Deploying
 The server is tested on [Node.js](https://nodejs.org/) **V12.13.0** only yet.
 1. First, you have to import the [provided data](https://canvas.sydney.edu.au/courses/39701/files/21997637/download?download_frd=1) to your local mongoDB.
 2. Then you have to modify the config file in **config/server.js**
@@ -32,9 +32,9 @@ The server is tested on [Node.js](https://nodejs.org/) **V12.13.0** only yet.
     ```
 3. Run server.js located at the root path.
 
-Read the swagger document to figure out what the api requires and returns.
-Read the note below **carefully** to comprehend the assignment requirement.
-Do NOT fore push your commits!
+- Read the swagger document to figure out what the api requires and returns.
+- Read the note below **carefully** to comprehend the assignment requirement.
+- Do NOT fore push your commits!
 
 # Assignment Requirement
 ## Main Page
