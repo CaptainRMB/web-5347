@@ -27,20 +27,17 @@ function onLoad() {
 
     loadBooks(productList, "All Categories")
     loadSelectList(brandList)
-    if (!user.isLogin) {
-        document.getElementById("login_toggle").innerHTML = `<a href="../login.html">Login in</a>`
-    }
-    else {
-        console.log(window.location.origin + "/user/detail")
+    if (user.isLogin) {
         let userPageUrl = new URL(window.location.origin + "/user/detail");
         userPageUrl.searchParams.append("id", user.data._id.toString())
-        // console.log(userPageUrl.toString())
-        document.getElementById("login_toggle").innerHTML = `<a id="userLink" href=${userPageUrl}>Hi, ${user.data.firstname}</a>`
-        // // document.getElementById("login_toggle").innerHTML = `<a id="userLink">`;
-        let userLink = document.getElementById("userLink")
-        userLink.setAttribute("href", userPageUrl);
-
-        // toggle.setAttribute("tag")
+        document.getElementById("login_toggle").innerHTML
+            = `<p>Hi,<a id="userLink" href='#'>${user.data.firstname}</a>&nbsp&nbsp&nbsp&nbsp<a id="signOutLink" href='#'>Sign Out</a></p>`;
+        document.getElementById("userLink").setAttribute("href", userPageUrl);
+        // document.getElementById("signOutLink").setAttribute("href", "/login.html");
+    }
+    else {
+        document.getElementById("login_toggle").innerHTML =
+            `<a href="../login.html">Login in</a>&nbsp&nbsp&nbsp&nbsp<a href="../sign_up.html">Sign Up</a>`
     }
 
 }
@@ -348,7 +345,7 @@ function theme_toggle() {
     }
 
     console.log("Switch to " + document.documentElement.className + " theme!")
-    document.getElementById("btn_search").disabled = true;
+    // document.getElementById("btn_search").disabled = true;
 }
 
 
