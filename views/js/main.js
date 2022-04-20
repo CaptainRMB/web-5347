@@ -30,9 +30,12 @@ function onLoad() {
     if (user.isLogin) {
         let userPageUrl = new URL(window.location.origin + "/user/detail");
         userPageUrl.searchParams.append("id", user.data._id.toString())
+        let userSignOutUrl = new URL(window.location.origin + "/sign_out");
+        console.log('tsts', userSignOutUrl.toString())
         document.getElementById("login_toggle").innerHTML
-            = `<p>Hi,<a id="userLink" href='#'>${user.data.firstname}</a>&nbsp&nbsp&nbsp&nbsp<a id="signOutLink" href='#'>Sign Out</a></p>`;
-        document.getElementById("userLink").setAttribute("href", userPageUrl);
+            = `<p>Hi,<a id="userPageLink" href='#'>${user.data.firstname}</a>&nbsp&nbsp&nbsp&nbsp<a id="signOutLink" href='#'>Sign Out</a></p>`;
+        document.getElementById("userPageLink").setAttribute("href", userPageUrl);
+        document.getElementById("signOutLink").setAttribute("href", userSignOutUrl);
         // document.getElementById("signOutLink").setAttribute("href", "/login.html");
     }
     else {
@@ -348,10 +351,6 @@ function theme_toggle() {
     // document.getElementById("btn_search").disabled = true;
 }
 
-
-function user_toggle() {
-
-}
 
 
 //should not be used for api security

@@ -28,7 +28,7 @@ router.get("/", function (req, res, next) {
  */
 router.get("/getUserByID", _userController.getUserByID);
 
-
+router.get("/sign_out", _userController.signOut);
 /**
  * @route POST /login.do
  * @group user - Operations about user

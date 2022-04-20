@@ -14,8 +14,13 @@
     --checked-highlight: #214283;
 }
 
+
 h1, h2, h3, nav, footer {
     font-family: Georgia, Cambria, "Times New Roman", serif;
+}
+
+p#login_toggle {
+    background-color: var(--search-highlight);
 }
 
 body {

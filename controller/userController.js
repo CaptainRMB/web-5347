@@ -60,6 +60,13 @@ module.exports = {
         }
     },
 
+    async signOut(req, res) {
+        // console.log(req.session)
+        req.session.destroy(function (err) {
+        });
+        res.redirect(req.get('referer'));
+    },
+
     async getAllUsers(req, res) {
         let result = await _usersQuery.getAllUsers();
         res.send(result);
@@ -80,7 +87,7 @@ module.exports = {
     async userPage(req, res) {
 
         let id = req.query.id;
-        console.log(id)
+        // console.log(id)
         let result = await _usersQuery.getUserByID(id);
         // console.log(req.body)
         // console.log(result)

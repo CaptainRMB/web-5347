@@ -27,14 +27,14 @@ module.exports = {
         if (req.session.data) {
             users.forEach(v => {
                 if (v._id.toString() === req.session.data.id) {
-                    console.log("FOUND!")
+                    // console.log("FOUND!")
                     user.isLogin = true;
                     user.data = v;
                 }
             })
         }
 
-        console.log(user)
+        // console.log(user)
         // console.log(products, users)
         res.render('main.ejs', {
             'doc': products,
