@@ -8,6 +8,7 @@ let cart = [];
 
 function onLoad() {
     // document.getElementById("p_test").innerHTML = Date();
+
     console.log('Main.js is running!')
     // console.log(document.querySelector('.plan-title').innerHTML);
     // console.log('JS: ', products[0])
@@ -43,7 +44,41 @@ function onLoad() {
 
             <a id='loginLink' href="#">Login2</a> </p>`;
         document.getElementById("loginLink").setAttribute("href", "JavaScript:void(0)");
-        document.getElementById("loginLink").setAttribute("onclick", "openLoginDialog()");
+        // document.getElementById("loginLink").setAttribute("onclick", `openLoginDialog()`);
+        let handler = function (event) {
+            if ($('#loginDialog').css('display') !== 'none') {
+                if (document.querySelector('#loginDialog').contains(event.target)) {
+                    // console.log('clicked inside');
+                }
+                else {
+                    // console.log('clicked outside');
+                    removeEventListener('mouseup', handler)
+                    $("#loginDialog").hide(300);
+                }
+            }
+            else {
+
+            }
+        };
+        $("#loginLink").click(function () {
+            $("#loginDialog").toggle(300);
+            // $("#body").css({ opacity: 0.6 });
+            addEventListener('mouseup', handler)
+        });
+
+        $("#loginDialog_close").click(function () {
+            $("#loginDialog").toggle(300);
+            removeEventListener('mouseup', handler);
+        });
+        //
+        // $(document).mouseup(function(e)
+        // {
+        //     let container = $("#loginDialog");
+        //     if (!container.is(e.target) && container.has(e.target).length === 0)
+        //     {
+        //         container.hide(300);
+        //     }
+        // });
     }
 
     const ws = new WebSocket("ws://localhost:8000");
@@ -61,8 +96,19 @@ function onLoad() {
     ws.onmessage = function (event) {
         console.log(event.data)
     }
+    $(document).ready(function () {
+        $('#website_name').click(function () {
+            let name = $('#website_name');
+            // name.animate({left:'100px'},"fast");
+            name.animate({opacity: '0.1'}, "slow");
+            // name.animate({right:'100px'},"fast");
+            name.animate({opacity: '1'}, "slow");
+        });
+    });
 }
 
+
+//TODO not sure if website should obverses the DB or send query every time
 function loadBooks(list, filterWord) {
     let table = document.getElementById("table_books").getElementsByTagName('tbody')[0];
     table.innerHTML = "";
@@ -402,14 +448,18 @@ function theme_toggle() {
 }
 
 function openLoginDialog() {
-    document.getElementById('loginDialog').style.display = 'block';
+    // document.getElementById('loginDialog').style.display = 'block';
+    // $('loginLink').ready(function (){
+    //     $("loginDialog").show(1000)
+    // })
 
     // let userLoginUrl = new URL(window.location.origin + "/login");
     // document.getElementById('dialog_login_form').action = userLoginUrl;
 }
 
 function closeLoginDialog() {
-    document.getElementById('loginDialog').style.display = 'none';
+    // document.getElementById('loginDialog').style.display = 'none';
+    // $("loginDialog").hide(1000)
 }
 
 function dialog_login_btn_OnClick() {

@@ -19,6 +19,7 @@
     "express-session": "^1.17.2",
     "express-swagger-generator": "^1.1.17",
     "express-ws": "^5.0.2",
+    "jquery": "^3.6.0",
     "js-validator": "^2.0.1",
     "mongodb": "^4.5.0",
     "mongoose": "^6.3.0",
