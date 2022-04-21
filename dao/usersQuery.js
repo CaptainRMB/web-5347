@@ -16,18 +16,36 @@ module.exports = {
                     reject(err);
                 })
         })
-            .catch(err =>{
-            console.log(err);
-            console.log(err.code);
-            return err;
+            .catch(err => {
+                console.log(err);
+                console.log(err.code);
+                return err;
+            })
+    },
+
+    login(email, password) {
+        return new Promise((resolve, reject) => {
+            usersModel.find({
+                email: email,
+                password: password
+            })
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err);
+                })
         })
+            .catch(err => {
+                console.log(err);
+                console.log(err.code);
+                return err;
+            })
     },
 
     getAllUsers() {
-        return new Promise((resolve,reject)=>{
-            usersModel.find({
-
-            })
+        return new Promise((resolve, reject) => {
+            usersModel.find({})
                 .then(doc => {
                     resolve(doc);
                 })

@@ -9,7 +9,7 @@ const urlencodedParser = _bodyParser.urlencoded({extended: false})
 const router = _express.Router()
 
 router.get("/*", function (req, res, next) {
-    // console.log(res.url)
+    // console.log(req.url)
     // console.log("Session: ",req.session)
     next();
 
@@ -38,7 +38,8 @@ router.get("/sign_out", _userController.signOut);
  * @returns {Error}  403 - Server Rejected
  */
 router.post("/login.do", _userController.userLogin);
-router.post("/login", _userController.userLogin);
+//this one returns data only with status code 200
+router.post("/login", _userController.userLoginIsSuccess);
 
 /**
  * @route POST /signup.do

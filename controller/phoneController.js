@@ -14,10 +14,10 @@ module.exports = {
         let id = req.query.id;
         let doc = await _phonesQuery.getPhoneByID(id);
         if (doc.length > 0) {
-            res.send(200, doc[0])
+            res.status(200).send(doc[0])
         }
         else {
-            res.send(403, "ID not found")
+            res.status(403).send("ID not found")
         }
     },
 

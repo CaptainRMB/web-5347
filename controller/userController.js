@@ -7,12 +7,13 @@ const _webSocket = require("ws");
 
 module.exports = {
 
-    //TODO session and cookie
     async userLogin(req, res) {
-        console.log(_ws)
+        // console.log(req.body)
         let {email, password} = req.body;
+        console.log(email, password)
         // let password =_util.md5(req.body.password); //TODO currently it's using unhashed password for testing, not sure if I can add salt in the case of the new data set during demo
-        let result = await _usersQuery.getUserByEmail(email);
+        let result = await _usersQuery.login(email, password);
+        console.log(result)
         try {
             if (result[0].password === password && result[0].password !== undefined) {//TODO wrong condition, boundary case might exist
                 await setTimeout(function () {
@@ -28,20 +29,12 @@ module.exports = {
                 }, 0 * 1000 );
             }
             else {
-                res.status(403)
-                res.render("main.ejs",)
-                res.send("Login Failed:" + "Wrong Password")
+                res.status(403).send("Login Failed:" + "Wrong Password")
 
             }
         } catch (e) {
-            // res.redirect(403,'main.ejs','<script>alert("Hello")</script>')
-            //TODO send alert instead
-            // res.send(`<script>alert("your alert message"); window.location.href = '/main'; </script>`);
-            // res.status(403)
-            // let ws = new _webSocket.Server({port: 8000});\
-            console.log(_ws)//stored websocket object is lost due to the post action
-            // _ws.send( "test")
-
+            console.log("ERROR\n", e);
+            res.status(200).send({error: e.toString()})
 
             // _ws.send(JSON.stringify({
             //     msg :"Login Failed:" + e.name + e.message
@@ -52,6 +45,22 @@ module.exports = {
 
         }
     },
+    async userLoginIsSuccess(req, res) {
+        // console.log(req.body)
+        let {email, password} = req.body;
+        console.log(email, password)
+        // let password =_util.md5(req.body.password); //TODO currently it's using unhashed password for testing, not sure if I can add salt in the case of the new data set during demo
+        let result = await _usersQuery.login(email, password);
+        // console.log('result=>',result)
+        if (result[0] !== undefined) {
+            req.session.data = {id: result[0]._id.toString()};
+            res.status(200).send({isSuccess: true})
+        }
+        else {
+            res.status(403).send({isSuccess: false})
+        }
+    },
+
 
     async userSignUp(req, res) {
         let {firstName, lastName, email, password} = req.body
@@ -75,7 +84,6 @@ module.exports = {
     },
 
     async signOut(req, res) {
-        // console.log(req.session)
         req.session.destroy(function (err) {
         });
         res.redirect(req.get('referer'));
@@ -99,12 +107,8 @@ module.exports = {
     },
 
     async userPage(req, res) {
-
         let id = req.query.id;
-        // console.log(id)
         let result = await _usersQuery.getUserByID(id);
-        // console.log(req.body)
-        // console.log(result)
         if (result[0]) {
             res.render('user.ejs', {
                 title_firstName: result[0].firstname,

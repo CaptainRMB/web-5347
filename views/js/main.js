@@ -83,7 +83,7 @@ function loadBooks(list, filterWord) {
         checkbox.append(cbox)
 
         let image = row.insertCell(1);
-        img = document.createElement("img");
+        let img = document.createElement("img");
         img.src = `../img/${list[i].brand}.jpeg`;
         img.style.width = '40pt'
         img.style.height = '60pt'
@@ -251,18 +251,25 @@ function selectOneBook(index) {
 
 function onRowClicked(row) {
     let phoneID = document.querySelectorAll('tr')[row.rowIndex].querySelectorAll('td')[7].innerHTML;
-
     let url = new URL(window.location.origin + "/getPhoneByID")
     url.searchParams.append("id", phoneID)
-    fetch(url)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (doc) {
-            console.log(JSON.stringify(doc));
-            console.log(doc.reviews);
-            alert(doc._id)
-        });
+    axios.get(url
+    ).then(function (doc) {
+        console.log(doc.data);
+        alert("phoneID: " + doc.data._id)
+    }).catch(function (error) {
+        console.log(error)
+    })
+    //
+    // fetch(url)
+    //     .then(function (response) {
+    //         return response.json();
+    //     })
+    //     .then(function (doc) {
+    //         console.log(JSON.stringify(doc));
+    //         console.log(doc.reviews);
+    //         alert(doc._id)
+    //     });
     // console.log(row.rowIndex);
     // let checkbox = row.getElementsByTagName('input')[0];
     // checkbox.checked = !checkbox.checked;
@@ -333,6 +340,7 @@ function updateCartQty() {
 
 }
 
+
 function getCartTotalQty() {
     var totalQty = 0;
     for (let i = 0; i < cart.length; i++) {
@@ -394,16 +402,48 @@ function theme_toggle() {
 }
 
 function openLoginDialog() {
-
     document.getElementById('loginDialog').style.display = 'block';
-    let userLoginUrl = new URL(window.location.origin + "/login");
-    // console.log(userLoginUrl.toString())
-    document.getElementById('dialog_login_form').action = userLoginUrl;
-    // console.log('test', document.getElementById('dialog_login_form').getAttribute('action'))
+
+    // let userLoginUrl = new URL(window.location.origin + "/login");
+    // document.getElementById('dialog_login_form').action = userLoginUrl;
 }
 
 function closeLoginDialog() {
     document.getElementById('loginDialog').style.display = 'none';
+}
+
+function dialog_login_btn_OnClick() {
+    let email = document.getElementById('dialog_login_email').value;
+    let password = document.getElementById('dialog_login_password').value;
+
+    if (email.length === 0) {
+        alert("Email address should not be empty")
+    }
+    else if (email.length === 0) {
+        alert("Password should not be empty")
+    }
+    else {
+        console.log(email, password)
+        axios.post(window.location.origin + `/login`, {
+            'email': email,
+            'password': password,
+        })
+            .then(function (response) {
+                console.log(response.data);
+                if (response.data.isSuccess === true) {
+                    location.reload();
+                }
+                else {
+                    alert("Login Failed!")
+                }
+            })
+            .catch(function (error) {
+                alert("Login Failed!")
+                console.log(error);
+            });
+    }
+
+
 }
 
 //should not be used for api security

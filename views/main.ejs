@@ -17,9 +17,9 @@
         const user = <%- JSON.stringify(user) %>
             console.log("Loading user data")
     </script>
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--    <script type="text/javascript">const axios ="http://ldy2.zaoliedu.com/jquery1.12.4.js";</script>-->
     <script type="text/javascript" src="js/main.js"></script>
-
 </head>
 
 <body onload="onLoad()">
@@ -89,11 +89,11 @@
         <div class="loginDialogMiddle">
             <div class="loginDialogInner">
                 <h1>LOGIN</h1>
-                <form id="dialog_login_form" action="" method="post">
-                    E-mail: <input name="email" type="text"><br>
-                    Password: <input name="password" type="password"><br>
-                    <button>Submit</button>
-                    <input type="submit" value="Open results in a new window">
+                <form id="dialog_login_form">
+                    E-mail: <input id='dialog_login_email' name="email" type="text"><br>
+                    Password: <input id='dialog_login_password' name="password" type="password"><br>
+                    <button onclick="dialog_login_btn_OnClick();return false;">Submit</button>
+                    <!--                    <input type="submit" value="Open results in a new window">-->
                 </form>
                 <!--            <a href="index.html">Return to index page.</a><br>-->
                 <a href="sign_up.html">Sign Up</a><br><br>
