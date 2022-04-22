@@ -151,9 +151,6 @@ caption {
 /*#listBox tr > *:nth-child(7) {*/
 /*    display: none;*/
 /*}*/
-#website_name {
-    position: relative;
-}
 
 .loginDialogOuter {
     display: table;

@@ -86,7 +86,6 @@ function onLoad() {
         console.log('Websocket is listening on: ', ws.url)
     }
 
-//多个回调函数用
     ws.addEventListener('open', function (event) {
         ws.send('Hello Server!');
     });
@@ -96,15 +95,15 @@ function onLoad() {
     ws.onmessage = function (event) {
         console.log(event.data)
     }
-    $(document).ready(function () {
-        $('#website_name').click(function () {
-            let name = $('#website_name');
-            // name.animate({left:'100px'},"fast");
-            name.animate({opacity: '0.1'}, "slow");
-            // name.animate({right:'100px'},"fast");
-            name.animate({opacity: '1'}, "slow");
-        });
-    });
+    // $(document).ready(function () {
+    //     $('#website_name').click(function () {
+    //         let name = $('#website_name');
+    //         // name.animate({left:'100px'},"fast");
+    //         name.animate({opacity: '0.1'}, "slow");
+    //         // name.animate({right:'100px'},"fast");
+    //         name.animate({opacity: '1'}, "slow");
+    //     });
+    // });
 }
 
 
