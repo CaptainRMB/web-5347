@@ -30,11 +30,11 @@ The server is tested on [Node.js](https://nodejs.org/) **V12.13.0** only yet.
     mongoDB_phonesCollection: "phones",                  //name of the collection of your imported phones data
     mongoDB_url: `mongodb://localhost:27017/COMP5347`,   //connecting link to mount your local MongoDB
     ```
-3. Run server.js located at the root path.
+3. Run server.js located at the root path.(Or in console: node server.js)
 
 - Read the swagger document to figure out what the api requires and returns.
 - Read the note below **carefully** to comprehend the assignment requirement.
-- Do NOT fore push your commits!
+- Do NOT force push your commits!
 
 # Assignment Requirement
 ## Main Page
