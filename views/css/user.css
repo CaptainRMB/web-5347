@@ -2,6 +2,85 @@ h1 {
     color: red;
 }
 
+h4 {
+    font-size: 20px;
+    color: #000000;
+    padding: 12px;
+    display : inline;
+    font-family: 'Public Sans', sans-serif;
+}
+
+/* -- button -- */
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 4px 24px 4px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 0 2px 0 2px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+/* -- plain button -- */
+.button1 {
+    background-color: white;
+    color: black;
+    border: 2px solid #ECEEF1;
+    border-radius: 4px;
+}
+
+.button1:hover {
+    background-color: white;
+    color: #409EFF;
+    border: 2px solid #409EFF;
+    border-radius: 4px;
+}
+
+/* -- primary button -- */
+.button2 {
+    background-color: #ECF5FF;
+    color: black;
+    border: 2px solid #D6EAFF;
+    border-radius: 4px;
+}
+
+.button2:hover {
+    background-color: #409EFF;
+    color: white;
+    border: 2px solid #409EFF;
+    border-radius: 4px;
+}
+
+/* -- primary button dark -- */
+.button3 {
+    background-color: #409EFF;
+    color: white;
+    border: 2px solid #409EFF;
+    border-radius: 4px;
+}
+
+.button3:hover {
+    background-color: #66B1FF;
+    color: white;
+    border: 2px solid #66B1FF;
+    border-radius: 4px;
+}
+
+div.floatRight{
+    float:right;
+    padding-right: 40px;
+    padding-top: 2px;
+}
+
+nav#navigation {
+    background:#95BEF0;
+    padding: 16px;
+}
+
 .loginDialogOuter {
     display: table;
     position: absolute;
@@ -12,8 +91,7 @@ h1 {
 }
 
 .middle {
-    background-color: skyblue;
-    display: table-cell;
+    display: inline;
     vertical-align: middle;
 }
 
@@ -23,3 +101,4 @@ h1 {
     width: 400px;
     /* Whatever width you want */
 }
+

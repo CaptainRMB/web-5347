@@ -6,6 +6,7 @@ let productList = [];
 let brandList = [];
 let cart = [];
 
+
 function onLoad() {
     // document.getElementById("p_test").innerHTML = Date();
 
@@ -33,7 +34,7 @@ function onLoad() {
         let userSignOutUrl = new URL(window.location.origin + "/sign_out");
         console.log('tsts', userSignOutUrl.toString())
         document.getElementById("login_toggle").innerHTML
-            = `<p>Hi,<a id="userPageLink" href='#'>${user.data.firstname}</a>&nbsp&nbsp&nbsp&nbsp<a id="userPageLink" href='#'>Profile</a> &nbsp&nbsp<a id="signOutLink" href='#'>Sign Out</a> </p>`;
+            = `<p>Hi,<a id="userPageLink" href='#'>${user.data.firstname}</a>&nbsp&nbsp&nbsp&nbsp<button id="userPageLink" href='#'>Profile</button> &nbsp&nbsp<a id="signOutLink" href='#'>Sign Out</a> </p>`;
         document.getElementById("userPageLink").setAttribute("href", userPageUrl);
         document.getElementById("signOutLink").setAttribute("href", userSignOutUrl);
         // document.getElementById("signOutLink").setAttribute("href", "/login.html");

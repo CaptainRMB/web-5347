@@ -2,13 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>INDEX.test</title>
+    <title>COMP5347 Assignment 2 - User Page</title>
     <link rel="stylesheet" href="/css/user.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="http://www.myersdaily.org/joseph/javascript/md5.js"></script>
 </head>
+
 <body onload="onLoad()">
 <script src="/js/user.js"></script>
 
 <div class="loginDialogOuter">
+
+    <nav id="navigation">
+
+        <h4 style="cursor:pointer" @click="showProfile">Edit profile</h4>
+        <h4 style="cursor:pointer" @click="showPassword">Change password</h4>
+        <h4 style="cursor:pointer" @click="showList">Manage listings</h4>
+
+        <div class="floatRight">
+            <button class="button button2" @click="signOut"> Sign out</button>
+            <button class="button button1"> Back to Main Page</button>
+        </div>
+    </nav>
+
+    <!-- Edit Profile -->
+    <div class="middle">
+        <div v-if="editProfile">
+            <section class="tab">
+                <form method="POST" action="updateProfile">
+                    <p v-if="showNotice">{{ noticeProfile }}</p>
+                    <p>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                        <input type="text" v-model="name"/>
+                    </p>
+                    <p>Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                        <input type="text" v-model="email"/>
+                    </p>
+                    <div v-if="updateClicked">
+                        <p>Password&nbsp;:
+                            <input type="password" v-model="verifiedPassword"/>
+                        </p>
+                    </div>
+                    <button class="button button3" @click="updateProfile"> Update</button>
+                    <br>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <!-- Change Password -->
+    <div v-if="changePassword">
+        <section class="tab">
+            <p v-if="pwdChanged">{{ noticePwdChange }}</p>
+            <p>Current password:
+                <input type="password" name="C_password" v-model="currentPwd"/>
+            </p>
+            <p>New password&nbsp;&nbsp;&nbsp;&nbsp;:
+                <input type="password" name="N_password" v-model="newPwd"/>
+            </p>
+            <button class="button button3" @click="checkPassword"> Comfirm</button>
+            <br>
+        </section>
+    </div>
+
+    <!-- Manage Listings -->
+    <div v-if="manageListings">
+    </div>
+
     <div class="middle">
         <div class="inner">
             <h1 id="text_title">

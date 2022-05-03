@@ -30,8 +30,76 @@ function requestDataFromDB() {
     var xhr;
     if (window.XMLHttpRequest) {
         xhr = new XMLHttpRequest();
-    }
-    else {
+    } else {
         xhr = ActiveXObject()
     }
 }
+
+const app = new Vue({
+    el: '#user',
+
+    data: {
+        email: '',
+        firstname: '',
+        lastname: '',
+        editProfile: true,
+        changePassword: false,
+        manageListings: false,
+        pwdChanged:false,
+        updateClicked:false,
+        ifViewClicked: false,
+        addClicked: false,
+        noticeProfile: '',
+        noticePwdChange: '',
+        currentPwd: '',
+        newPwd: '',
+        userListing: '',
+        addTitle: '',
+        addBrand: 'Apple',
+        addQuantity: '',
+        addPrice: '',
+        verifiedPassword: '',
+        showNotice: false
+    },
+
+    methods: {
+        /*Three function combined to word as the navigation bar*/
+        showProfile: function () {
+            this.editProfile = true,
+                this.changePassword = false,
+                this.manageListings = false
+        },
+
+        showPassword: function () {
+            this.editProfile = false,
+                this.changePassword = true,
+                this.manageListings = false
+        },
+
+        showList: function(){
+            this.editProfile = false,
+                this.changePassword = false,
+                this.manageListings = true
+        },
+    },
+
+    //Execute when Vue instance created
+    mounted() {
+        //get the user information from server session
+        axios.get('userinfo')
+            .then(response => {
+                this.email = response.data.email,
+                    this.firstname = response.data.firstname,
+                    this.lastname = response.data.lastname
+            });
+
+        //get the user added list from database
+        axios.get('userListing')
+            .then(response => {
+                if(response["data"].length != 0){
+                    this.userListing = response["data"]
+                }
+            })
+
+    }
+})
