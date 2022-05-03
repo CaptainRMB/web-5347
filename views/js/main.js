@@ -33,16 +33,18 @@ function onLoad() {
         let userSignOutUrl = new URL(window.location.origin + "/sign_out");
         console.log('tsts', userSignOutUrl.toString())
         document.getElementById("login_toggle").innerHTML
-            = `<p>Hi,<a id="userPageLink" href='#'>${user.data.firstname}</a>&nbsp&nbsp&nbsp&nbsp<a id="signOutLink" href='#'>Sign Out</a></p>`;
+            = `<p>Hi,<a id="userPageLink" href='#'>${user.data.firstname}</a>&nbsp&nbsp&nbsp&nbsp<a id="userPageLink" href='#'>Profile</a> &nbsp&nbsp<a id="signOutLink" href='#'>Sign Out</a> </p>`;
         document.getElementById("userPageLink").setAttribute("href", userPageUrl);
         document.getElementById("signOutLink").setAttribute("href", userSignOutUrl);
         // document.getElementById("signOutLink").setAttribute("href", "/login.html");
+
+
     }
     else {
         document.getElementById("login_toggle").innerHTML =
             `<p><a href="../login.html">Login</a>&nbsp&nbsp&nbsp&nbsp<a href="../sign_up.html">Sign Up</a><br>
 
-            <a id='loginLink' href="#">Login2</a> </p>`;
+            <a id='loginLink' href="#">Login2 </a> </p>`;
         document.getElementById("loginLink").setAttribute("href", "JavaScript:void(0)");
         // document.getElementById("loginLink").setAttribute("onclick", `openLoginDialog()`);
         let handler = function (event) {
