@@ -1,50 +1,13 @@
-console.log("user.js调用")
-
-function onLoad() {
-    // console.log(test)
-    // fillUserInfo({
-    //     firstName:"John",
-    //     lastName:"Doe",
-    //     email:"ggggg@g",
-    //     password:"pwd"}
-    // )
-    document.getElementById('text_timer').innerHTML = new Date().toLocaleString();
-    setInterval(
-        function () {
-            document.getElementById('text_timer').innerHTML = new Date().toLocaleString();
-        }, 1000
-    );
-
-}
-
-function fillUserInfo(user) {
-    let table = document.getElementById("table_userInfo").getElementsByTagName('td');
-    table[0].innerHTML = user.firstName + " " + user.lastName;
-    table[1].innerHTML = user.lastName;
-    table[2].innerHTML = user.password;
-    table[3].innerHTML = user.id;
-    document.getElementById("text_title").innerHTML = "Hello" + user.firstName;
-}
-
-function requestDataFromDB() {
-    var xhr;
-    if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-    } else {
-        xhr = ActiveXObject()
-    }
-}
-
 const app = new Vue({
-    el: '#user',
+    el: '#userPage',
 
     data: {
         email: '',
         firstname: '',
         lastname: '',
-        editProfile: true,
-        changePassword: false,
-        manageListings: false,
+        tabProfile: true,
+        tabPassword: false,
+        tabList: false,
         pwdChanged:false,
         updateClicked:false,
         ifViewClicked: false,
@@ -63,24 +26,177 @@ const app = new Vue({
     },
 
     methods: {
-        /*Three function combined to word as the navigation bar*/
-        showProfile: function () {
-            this.editProfile = true,
-                this.changePassword = false,
-                this.manageListings = false
+
+        //When update the profile, password will be verified first
+        //If password matched, change the profile in database and session
+        updateProfile: function() {
+            this.showNotice = true;
+            if(!this.updateClicked){
+                this.updateClicked = true;
+                this.noticeProfile ="Please enter your password first";
+            }
+            else {
+                if(this.verifiedPassword){
+                    axios.post("changeProfile",
+                        {email: this.email, firstname: this.firstname, lastname: this.lastname,
+                            password: md5(this.verifiedPassword)})
+                        .then(response => {
+                            if(response.data.success) {
+                                this.noticeProfile = "The profile has been successfully changed ";
+                                this.updateClicked = false;
+                            }
+                            else {
+                                if(response.data.reason == 'pwd') {
+                                    this.noticeProfile = "The password is uncorrect";
+                                }
+                                else {
+                                    this.noticeProfile = "The email is used";
+                                }
+                            }
+                            this.verifiedPassword = ''
+                        })
+                }
+                else{
+                    this.noticeProfile = "Please enter the password to verify identity"
+                }
+            }
+
         },
 
-        showPassword: function () {
-            this.editProfile = false,
-                this.changePassword = true,
-                this.manageListings = false
+
+        //Change the password after verified the current password
+        checkPassword: function(){
+            axios.post('changePassword', {
+                currentPwd: md5(this.currentPwd),
+                newPwd: md5(this.newPwd)
+            })
+                .then(response => (
+                    this.pwdChanged = true,
+                        this.noticePwdChange = (response["data"] ?
+                            "The password has been successfully changed"
+                            :
+                            "The password is uncorrect" ),
+                        this.currentPwd = '',
+                        this.newPwd = ''
+                ))
+        },
+
+
+        //Enable or disable the phone list added by user
+        check: function(event, index) {
+            axios.post('changePhoneList', {
+                phoneList: this.userListing[index],
+                listOperation: (event.target.checked ? "enable" : "disable")});
+        },
+
+
+
+        //Remove the phone list added by user
+        removePhone: function(event, index) {
+
+            axios.post('changePhoneList', {
+                phoneList: this.userListing[index],
+                listOperation: "remove"})
+                .then(response => {
+                    this.userListing.splice(index, 1);
+                });
+        },
+
+
+        //When click add a new list, show the input text and brand selection
+        addListing: function(){
+            this.addClicked = true;
+        },
+
+
+        //When confirm the added list, add the list to the database
+        confirmAddList: function() {
+            if(this.addTitle && this.addQuantity && this.addPrice) {
+                if(Number.isInteger(parseFloat(this.addQuantity))
+                    && parseFloat(this.addPrice)
+                    && Math.sign(parseFloat(this.addQuantity)) != -1){
+                    if(!this.userListing) {
+                        this.userListing = []
+                    }
+
+                    this.userListing.push({
+                        "title": this.addTitle,
+                        "brand": this.addBrand,
+                        "image": `/images/${this.addBrand}.jpeg`,
+                        "stock": this.addQuantity,
+                        "price": this.addPrice,
+                        "review": [],
+                        "sellername": `${this.firstname} ${this.lastname}`
+                    });
+
+                    axios.post('changePhoneList', {
+                        phoneList: this.userListing[this.userListing.length - 1],
+                        listOperation: "add"})
+                        .then(response => {
+                            listWithId = response.data;
+                            this.userListing[this.userListing.length - 1] = listWithId;
+                        });
+
+                    this.addClicked = false;
+                    this.addTitle = '';
+                    this.addBrand = 'Apple';
+                    this.addQuantity = '';
+                    this.addPrice = '';
+                }
+                else {
+                    alert("Please enter the positive integer in quantity and valid number in price!")
+                }
+
+            }
+            else {
+                alert("Please fill in all content!")
+            }
+
+        },
+
+        //Cancel the add list operation
+        cancelAddList: function() {
+            this.addClicked = false;
+            this.addTitle = '';
+            this.addBrand = 'Apple';
+            this.addQuantity = '';
+            this.addPrice = '';
+        },
+
+
+        /*Three function combined to word as the navigation bar*/
+        showProfile: function(){
+            this.tabProfile = true,
+                this.tabPassword = false,
+                this.tabList = false
+        },
+
+        showPassword: function(){
+            this.tabProfile = false,
+                this.tabPassword = true,
+                this.tabList = false
         },
 
         showList: function(){
-            this.editProfile = false,
-                this.changePassword = false,
-                this.manageListings = true
+            this.tabProfile = false,
+                this.tabPassword = false,
+                this.tabList = true
         },
+
+
+        //Sign out the account, need to be confirmed
+        //Redirect to main page with home state after confirmed
+        signOut: function() {
+            answer = confirm("Are you sure to sign out?")
+            if(answer) {
+                axios.post('signOut');
+                window.location.href = '/';
+            }
+            else{
+                console.log("Sign out canceled")
+            }
+        },
+
     },
 
     //Execute when Vue instance created
@@ -102,4 +218,5 @@ const app = new Vue({
             })
 
     }
-})
+
+});

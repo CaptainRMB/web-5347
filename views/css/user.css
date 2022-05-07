@@ -1,13 +1,31 @@
-h1 {
-    color: red;
+nav#navigation {
+    background:#606266;
+    padding: 16px;
+}
+h4 {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 20px;
+    color: #ffffff;
+    display : inline;
+    padding: 30px;
+}
+div#container {
+    background-color: #EBF4FB ;
+    padding: 5px;
+
+}
+div.box_Right{
+    float:right;
+    padding-right: 20px;
+    padding-top: 2px;
 }
 
-h4 {
-    font-size: 20px;
-    color: #000000;
-    padding: 12px;
-    display : inline;
-    font-family: 'Public Sans', sans-serif;
+form{
+    margin:0px;
+    display: inline
+}
+section.tab {
+    padding: 25px;
 }
 
 /* -- button -- */
@@ -23,6 +41,7 @@ h4 {
     margin: 0 2px 0 2px;
     transition-duration: 0.2s;
     cursor: pointer;
+    height: 32px;
 }
 
 /* -- plain button -- */
@@ -70,35 +89,24 @@ h4 {
     border-radius: 4px;
 }
 
-div.floatRight{
-    float:right;
-    padding-right: 40px;
-    padding-top: 2px;
+/* -- input -- */
+input[type=text], select {
+    width: 320px;
+    padding: 8px 16px;
+    margin: 4px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
-nav#navigation {
-    background:#95BEF0;
-    padding: 16px;
-}
-
-.loginDialogOuter {
-    display: table;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-}
-
-.middle {
-    display: inline;
-    vertical-align: middle;
-}
-
-.inner {
-    margin-left: auto;
-    margin-right: auto;
-    width: 400px;
-    /* Whatever width you want */
+input[type=password], select {
+    width: 320px;
+    padding: 8px 16px;
+    margin: 4px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
