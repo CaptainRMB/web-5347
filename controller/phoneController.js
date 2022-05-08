@@ -75,23 +75,31 @@ module.exports = {
 
     async getTop5RatedPhones(req, res) {
         let doc = await _phonesQuery.getTop5RatedPhones();
-        console.log(doc)
-        // console.log(avgRating)
+        // console.log(doc)
         res.send(doc)
     },
 
     async getDisabledPhones(req, res) {
         let doc = await _phonesQuery.getDisabledPhones();
-        console.log(doc)
-        // console.log(avgRating)
+        // console.log(doc)
         res.send(doc)
     },
 
     async getSoldOutSoon(req, res) {
         let doc = await _phonesQuery.getSoldOutSoon();
+        // console.log(doc)
+        res.send(doc)
+    },
+
+    async postReview(req, res) {
+        console.log(req.body)
+        let {pid, post_uid, post_rating, post_comment} = req.body;
+        console.log(pid, post_uid, post_rating, post_comment)
+        let doc = await _phonesQuery.postReview(pid, post_uid, post_rating, post_comment);
         console.log(doc)
         // console.log(avgRating)
         res.send(doc)
     },
+
 
 }

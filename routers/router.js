@@ -173,6 +173,7 @@ router.get("/getTop5RatedPhones", _phoneController.getTop5RatedPhones);
 
 router.get("/getDisabledPhones", _phoneController.getDisabledPhones);
 router.get("/getSoldOutSoon", _phoneController.getSoldOutSoon);
+router.post("/postReview", _phoneController.postReview);
 
 router.get("/main", _pageController.getMainPageData);
 

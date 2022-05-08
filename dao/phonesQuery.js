@@ -1,6 +1,7 @@
 let phonesModel = require("../dao/phonesModel");
 const _mongoose = require("mongoose");
 const mongoose = require("mongoose");
+const usersModel = require("./usersModel");
 const ObjectId = require('mongodb').ObjectID;
 
 module.exports = {
@@ -46,7 +47,7 @@ module.exports = {
     },
 
     getPhoneByBrand(brand) {
-        console.log("looking for => ", brand)
+        // console.log("looking for => ", brand)
         return new Promise((resolve, reject) => {
             phonesModel.find({
                 brand: brand
@@ -97,7 +98,7 @@ module.exports = {
     },
 
     getAvgRatingByID(id) {
-        console.log(id)
+        // console.log(id)
         return new Promise((resolve, reject) => {
             phonesModel
                 .aggregate([
@@ -197,6 +198,33 @@ module.exports = {
             }).sort({
                 stock: 1
             }).limit(5)
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    postReview(pid, post_uid, post_rating, post_comment) {
+        return new Promise((resolve, reject) => {
+            phonesModel
+                .findOne({
+                    _id: pid
+                })
+                .update(
+                    {
+                        reviews: {
+                            $push: {
+                                reviewer: post_uid,
+                                rating: post_rating,
+                                comment, post_comment
+                            }
+                        }
+                    }
+                )
+
                 .then(doc => {
                     resolve(doc);
                 })

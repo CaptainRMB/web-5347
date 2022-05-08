@@ -14,7 +14,7 @@ function onLoad() {
     // console.log(document.querySelector('.plan-title').innerHTML);
     // console.log('JS: ', products[0])
     // console.log('JS: ', sellers[0])
-    console.log('JS: ', user)
+    console.log('JS: ', user.data)
     updateCartQty();
     // document.documentElement.className = 'light'
     productList = products;
@@ -37,7 +37,7 @@ function onLoad() {
         let userPageUrl = new URL(window.location.origin + "/user/detail");
         userPageUrl.searchParams.append("id", user.data._id.toString())
         let userSignOutUrl = new URL(window.location.origin + "/sign_out");
-        console.log('tsts', userSignOutUrl.toString())
+        console.log('tests', userSignOutUrl.toString())
         document.getElementById("login_toggle").innerHTML
             = `<p>Hi,<a id="userPageLink" href='#'>${user.data.firstname}</a>&nbsp&nbsp&nbsp&nbsp<button id="userPageLink" href='#'>Profile</button> &nbsp&nbsp<a id="signOutLink" href='#'>Sign Out</a> </p>`;
         document.getElementById("userPageLink").setAttribute("href", userPageUrl);
@@ -77,24 +77,16 @@ function onLoad() {
             $("#loginDialog").toggle(300);
             removeEventListener('mouseup', handler);
         });
-        $("#btn_search").click(function () {
-            let keyword = $("#inputBox_search").val();
-            let brand = $("#list_select").val();
-            let price = $("#range_slider").val();
-            $("#HomeState").hide();
-            $("#listBox").show();
-            loadBooks(productList, keyword, brand, price)
-        })
-        //
-        // $(document).mouseup(function(e)
-        // {
-        //     let container = $("#loginDialog");
-        //     if (!container.is(e.target) && container.has(e.target).length === 0)
-        //     {
-        //         container.hide(300);
-        //     }
-        // });
     }
+
+    $("#btn_search").click(function () {
+        let keyword = $("#inputBox_search").val();
+        let brand = $("#list_select").val();
+        let price = $("#range_slider").val();
+        $("#HomeState").hide();
+        $("#listBox").show();
+        loadBooks(productList, keyword, brand, price)
+    })
 
     $(document).mouseup(function (e) {
         let container = $("#productDialog");
@@ -405,6 +397,37 @@ function onRowClicked(row) {
                     cell.append(btn)
                 }
             });
+
+            $("#post_review_form").submit(function (e) {
+                e.preventDefault();
+            });
+            $("#post_review_btn").click(function () {
+                let pid = phoneID;
+                let uid = user.data._id;
+                let rating = $("#post_review_rating").val();
+                let comment = $("#post_review_comment").val();
+                console.log(pid, uid, rating, comment);
+                axios.post(window.location.origin + `/postReview`, {
+                    'pid': pid,
+                    'post_uid': uid,
+                    'post_rating': rating,
+                    'post_comment': comment
+                })
+                    .then(function (response) {
+                        console.log(response.data);
+                        if (response.data.isSuccess === true) {
+                            alert("Review Posting Successfully!")
+                        }
+                        else {
+                            alert("Review Posting Failed!")
+                        }
+                    })
+                    .catch(function (error) {
+                        alert("Review Posting Failed!")
+                        console.log(error);
+                    });
+            })
+
             $("#btn_add_to_cart").click(function () {
                 let q = prompt("Please enter the quantity:", 1);
                 if (q === null || q === "") {
@@ -518,47 +541,6 @@ function getTop5RatedPhones() {
         })
 }
 
-function addCart() {
-    let tr = document.getElementsByTagName("tr");
-    for (let i = 0; i < tr.length; i++) {
-        let checkbox = tr[i].cells[0].children[0];
-        if (checkbox.checked) {
-            let title = tr[i].cells[2].textContent;
-            // console.log(title)
-            let index = isCartContained(title)
-            if (index === -1) {
-                let qty = prompt("Qty?");
-                let book = {title: title, qty: Number(qty)};
-                if (Number(qty) < 1) {
-                    alert("Wrong Quantity Number!")
-                    return;
-                }
-                else {
-                    tr[i].cells[0].children[0].checked = false;
-                    cart.push(book);
-                    search_books("refresh");
-                }
-
-            }
-            else {
-                let qty = prompt("Qty?");
-                cart[index].qty += Number(qty);
-                tr[i].cells[0].children[0].checked = false;
-                search_books("refresh");
-            }
-        }
-        updateCartQty();
-    }
-    console.log("Cart:");
-    console.log(cart);
-    var totalPrice = 0;
-    for (let i = 0; i < cart.length; i++) {
-        let price = Number(searchTableByTitle(cart[i]["title"])["price"]);
-        let qty = Number(cart[i].qty);
-        totalPrice += price * qty;
-    }
-    console.log("totalPrice: $" + totalPrice);
-}
 
 function updateCartQty() {
     let qty = getCartTotalQty();
