@@ -291,6 +291,14 @@ function onRowClicked(row) {
             $("#table_productInfo_seller").html(`<a href="#" title="${seller.email}">${seller.firstname} ${seller.lastname}</a>`);
             $("#table_productInfo_price").html(doc.data.price);
             $("#table_productInfo_stock").html(doc.data.stock);
+            let quan = 0;
+            console.log(cart);
+            for (let i = 0; i < cart.length; i++) {
+                if (cart[i].id === phoneID) {
+                    quan = cart[i].quantity;
+                }
+            }
+            $("#table_productInfo_quantity").html(quan);
             $('#table_productReviews tbody').empty();
             if (doc.data.reviews.length <= 3) {
                 console.log(doc.data.reviews.length + '<=3')
@@ -397,7 +405,27 @@ function onRowClicked(row) {
                     cell.append(btn)
                 }
             });
+            $("#btn_add_to_cart").click(function () {
+                let q = prompt("Please enter the quantity:", 1);
+                if (q === null || q === "") {
+                    alert("Input Error!")
+                }
+                else {
+                    alert("Item is Added to Cart!")
+                }
+                let flag = false;
+                for (let i = 0; i < cart.length; i++) {
+                    if (cart[i].id === phoneID) {
+                        cart[i].quantity += parseInt(q);
+                        flag = true;
+                    }
+                }
+                if (flag === false) {
+                    cart.push({id: phoneID, quantity: parseInt(q)});
+                }
 
+                console.log(cart);
+            })
         })
         .catch(function (error) {
             console.log(error)
