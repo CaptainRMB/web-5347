@@ -49,15 +49,18 @@
         </div>
         <div id="div_cart">
             <input type="button" id="btn_addToCart" value="Add to cart" onclick="addCart()"/>
-            <input type="button" id="btn_resetCart" value="Reset the cart" onclick="resetCart()"/>
+            <input type="button" id="btn_checkout" value="Checkout" onclick="checkout()"/>
             <img src="img/shopping_cart.png" onclick="displayDate()"
                  onClick="onCartClicked()" width="5%" height="auto"/>
             <b id="cart_qty">QTY</b>
         </div>
+        <div class="slide_container">
+            <input type="range" min="1" max="100" value="50" class="slider" id="range_slider">
+        </div>
     </div>
 
     <div id="listBox">
-        <table class="table-sort" id="table_books" border="1">
+        <table class="table_sort" id="table_books" border="1">
 
             <thead>
             <th><input type="checkbox"></th>
@@ -87,9 +90,8 @@
             </tbody>
         </table>
     </div>
-
-
 </form>
+
 <div id="loginDialog" class="loginDialog" style="display: none">
     <div class="loginDialogOuter">
         <div class="loginDialogMiddle">
@@ -117,5 +119,60 @@
         </div>
     </div>
 </div>
+
+<div id="productDialog" class="productDialog" style="display: none">
+    <div class="productDialogOuter">
+        <div class="productDialogMiddle">
+            <div class="productDialogInner">
+                <h2 id="productDialog_title">Product details</h2>
+                <div id="productDialog_div1" style="width: 70%; display: inline-block">
+                    <div class="row">
+                        <div style=" float:left;margin-left: 20%">
+                            <img id="productDialog_img" style="width: 100pt">
+                        </div>
+                        <div style="float:right">
+                            <table id="table_productInfo" style="">
+                                <tr>
+                                    <th>Brand:</th>
+                                    <td id="table_productInfo_brand"></td>
+                                </tr>
+                                <tr>
+                                    <th>Seller:</th>
+                                    <td id="table_productInfo_seller"></td>
+                                </tr>
+                                <tr>
+                                    <th>Price:</th>
+                                    <td id="table_productInfo_price"></td>
+                                </tr>
+                                <tr>
+                                    <th>Stock:</th>
+                                    <td id="table_productInfo_stock"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <table id="table_productReviews" style="width: 70%; display: inline-block" border="1">
+                        <thead>
+                        <th>Reviewer</th>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        </thead>
+                        <tfoot>
+                        </tfoot>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <a style="display: none" id="productDialog_ShowMoreReviews" href="javascript:void(0)">See More
+                        reviews</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

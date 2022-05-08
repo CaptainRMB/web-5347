@@ -122,11 +122,11 @@ module.exports = {
         })
     },
 
-    getTopFivePhonesByIDs(ids) {
-        let ObjectIDs = new Array(ids.length)
-        ids.forEach((v, i) => {
-            ObjectIDs[i] = _mongoose.Types.ObjectId(v);
-        })
+    getTop5RatedPhones() {
+        // let ObjectIDs = new Array(ids.length)
+        // ids.forEach((v, i) => {
+        //     ObjectIDs[i] = _mongoose.Types.ObjectId(v);
+        // })
 
         return new Promise((resolve, reject) => {
             // five phone,
@@ -137,13 +137,16 @@ module.exports = {
                 {
                     $match: {
                         // _id: {$in : ObjectIDs},
-                        'reviews.1': {$exists: true}
+                        'reviews.1': {$exists: true},
+                        'disabled': {$ne: ""}
                     }
                 },
                 {$unwind: "$reviews"},
                 {
                     $group: {
                         _id: '$_id',
+                        "title": {"$first": "$title"},
+                        "brand": {"$first": "$brand"},
                         rating: {$avg: "$reviews.rating"}
                     }
                 },
@@ -153,6 +156,14 @@ module.exports = {
                     }
                 }, {
                     $limit: 5
+                },
+                {
+                    "$project": {
+                        "_id": "$_id",
+                        "title": "$title",
+                        "brand": "$brand",
+                        "avgRating": "$rating",
+                    }
                 }
             ])
                 .then(doc => {
@@ -164,6 +175,36 @@ module.exports = {
         })
     },
 
+    getDisabledPhones() {
+        return new Promise((resolve, reject) => {
+            phonesModel.find({
+                disabled: ""
+            })
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    getSoldOutSoon() {
+        return new Promise((resolve, reject) => {
+            phonesModel.find({
+                disabled: {$ne: ""},
+                stock: {$gt: 0}
+            }).sort({
+                stock: 1
+            }).limit(5)
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
 }
 
 

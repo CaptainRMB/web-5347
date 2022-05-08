@@ -37,15 +37,20 @@ let phonesModel = new mongoose.Schema({
         type: String,
         require: false,
     },
-    price:{
+    price: {
         type: Number,
         require: false,
         default: 0
     },
-    reviews:{
+    reviews: {
         type: [reviewModel],
         require: false,
     },
+    disabled: {
+        type: String,
+        require: false,
+        default: "false"
+    }
 
 })
 

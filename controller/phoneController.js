@@ -73,22 +73,25 @@ module.exports = {
 
     },
 
-    async getTopFivePhonesByIDs(req, res) {
-        // let ids = req.body.ids;
-        let ids = ["625ac107dd15756133d73fd9",
-            "625ac107dd15756133d73fd9",
-            "625ac107dd15756133d73fda",
-            "625ac107dd15756133d73fdc",
-            "625ac107dd15756133d73fdd",
-            "625ac107dd15756133d73fde",
-            "625ac107dd15756133d73fdf",
-            "625ac107dd15756133d73fe0",
-            "625ac107dd15756133d73fe1"];
-        let doc = await _phonesQuery.getTopFivePhonesByIDs(ids);
+    async getTop5RatedPhones(req, res) {
+        let doc = await _phonesQuery.getTop5RatedPhones();
         console.log(doc)
         // console.log(avgRating)
         res.send(doc)
     },
 
+    async getDisabledPhones(req, res) {
+        let doc = await _phonesQuery.getDisabledPhones();
+        console.log(doc)
+        // console.log(avgRating)
+        res.send(doc)
+    },
+
+    async getSoldOutSoon(req, res) {
+        let doc = await _phonesQuery.getSoldOutSoon();
+        console.log(doc)
+        // console.log(avgRating)
+        res.send(doc)
+    },
 
 }

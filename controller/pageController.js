@@ -19,6 +19,8 @@ module.exports = {
     async getMainPageData(req, res) {
         let products = await _phonesQuery.getAllPhones();
         let users = await _usersQuery.getUsersNamesIDs();
+        // let soldOutSoon = await _phonesQuery.getSoldOutSoon();
+        // let top5RatedPhones = await _phonesQuery.getTop5RatedPhones();
         // console.log(req.session.data)
         let user = {
             isLogin: false,

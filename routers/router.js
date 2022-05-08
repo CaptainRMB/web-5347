@@ -168,7 +168,11 @@ router.get("/getRatingByID", _phoneController.getAvgRatingByID);
  * @returns {boolean} 200 - Array of id and corresponding average rating
  * @returns {Error}  403 - Server Rejected
  */
-router.post("/getTopFiveRatedPhonesByIDs", _phoneController.getTopFivePhonesByIDs);
+router.get("/getTop5RatedPhones", _phoneController.getTop5RatedPhones);
+
+
+router.get("/getDisabledPhones", _phoneController.getDisabledPhones);
+router.get("/getSoldOutSoon", _phoneController.getSoldOutSoon);
 
 router.get("/main", _pageController.getMainPageData);
 

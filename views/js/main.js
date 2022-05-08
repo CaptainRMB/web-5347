@@ -38,9 +38,8 @@ function onLoad() {
         document.getElementById("userPageLink").setAttribute("href", userPageUrl);
         document.getElementById("signOutLink").setAttribute("href", userSignOutUrl);
         // document.getElementById("signOutLink").setAttribute("href", "/login.html");
-
-
     }
+    //Not login yet
     else {
         document.getElementById("login_toggle").innerHTML =
             `<p><a href="../login.html">Login</a>&nbsp&nbsp&nbsp&nbsp<a href="../sign_up.html">Sign Up</a><br>
@@ -83,6 +82,14 @@ function onLoad() {
         //     }
         // });
     }
+
+    $(document).mouseup(function (e) {
+        let container = $("#productDialog");
+        // if the target of the click isn't the container nor a descendant of the container
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            container.hide(300);
+        }
+    });
 
     const ws = new WebSocket("ws://localhost:8000");
     ws.onopen = function () {
@@ -298,16 +305,117 @@ function selectOneBook(index) {
 }
 
 function onRowClicked(row) {
+
+
     let phoneID = document.querySelectorAll('tr')[row.rowIndex].querySelectorAll('td')[7].innerHTML;
+    console.log(phoneID);
     let url = new URL(window.location.origin + "/getPhoneByID")
     url.searchParams.append("id", phoneID)
     axios.get(url
-    ).then(function (doc) {
-        console.log(doc.data);
-        alert("phoneID: " + doc.data._id)
-    }).catch(function (error) {
-        console.log(error)
-    })
+    )
+        .then(function (doc) {
+            console.log(doc.data);
+            $("#productDialog_title").html(doc.data.title);
+            $("#productDialog_img").attr("src", `../img/${doc.data.brand}.jpeg`);
+            $("#table_productInfo_brand").html(doc.data.brand);
+            let seller = sellers.find(function (obj, index) {
+                if (obj._id === doc.data.seller)
+                    return true;
+            });
+            $("#table_productInfo_seller").html(`<a href="#" title="${seller.email}">${seller.firstname} ${seller.lastname}</a>`);
+            $("#table_productInfo_price").html(doc.data.price);
+            $("#table_productInfo_stock").html(doc.data.stock);
+            $('#table_productReviews tbody').empty();
+            if (doc.data.reviews.length <= 3) {
+                console.log(doc.data.reviews.length + '<=3')
+                for (let i = 0; i < doc.data.reviews.length; i++) {
+                    let reviewer = sellers.find(function (obj, index) {
+                        if (obj._id === doc.data.reviews[i].reviewer)
+                            return true;
+                    });
+                    console.log(reviewer)
+                    let row = $("<tr>"
+                        + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
+
+                        + "<td>" + doc.data.reviews[i].rating + "</td>"
+
+                        + "<td>" + doc.data.reviews[i].comment + "</td>"
+
+                        + "</tr>");
+                    $('#table_productReviews').append(row);
+
+                }
+                $("#productDialog_ShowMoreReviews").hide();
+            }
+            else {
+                console.log(doc.data.reviews.length + '>3')
+                for (let i = 0; i < 3; i++) {
+                    let reviewer = sellers.find(function (obj, index) {
+                        if (obj._id === doc.data.reviews[i].reviewer)
+                            return true;
+                    });
+                    let row = $("<tr>"
+
+                        + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
+
+                        + "<td>" + doc.data.reviews[i].rating + "</td>"
+
+                        + "<td>" + doc.data.reviews[i].comment + "</td>"
+
+                        + "</tr>");
+                    $('#table_productReviews').append(row);
+                }
+                $("#productDialog_ShowMoreReviews").show().click(function () {
+                    for (let i = 3; i < doc.data.reviews.length; i++) {
+                        let reviewer = sellers.find(function (obj, index) {
+                            if (obj._id === doc.data.reviews[i].reviewer)
+                                return true;
+                        });
+                        let row = $("<tr>"
+
+                            + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
+
+                            + "<td>" + doc.data.reviews[i].rating + "</td>"
+
+                            + "<td>" + doc.data.reviews[i].comment + "</td>"
+
+                            + "</tr>");
+                        $('#table_productReviews').append(row);
+                    }
+                    $("#productDialog_ShowMoreReviews").hide();
+                });
+
+            }
+
+
+            // $("#table_productReviews").find('tbody')
+            //     .append($('<tr>')
+            //         .append($('<td>')
+            //             .append('Image cell1')
+            //             .append('Image cell2')
+            //             .append('Image cell3')
+            //         )
+            //     );
+
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+
+    $("#productDialog").toggle(300);
+    $("#div_verytop").scrollTop()
+
+    // let phoneID = document.querySelectorAll('tr')[row.rowIndex].querySelectorAll('td')[7].innerHTML;
+    // let url = new URL(window.location.origin + "/getPhoneByID")
+    // url.searchParams.append("id", phoneID)
+    // axios.get(url
+    // ).then(function (doc) {
+    //     console.log(doc.data);
+    //     alert("phoneID: " + doc.data._id)
+    // }).catch(function (error) {
+    //     console.log(error)
+    // })
+
     //
     // fetch(url)
     //     .then(function (response) {
@@ -322,8 +430,7 @@ function onRowClicked(row) {
     // let checkbox = row.getElementsByTagName('input')[0];
     // checkbox.checked = !checkbox.checked;
 
-
-    selectOneBook(row.rowIndex);
+    // selectOneBook(row.rowIndex);
 }
 
 //this one is not working
@@ -398,7 +505,7 @@ function getCartTotalQty() {
     return totalQty;
 }
 
-function resetCart() {
+function checkout() {
     let dialog;
     dialog = confirm("Are you sure to reset the cart?");
     if (dialog === true) {
@@ -463,6 +570,7 @@ function closeLoginDialog() {
     // document.getElementById('loginDialog').style.display = 'none';
     // $("loginDialog").hide(1000)
 }
+
 
 function dialog_login_btn_OnClick() {
     let email = document.getElementById('dialog_login_email').value;
