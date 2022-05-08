@@ -299,17 +299,23 @@ function onRowClicked(row) {
                         if (obj._id === doc.data.reviews[i].reviewer)
                             return true;
                     });
-                    console.log(reviewer)
-                    let row = $("<tr>"
-                        + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
-
-                        + "<td>" + doc.data.reviews[i].rating + "</td>"
-
-                        + "<td>" + doc.data.reviews[i].comment + "</td>"
-
-                        + "</tr>");
-                    $('#table_productReviews').append(row);
-
+                    if (doc.data.reviews[i].comment.length > 200) {
+                        let row = $("<tr>"
+                            + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
+                            + "<td>" + doc.data.reviews[i].rating + "</td>"
+                            + "<td>" + doc.data.reviews[i].comment.substring(0, 200) + "</td>"
+                            + "<td style='display: none'>" + doc.data.reviews[i].comment + "</td>"
+                            + "</tr>");
+                        $('#table_productReviews').append(row);
+                    }
+                    else {
+                        let row = $("<tr>"
+                            + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
+                            + "<td>" + doc.data.reviews[i].rating + "</td>"
+                            + "<td>" + doc.data.reviews[i].comment + "</td>"
+                            + "</tr>");
+                        $('#table_productReviews').append(row);
+                    }
                 }
                 $("#productDialog_ShowMoreReviews").hide();
             }
@@ -320,16 +326,23 @@ function onRowClicked(row) {
                         if (obj._id === doc.data.reviews[i].reviewer)
                             return true;
                     });
-                    let row = $("<tr>"
-
-                        + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
-
-                        + "<td>" + doc.data.reviews[i].rating + "</td>"
-
-                        + "<td>" + doc.data.reviews[i].comment + "</td>"
-
-                        + "</tr>");
-                    $('#table_productReviews').append(row);
+                    if (doc.data.reviews[i].comment.length > 200) {
+                        let row = $("<tr>"
+                            + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
+                            + "<td>" + doc.data.reviews[i].rating + "</td>"
+                            + "<td>" + doc.data.reviews[i].comment.substring(0, 200) + "</td>"
+                            + "<td style='display: none'>" + doc.data.reviews[i].comment + "</td>"
+                            + "</tr>");
+                        $('#table_productReviews').append(row);
+                    }
+                    else {
+                        let row = $("<tr>"
+                            + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
+                            + "<td>" + doc.data.reviews[i].rating + "</td>"
+                            + "<td>" + doc.data.reviews[i].comment + "</td>"
+                            + "</tr>");
+                        $('#table_productReviews').append(row);
+                    }
                 }
                 $("#productDialog_ShowMoreReviews").show().click(function () {
                     for (let i = 3; i < doc.data.reviews.length; i++) {
@@ -337,31 +350,53 @@ function onRowClicked(row) {
                             if (obj._id === doc.data.reviews[i].reviewer)
                                 return true;
                         });
-                        let row = $("<tr>"
-
-                            + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
-
-                            + "<td>" + doc.data.reviews[i].rating + "</td>"
-
-                            + "<td>" + doc.data.reviews[i].comment + "</td>"
-
-                            + "</tr>");
-                        $('#table_productReviews').append(row);
+                        if (doc.data.reviews[i].comment.length > 200) {
+                            let row = $("<tr>"
+                                + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
+                                + "<td>" + doc.data.reviews[i].rating + "</td>"
+                                + "<td>" + doc.data.reviews[i].comment.substring(0, 200) + "</td>"
+                                + "<td style='display: none'>" + doc.data.reviews[i].comment + "</td>"
+                                + "</tr>");
+                            $('#table_productReviews').append(row);
+                        }
+                        else {
+                            let row = $("<tr>"
+                                + "<td>" + `${reviewer.firstname} ${reviewer.lastname}` + "</td>"
+                                + "<td>" + doc.data.reviews[i].rating + "</td>"
+                                + "<td>" + doc.data.reviews[i].comment + "</td>"
+                                + "</tr>");
+                            $('#table_productReviews').append(row);
+                        }
                     }
                     $("#productDialog_ShowMoreReviews").hide();
+                    const rows = document.getElementById("table_productReviews").querySelectorAll('tr');
+                    rows.forEach(row => {
+                        if (row.cells[3]) {
+                            let cell = row.insertCell();
+                            let btn = document.createElement("button");
+                            btn.innerHTML = "Show More";
+                            btn.addEventListener("click", function () {
+                                row.cells[2].innerHTML = row.cells[3].innerHTML;
+                                btn.style = "display:none"
+                            })
+                            cell.append(btn)
+                        }
+                    });
                 });
-
             }
-
-
-            // $("#table_productReviews").find('tbody')
-            //     .append($('<tr>')
-            //         .append($('<td>')
-            //             .append('Image cell1')
-            //             .append('Image cell2')
-            //             .append('Image cell3')
-            //         )
-            //     );
+            const rows = document.getElementById("table_productReviews").querySelectorAll('tr');
+            rows.forEach(row => {
+                if (row.cells[3]) {
+                    let cell = row.insertCell();
+                    let btn = document.createElement("button");
+                    btn.innerHTML = "Show More";
+                    btn.addEventListener("click", function () {
+                        row.cells[2].innerHTML = row.cells[3].innerHTML;
+                        btn.style = "display:none"
+                    })
+                    cell.append(btn)
+                }
+            });
 
         })
         .catch(function (error) {
@@ -397,6 +432,11 @@ function onRowClicked(row) {
     // checkbox.checked = !checkbox.checked;
 
     // selectOneBook(row.rowIndex);
+}
+
+function getLongerComment(obj) {
+    console.log(obj)
+    console.log($(el).closest('tr').index())
 }
 
 function loadHomeState() {
