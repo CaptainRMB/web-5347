@@ -5,7 +5,7 @@ let request = new XMLHttpRequest();
 let productList = [];
 let brandList = [];
 let cart = [];
-
+let maxPrice = 0;
 
 function onLoad() {
     // document.getElementById("p_test").innerHTML = Date();
@@ -23,11 +23,16 @@ function onLoad() {
         if (!brandList.includes(category)) {
             brandList.push(category)
         }
+        if (productList[i].price > maxPrice) {
+            maxPrice = productList[i].price;
+        }
     }
-    brandList.sort()
+    brandList.sort();
 
-    loadBooks(productList, "All Categories")
-    loadSelectList(brandList)
+    loadBooks(productList, "", "All Brands", maxPrice);
+    loadBrandList(brandList);
+    loadHomeState();
+    $("#listBox").hide();
     if (user.isLogin) {
         let userPageUrl = new URL(window.location.origin + "/user/detail");
         userPageUrl.searchParams.append("id", user.data._id.toString())
@@ -72,6 +77,14 @@ function onLoad() {
             $("#loginDialog").toggle(300);
             removeEventListener('mouseup', handler);
         });
+        $("#btn_search").click(function () {
+            let keyword = $("#inputBox_search").val();
+            let brand = $("#list_select").val();
+            let price = $("#range_slider").val();
+            $("#HomeState").hide();
+            $("#listBox").show();
+            loadBooks(productList, keyword, brand, price)
+        })
         //
         // $(document).mouseup(function(e)
         // {
@@ -90,6 +103,17 @@ function onLoad() {
             container.hide(300);
         }
     });
+
+    let slider = document.getElementById("range_slider");
+    let slider_value = document.getElementById("range_slider_value");
+    slider.setAttribute("max", maxPrice);
+    slider_value.innerHTML = 'Max Price:' + maxPrice;
+    ; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function () {
+        slider_value.innerHTML = `Max Price: ${this.value}`;
+    }
 
     const ws = new WebSocket("ws://localhost:8000");
     ws.onopen = function () {
@@ -118,36 +142,39 @@ function onLoad() {
 
 
 //TODO not sure if website should obverses the DB or send query every time
-function loadBooks(list, filterWord) {
+function loadBooks(list, search_keyword, search_brand, search_price) {
+    console.log(`search for => keyword:${search_keyword}, brand:${search_brand}, max price:${search_price},`)
     let table = document.getElementById("table_books").getElementsByTagName('tbody')[0];
     table.innerHTML = "";
     let id = 0;
     for (let i = 0; i < list.length; i++) {
-        if (filterWord !== "All Categories") {
-            if (list[i].brand !== filterWord) {
+        if (search_brand !== "All Brands") {
+            if (list[i].brand !== search_brand) {
                 continue;
             }
         }
+        if (search_keyword !== "") {
+            if (!list[i].title.toLowerCase().includes(search_keyword.toLowerCase())) {
+                continue;
+            }
+        }
+        if (list[i].price > search_price) {
+            continue;
+        }
         let row = table.insertRow(id);
         row.setAttribute("onclick", "onRowClicked(this)")
-        let checkbox = row.insertCell(0);
-        cbox = document.createElement("INPUT");
-        cbox.setAttribute("type", "checkbox");
-        cbox.setAttribute("id", i);
-        cbox.setAttribute("onclick", "onCheckboxClicked(this)")
-        checkbox.append(cbox)
 
-        let image = row.insertCell(1);
+        let image = row.insertCell(0);
         let img = document.createElement("img");
         img.src = `../img/${list[i].brand}.jpeg`;
         img.style.width = '40pt'
         img.style.height = '60pt'
         image.append(img)
 
-        let title = row.insertCell(2);
+        let title = row.insertCell(1);
         title.innerHTML = list[i].title;
 
-        let brand = row.insertCell(3);
+        let brand = row.insertCell(2);
         brand.innerHTML = list[i].brand;
 
 
@@ -155,21 +182,21 @@ function loadBooks(list, filterWord) {
             if (obj._id === list[i].seller)
                 return true;
         });
-        let sellerName = row.insertCell(4);
+        let sellerName = row.insertCell(3);
         sellerName.innerHTML = `<a href="#" title="${seller.email}\n${seller._id}">${seller.firstname} ${seller.lastname}</a>`;
         // sellerName.innerHTML = seller.firstname + " " + seller.lastname;
 
-        let price = row.insertCell(5);
+        let price = row.insertCell(4);
         price.innerHTML = list[i].price;
 
-        let stock = row.insertCell(6);
+        let stock = row.insertCell(5);
         stock.innerHTML = list[i].stock;
 
         //hidden column of ids
-        let _id = row.insertCell(7);
+        let _id = row.insertCell(6);
         _id.innerHTML = `<td style="visibility:collapse;">${list[i]._id}</td>`;
         document.getElementById("table_books").getElementsByTagName('tbody')[0]
-            .getElementsByTagName('tr')[id].getElementsByTagName('td')[7]
+            .getElementsByTagName('tr')[id].getElementsByTagName('td')[6]
             .style.display = 'none';
         id++;
     }
@@ -177,7 +204,7 @@ function loadBooks(list, filterWord) {
     // let inputs = document.querySelector('tbody').getElementsByTagName('input');
     // checkboxes
 
-    let trs = document.querySelector('tbody').querySelectorAll('tr');
+    let trs = document.getElementById("table_books").querySelector('tbody').querySelectorAll('tr');
     for (let i = 0; i < trs.length; i++) {
         trs[i].onmouseover = function () {
             this.style.backgroundColor = "var(--checked-highlight)";
@@ -205,11 +232,11 @@ function loadBooks(list, filterWord) {
     // var col = tbl.getElementsByTagName('col')[col_no];
 }
 
-function loadSelectList(categoryList) {
+function loadBrandList(categoryList) {
     let select = document.getElementById('list_select');
     let opt_default = document.createElement('option');
-    opt_default.value = "All Categories";
-    opt_default.innerHTML = "All Categories";
+    opt_default.value = "All Brands";
+    opt_default.innerHTML = "All Brands";
     opt_default.selected = "selected"
     select.appendChild(opt_default);
     for (let i = 0; i < categoryList.length; i++) {
@@ -218,7 +245,7 @@ function loadSelectList(categoryList) {
         opt.innerHTML = categoryList[i];
         select.appendChild(opt);
     }
-    addCategory("Coding")
+    addCategory("Unknown")
 }
 
 //extra category
@@ -231,83 +258,22 @@ function addCategory(category) {
 }
 
 
-function filter_books() {
-    let select = document.getElementById('list_select');
-    let filterWord = select.options[select.selectedIndex].text;
-    console.log("Filtering->" + filterWord)
-    loadBooks(productList, filterWord)
-    search_books("refresh");
-    let tr = document.getElementsByTagName("tr");
-    if (tr.length === 1) {
-        alert("No item is founded under this category!")
-    }
-}
-
-function search_books(mode) {
-    let tr = document.getElementsByTagName("tr");
-    let searchWord = document.getElementById("inputBox_search").value
-    console.log("Searching -> \"" + searchWord + "\"")
-    let table = document.getElementById("table_books");
-    let match_counter = 0;
-    for (let i = 1; i < table.rows.length; i++) {
-        tr[i].style.backgroundColor = "var(--bg-color)";
-        let row = table.rows[i]
-        if (row.cells[2].textContent.toLowerCase().includes(searchWord.toLowerCase())
-        ) {
-            if (searchWord !== "") {
-                match_counter++;
-                tr[i].style.backgroundColor = "var(--search-highlight)";
-            }
-            else {
-                if (tr[i].cells[0].children[0].checked) {
-                    tr[i].style.backgroundColor = "var(--checked-highlight)";
-                }
-                else {
-                    tr[i].style.backgroundColor = "var(--bg-color)";
-                }
-            }
-
-        }
-        else {
-            if (tr[i].cells[0].children[0].checked) {
-                tr[i].style.backgroundColor = "var(--checked-highlight)";
-            }
-            else {
-                tr[i].style.backgroundColor = "var(--bg-color)";
-            }
-        }
-    }
-    if (mode !== "refresh") {
-        if (match_counter === 0) {
-            alert("Found 0 matching result!")
-        }
-    }
-}
-
 function reset_search() {
     let list_select = document.getElementById('list_select');
-    list_select.value = "All Categories"
+    list_select.value = "All Brands"
     let inputBox_search = document.getElementById('inputBox_search');
     inputBox_search.value = ""
-    filter_books()
+    let slider = document.getElementById('range_slider');
+    slider.value = maxPrice;
+    let slider_value = document.getElementById('range_slider_value');
+    slider_value.innerText = 'Max Price:' + maxPrice;
 }
 
-function selectOneBook(index) {
-    let trs = document.querySelectorAll('tr');
-    for (let i = 0; i < trs.length; i++) {
-        if (i !== index) {
-            trs[i].cells[0].children[0].checked = false;
-        }
-    }
-    let checkbox = trs[index].cells[0].children[0];
-    checkbox.checked = !checkbox.checked;
-    search_books("refresh");
-}
 
 function onRowClicked(row) {
+    // console.log(document.getElementById("table_books").querySelectorAll('tr')[row.rowIndex].querySelectorAll('td')[6].innerHTML)
 
-
-    let phoneID = document.querySelectorAll('tr')[row.rowIndex].querySelectorAll('td')[7].innerHTML;
+    let phoneID = document.getElementById("table_books").querySelectorAll('tr')[row.rowIndex].querySelectorAll('td')[6].innerHTML;
     console.log(phoneID);
     let url = new URL(window.location.origin + "/getPhoneByID")
     url.searchParams.append("id", phoneID)
@@ -433,18 +399,55 @@ function onRowClicked(row) {
     // selectOneBook(row.rowIndex);
 }
 
-//this one is not working
-function onCheckboxClicked(checkbox) {
-    console.log("??")
-    console.log(checkbox.rowIndex)
-    checkbox.checked = !checkbox.checked;
-    // console.log(this.value)
-    if (this.checked) {
-        // console.log("Checked!")
-    }
-    else {
-        // console.log("Unchecked!")
-    }
+function loadHomeState() {
+    getSoldOutSoon();
+    getTop5RatedPhones()
+}
+
+function getSoldOutSoon() {
+    let url = new URL(window.location.origin + "/getSoldOutSoon")
+    axios.get(url
+    )
+        .then(function (doc) {
+            console.log('getSoldOutSoon', doc.data);
+            for (let i = 0; i < doc.data.length; i++) {
+                let row = $("<tr>"
+                    + "<td>" + `<img style='width: 40pt; height: 60pt' src=\"../img/${doc.data[i].brand}.jpeg\">` + "</td>"
+                    + "<td>" + doc.data[i].price + "</td>"
+                    + "<td>" + doc.data[i].title + "</td>"
+                    + "<td style=\"display:none;\">" + doc.data[i]._id + "</td>"
+                    + "</tr>");
+                $('#table_soldOutSoon').append(row);
+
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+}
+
+function getTop5RatedPhones() {
+    let url = new URL(window.location.origin + "/getTop5RatedPhones")
+    axios.get(url
+    )
+        .then(function (doc) {
+            console.log('getTop5RatedPhones', doc.data);
+            for (let i = 0; i < doc.data.length; i++) {
+                let row = $("<tr>"
+                    + "<td>" + `<img style='width: 40pt; height: 60pt' src=\"../img/${doc.data[i].brand}.jpeg\">` + "</td>"
+                    + "<td>" + doc.data[i].avgRating + "</td>"
+                    + "<td>" + doc.data[i].title + "</td>"
+                    + "<td style=\"display:none;\">" + doc.data[i]._id + "</td>"
+                    + "</tr>");
+                $('#table_bestSeller').append(row);
+
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
 }
 
 function addCart() {

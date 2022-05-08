@@ -39,7 +39,7 @@ body {
     text-align: center
 }
 
-div#searchBox, div#listBox {
+div#searchBox, div#listBox, div#HomeState {
     margin: 0.1em auto;
     background-color: var(--bg-color);
     padding: 2em;
