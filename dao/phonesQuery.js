@@ -210,16 +210,17 @@ module.exports = {
     postReview(pid, post_uid, post_rating, post_comment) {
         return new Promise((resolve, reject) => {
             phonesModel
-                .findOne({
-                    _id: pid
-                })
+                // .findOne({
+                //     _id: pid
+                // })
                 .update(
+                    {_id: pid},
                     {
-                        reviews: {
-                            $push: {
+                        $push: {
+                            reviews: {
                                 reviewer: post_uid,
                                 rating: post_rating,
-                                comment, post_comment
+                                comment: post_comment
                             }
                         }
                     }

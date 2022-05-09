@@ -94,11 +94,14 @@ module.exports = {
     async postReview(req, res) {
         console.log(req.body)
         let {pid, post_uid, post_rating, post_comment} = req.body;
-        console.log(pid, post_uid, post_rating, post_comment)
         let doc = await _phonesQuery.postReview(pid, post_uid, post_rating, post_comment);
         console.log(doc)
-        // console.log(avgRating)
-        res.send(doc)
+        if (doc.acknowledged === true && doc.modifiedCount === 1) {
+            res.status(200).send({isSuccess: true})
+        }
+        else {
+            res.status(403).send({isSuccess: false})
+        }
     },
 
 
