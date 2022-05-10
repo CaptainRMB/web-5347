@@ -13,8 +13,8 @@
 |-------------|--------------------------------------|
 | Bojia Zhang | [Sign In/Out page](#Sign-in/up-Page) |
 | Linrui Chen | [User Page](#User-Page)              |
-| Yubo Zhang  | [Main Page](#Main-Page)              |
-| Yizhen Xu   | [Checkout Page](#Checkout-Page)      |
+| Yubo Zhang  | [Checkout Page](#Checkout-Page)           |
+| Yizhen Xu   | [Main Page](#Main-Page)        |
 
 [Additional Note](#Additional-Note)
 
