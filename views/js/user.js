@@ -190,7 +190,7 @@ const app = new Vue({
             answer = confirm("Are you sure to sign out?")
             if(answer) {
                 axios.post('signOut');
-                window.location.href = '/';
+                window.location.href = '#';
             }
             else{
                 console.log("Sign out canceled")
