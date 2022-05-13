@@ -117,11 +117,11 @@ module.exports = {
         mailTransport.sendMail(options, function(err, msg){
             if(err){
                 console.log(err);
-                res.render('index', { title: err });
+                //res.render('index', { title: err });
             }
             else {
                 console.log(msg);
-                res.render('index', { title: "received："+msg.accepted});
+                //res.render('index', { title: "received："+msg.accepted});
             }
         });
     },
