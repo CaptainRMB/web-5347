@@ -12,7 +12,7 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
-var Phonelisting = require("../models/phonelisting")
+// var Phonelisting = require("../models/phonelisting")
 var Userinfo = require("../views/js/userinfo")
 
 module.exports.showPage = function (req, res) {

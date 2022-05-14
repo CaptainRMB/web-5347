@@ -1,4 +1,4 @@
-var mongoose = require('./db')
+const mongoose = require("mongoose");
 var UserinfoSchema = new mongoose.Schema({
     email: String,
     password: String,
