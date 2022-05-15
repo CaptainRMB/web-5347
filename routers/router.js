@@ -3,7 +3,7 @@ const _bodyParser = require('body-parser');
 const _userController = require("../controller/userController")
 const _phoneController = require("../controller/phoneController")
 const _pageController = require("../controller/pageController")
-const _userPageController = require('../controllers/profileController')
+const _userPageController = require("../controller/profileController")
 
 const jsonParser = _bodyParser.json();
 const urlencodedParser = _bodyParser.urlencoded({extended: false})
@@ -179,11 +179,12 @@ router.post("/postReview", _phoneController.postReview);
 router.get("/main", _pageController.getMainPageData);
 
 /*profile page routes*/
-router.get('/userinfo', _userPageController.sendSessionInfo);
-router.post('/profile', _userPageController.showPage);
-router.post('/changeProfile', _userPageController.changeProfile);
-router.post('/changePassword', _userPageController.changePassword);
-router.get('/userListing', _userPageController.getListing);
-router.post('/changePhoneList', _userPageController.changePhoneList)
+router.get('/userinfo', _userController.sendSessionInfo);
+//router.post('/profile', _userController.showPage);
+router.post('/changeProfile', _userController.changeProfile);
+router.post('/changePassword', _userController.changePassword);
+router.get('/userListing', _userController.getListing);
+router.post('/changePhoneList', _userController.changePhoneList)
+router.post('/signOut', _userController.signOut)
 
 module.exports = router;

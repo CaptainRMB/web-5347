@@ -33,9 +33,11 @@ module.exports = {
     },
 
     getPhoneBySeller(seller) {
+        console.log("looking for => ", seller)
         return new Promise((resolve, reject) => {
             phonesModel.find({
-                seller: seller
+                seller: seller,
+                reviews: 0
             })
                 .then(doc => {
                     resolve(doc);

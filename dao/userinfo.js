@@ -23,7 +23,6 @@ UserinfoSchema.statics.findUserEmail = function (email) {
 
 UserinfoSchema.statics.findbyUserid = function (id) {
     return this.findById(id)
-
 }
 
 

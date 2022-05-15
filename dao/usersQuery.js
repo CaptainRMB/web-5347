@@ -112,6 +112,50 @@ module.exports = {
                 })
         })
     },
+
+    //update firstname lastname email by id
+    updateProfile(_id,email,firstname,lastname) {
+        return new Promise((resolve, reject) => {
+            usersModel
+                // .findOne({
+                //     _id: pid
+                // })
+                .update(
+                    {_id: _id},
+                    {
+                        $set: {'email': email,'firstname':firstname,'lastname':lastname}
+                    }
+                )
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    //update password by id
+    updatePasswordById(_id, password) {
+        return new Promise((resolve, reject) => {
+            usersModel
+                // .findOne({
+                //     _id: pid
+                // })
+                .update(
+                    {_id: _id},
+                    {
+                        $set: {'password': password}
+                    }
+                )
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
 }
 
 

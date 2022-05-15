@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
+
+
+
     <meta charset="utf-8">
     <title>COMP5347 Assignment 2</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
@@ -8,6 +11,8 @@
     <script src="http://www.myersdaily.org/joseph/javascript/md5.js"></script>
     <script src="/js/user.js" defer></script>
     <link rel="stylesheet" href="/css/user.css" type="text/css"/>
+
+
 </head>
 
 <body>
@@ -38,14 +43,14 @@
                     <p v-if="showNotice">{{ noticeProfile }}</p>
 
                     <p>First name:
-                        <input value="<%- table_firstName%>" type="text"/>
+                        <input v-model="firstname" type="text"/>
                     </p>
                     <p>Last name:
-                        <input value="<%- table_lastName%>" type="text" />
+                        <input v-model="lastname" type="text" />
                     </p>
 
                     <p>Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input value="<%- table_email%>" type="text" />
+                        <input v-model="email" type="text" />
                     </p>
 
                     <div v-if="updateClicked">

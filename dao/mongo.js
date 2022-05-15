@@ -1,7 +1,6 @@
 const _config = require("../config/server")
 const mongoose = require("mongoose");
 
-
 class Database {
     constructor() {
         //Singleton

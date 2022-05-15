@@ -9,6 +9,7 @@
  *  - changePhoneList is used for changing the phone list that related to the user. The functions of
  *  "remove", "add", "disable", "enable" are included
  */
+
 const express = require('express');
 const mongoose = require('mongoose');
 const Phonelisting = require("../dao/phonelisting.js");
@@ -29,6 +30,7 @@ module.exports.sendSessionInfo = function (req, res) {
 };
 
 module.exports.changeProfile = async function (req, res) {
+    console.log(1);
     /*Information for verify identity*/
     id = req.session.sid;
     currentEmail = req.session.email
@@ -38,6 +40,8 @@ module.exports.changeProfile = async function (req, res) {
     changedEmail = req.body.email;
     changedFirstname = req.body.firstname;
     changedLastname = req.body.lastname;
+    console.log(id);
+
 
     //Verify the password
     //Then change the profile in database

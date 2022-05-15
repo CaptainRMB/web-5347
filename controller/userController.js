@@ -169,37 +169,44 @@ module.exports = {
         }
     },
 
+    async sendSessionInfo(req, res) {
+
+        sess = req.session
+        res.json({
+            firstname: sess.firstname,
+            lastname: sess.lastname,
+            email: sess.email
+        })
+    },
+
+
     async changeProfile(req, res) {
-        console.log(req);
+        console.log(1);
         /*Information for verify identity*/
-        let id = req.query.id;
-        //id = req.session.sid;
-        let email = req.query.email;
-        //let currentEmail = req.session.email
-        let password = '';
-        password = _util.md5(password);
-        //hashedPassword = req.body.password;
+        let id = req.body.id;
+        let currentEmail = req.session.email;
+        let hashedPassword = req.body.password;
+
         /*The changed profile information*/
         let changedEmail = req.body.email;
         let changedFirstname = req.body.firstname;
         let changedLastname = req.body.lastname;
+        console.log(id);
 
         //Verify the password
         //Then change the profile in database
-        let result = await Userinfo.findbyUserid(id)
-        if (password == result['password']) {
-            console.log("a");
-            result = await Userinfo.findUserEmail(changedEmail)
-            if (result == "" || result[0]['email'] == email) {
-                await Userinfo.UpdateUserById(id, changedEmail, changedFirstname, changedLastname)
-                req.query.id = id;
-                //req.session.sid = id;
-                req.query.email = changedEmail;
-                //req.session.email = changedEmail;
-                req.query.firstname = changedFirstname;
-                //req.session.firstname = changedFirstname;
-                req.query.lastname = changedLastname;
-                //req.session.lastname = changedLastname;
+        let result = await _usersQuery.getUserByID(id)
+        console.log(result);
+        console.log(hashedPassword);
+        if (hashedPassword === result[0].password) {
+            result = await _usersQuery.getUserByEmail(changedEmail)
+            console.log(result[0]['email'], changedEmail);
+            if (result.length === 0 || result[0]['email'] === changedEmail) {
+                await _usersQuery.updateProfile(id, changedEmail, changedFirstname, changedLastname)
+                req.session.sid = id;
+                req.session.email = changedEmail;
+                req.session.firstname = changedFirstname;
+                req.session.lastname = changedLastname;
                 console.log("User Profile UPDATED")
                 res.json({success: true});
             }
@@ -216,19 +223,20 @@ module.exports = {
     async changePassword(req, res) {
         /*Info for verify identity*/
 
-        let id = req.query.id;
-        //let id = req.session.sid;
-
+        let id = req.body.id;
+        console.log(id);
         let hashedCurrentPwd = req.body.currentPwd;
         let hashedNewPwd = req.body.newPwd;
 
         //Verify the password
         //Then change the profile in database
-        let result = await Userinfo.findbyUserid(id)
-        if (hashedCurrentPwd == result['password']) {
+        let result = await _usersQuery.getUserByID(id)
+        // console.log(result);
+        // console.log(hashedCurrentPwd, hashedNewPwd, result[0]['password']);
+        if (hashedCurrentPwd === result[0]['password'] ) {
             console.log("password checked")
             //update user password
-            await Userinfo.UpdateUserPasswordById(id, hashedNewPwd)
+            await _usersQuery.updatePasswordById(id, hashedNewPwd)
             res.json(true);
             console.log("password UPDATED!")
         } else {
@@ -238,9 +246,11 @@ module.exports = {
     },
 
     async getListing(req, res) {
-        let sellerId = req.session.sid;
-        /*Get all phone list selled by sellerID*/
-        let user_related_phonelist = await _phonesQuery.getPhoneByID(id);
+        let sellerId = req.body.id;
+        console.log("This is sellerId: " + sellerId);
+        /* Get all phone list sold by sellerID */
+        let user_related_phonelist = await _phonesQuery.getPhoneBySeller(sellerId);
+        console.log(user_related_phonelist);
         res.json(user_related_phonelist);
     },
 
