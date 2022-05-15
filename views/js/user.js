@@ -241,8 +241,12 @@ const app = new Vue({
         //get the user added list from database
 
         let url2 = new URL(window.location.origin + "/userListing")
-        //axios.get(url2)
-        axios.get('userListing')
+
+        url2.searchParams.append("id", this.id);
+        console.log(url2);
+        console.log(this.id);
+        axios.get(url2)
+        //axios.get('userListing')
             .then(response => {
                 console.log(response);
                 if(response["data"].length != 0){

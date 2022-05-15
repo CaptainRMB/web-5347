@@ -92,13 +92,13 @@
                 <table v-else id='list_table'>
                     <thead>
                     <tr>
-                        <th>Enabled</th>
-                        <th></th>
-                        <th>Title</th>
-                        <th>Price</th>
-                        <th>Brand</th>
-                        <th>Stock</th>
-                        <th></th>
+                        <th style="width: 6%">Enabled</th>
+                        <th style="width: 10%">Image</th>
+                        <th style="width: 54%">Title</th>
+                        <th style="width: 8%">Price</th>
+                        <th style="width: 6%">Brand</th>
+                        <th style="width: 6%">Stock</th>
+                        <th style="width: 10%">Operation</th>
                     </tr>
 
                     <tr v-for="(list, index) in userListing">
@@ -106,7 +106,7 @@
                         <td v-if="list.disabled==''"><input type="checkbox" @change="check($event, index)"/></td>
                         <td v-else><input type="checkbox" @change="check($event, index)" checked="checked"/></td>
 
-                        <td><img v-bind:src="list.image"/></td>
+                        <td><img style="width: 96px; height: 128px; position: center" v-bind:src=`/img/${list.brand}.jpeg`></td>
                         <td>{{ list.title }}</td>
                         <td>{{ list.price }}</td>
                         <td>{{ list.brand }}</td>

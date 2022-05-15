@@ -37,7 +37,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             phonesModel.find({
                 seller: seller,
-                reviews: 0
+                // reviews: 0
             })
                 .then(doc => {
                     resolve(doc);

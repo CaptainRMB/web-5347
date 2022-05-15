@@ -246,7 +246,7 @@ module.exports = {
     },
 
     async getListing(req, res) {
-        let sellerId = req.body.id;
+        let sellerId = req.query.id;
         console.log("This is sellerId: " + sellerId);
         /* Get all phone list sold by sellerID */
         let user_related_phonelist = await _phonesQuery.getPhoneBySeller(sellerId);
