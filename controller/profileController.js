@@ -9,11 +9,10 @@
  *  - changePhoneList is used for changing the phone list that related to the user. The functions of
  *  "remove", "add", "disable", "enable" are included
  */
-
-var express = require('express');
-var mongoose = require('mongoose');
-// var Phonelisting = require("../models/phonelisting")
-var Userinfo = require("../views/js/userinfo")
+const express = require('express');
+const mongoose = require('mongoose');
+const Phonelisting = require("../dao/phonelisting.js");
+const Userinfo = require("../dao/userinfo");
 
 module.exports.showPage = function (req, res) {
     res.render('user.ejs');

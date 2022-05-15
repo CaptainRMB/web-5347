@@ -26,10 +26,10 @@ const app = new Vue({
     },
 
     methods: {
-
         //When update the profile, password will be verified first
         //If password matched, change the profile in database and session
         updateProfile: function() {
+            console.log(1);
             this.showNotice = true;
             if(!this.updateClicked){
                 this.updateClicked = true;
@@ -37,17 +37,20 @@ const app = new Vue({
             }
             else {
                 if(this.verifiedPassword){
+                    console.log(2);
                     axios.post("changeProfile",
                         {email: this.email, firstname: this.firstname, lastname: this.lastname,
                             password: md5(this.verifiedPassword)})
                         .then(response => {
                             if(response.data.success) {
+                                console.log(3);
                                 this.noticeProfile = "The profile has been successfully changed ";
                                 this.updateClicked = false;
                             }
                             else {
                                 if(response.data.reason == 'pwd') {
-                                    this.noticeProfile = "The password is uncorrect";
+                                    console.log(4);
+                                    this.noticeProfile = "The password is incorrect";
                                 }
                                 else {
                                     this.noticeProfile = "The email is used";

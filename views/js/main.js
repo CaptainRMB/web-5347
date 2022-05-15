@@ -268,7 +268,7 @@ function reset_search() {
 
 
 function onRowClicked(row) {
-    // console.log(document.getElementById("table_books").querySelectorAll('tr')[row.rowIndex].querySelectorAll('td')[6].innerHTML)
+    //console.log(document.getElementById("table_books").querySelectorAll('tr')[row.rowIndex].querySelectorAll('td')[6].innerHTML)
 
     let phoneID = document.getElementById("table_books").querySelectorAll('tr')[row.rowIndex].querySelectorAll('td')[6].innerHTML;
     console.log(phoneID);

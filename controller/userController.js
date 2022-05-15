@@ -5,10 +5,14 @@ const _util = require('../utils/hashing')
 const _ws = require('../websocketServer')
 const _webSocket = require("ws");
 const nodemailer  = require('nodemailer');
+const _phonesQuery = require("../dao/phonesQuery")
 
 const {isEmail}= require('../utils/validator');
 const { isPromise } = require("util/types");
 const { isPwdValidated } = require("../utils/validator");
+const Phonelisting = require("../dao/phonelisting");
+const Userinfo = require("../dao/userinfo");
+
 module.exports = {
 
     async userLogin(req, res) {
@@ -156,10 +160,131 @@ module.exports = {
             res.render('user.ejs', {
                 title_firstName: result[0].firstname,
                 table_name: result[0].firstname + " " + result[0].lastname,
+                table_firstName: result[0].firstname,
+                table_lastName: result[0].lastname,
                 table_email: result[0].email,
                 table_password: result[0].password,
                 table_id: result[0].id
             })
         }
+    },
+
+    async changeProfile(req, res) {
+        console.log(req);
+        /*Information for verify identity*/
+        let id = req.query.id;
+        //id = req.session.sid;
+        let email = req.query.email;
+        //let currentEmail = req.session.email
+        let password = '';
+        password = _util.md5(password);
+        //hashedPassword = req.body.password;
+        /*The changed profile information*/
+        let changedEmail = req.body.email;
+        let changedFirstname = req.body.firstname;
+        let changedLastname = req.body.lastname;
+
+        //Verify the password
+        //Then change the profile in database
+        let result = await Userinfo.findbyUserid(id)
+        if (password == result['password']) {
+            console.log("a");
+            result = await Userinfo.findUserEmail(changedEmail)
+            if (result == "" || result[0]['email'] == email) {
+                await Userinfo.UpdateUserById(id, changedEmail, changedFirstname, changedLastname)
+                req.query.id = id;
+                //req.session.sid = id;
+                req.query.email = changedEmail;
+                //req.session.email = changedEmail;
+                req.query.firstname = changedFirstname;
+                //req.session.firstname = changedFirstname;
+                req.query.lastname = changedLastname;
+                //req.session.lastname = changedLastname;
+                console.log("User Profile UPDATED")
+                res.json({success: true});
+            }
+            // email existed in DB!!
+            else {
+                res.json({success: false, reason: 'email'});
+            }
+        }
+        else {
+            res.json({success: false, reason: 'pwd'});
+        }
+    },
+
+    async changePassword(req, res) {
+        /*Info for verify identity*/
+
+        let id = req.query.id;
+        //let id = req.session.sid;
+
+        let hashedCurrentPwd = req.body.currentPwd;
+        let hashedNewPwd = req.body.newPwd;
+
+        //Verify the password
+        //Then change the profile in database
+        let result = await Userinfo.findbyUserid(id)
+        if (hashedCurrentPwd == result['password']) {
+            console.log("password checked")
+            //update user password
+            await Userinfo.UpdateUserPasswordById(id, hashedNewPwd)
+            res.json(true);
+            console.log("password UPDATED!")
+        } else {
+            res.json(false);
+            console.log("wrong password, you cannot change to a new one!")
+        }
+    },
+
+    async getListing(req, res) {
+        let sellerId = req.session.sid;
+        /*Get all phone list selled by sellerID*/
+        let user_related_phonelist = await _phonesQuery.getPhoneByID(id);
+        res.json(user_related_phonelist);
+    },
+
+    async changePhoneList(req, res) {
+        let sellerId = req.session.sid;
+
+        /*The phone list need to be processed*/
+        phoneList = req.body.phoneList;
+
+        /*The required operation on sent phone list*/
+        /*Possible data are "remove", "add", "disable", "enable"*/
+        listOperation = req.body.listOperation;
+
+        //Extract the used information from sent phone list
+        if(listOperation != "add") {
+            phoneId = phoneList['_id'];
+        }
+        phoneTitle = phoneList['title'];
+        phoneBrand = phoneList['brand'];
+        phoneImage = phoneList['image'];
+        phoneStock = phoneList['stock'];
+        phonePrice = phoneList['price'];
+
+        /*Set sellername to new added list*/
+        sellerName = `${req.session.firstname} ${req.session.lastname}`
+
+        addedList = '';
+
+        //Do the operation to the list in database
+        switch (listOperation) {
+            case "remove" :
+                await Phonelisting.RemovePhoneInMongo(phoneId);
+                break;
+            case "add" :
+                addedList = await Phonelisting.AddPhoneInMongo(phoneTitle, phoneBrand, phoneImage, phoneStock, sellerId, phonePrice,sellerName);
+                break;
+            case "disable" :
+                await Phonelisting.disablePhone(phoneId);
+                break;
+            case "enable" :
+                await Phonelisting.enablePhone(phoneId);
+                break;
+        }
+
+        res.json(addedList);
     },
 }
