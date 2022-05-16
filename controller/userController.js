@@ -247,54 +247,11 @@ module.exports = {
 
     async getListing(req, res) {
         let sellerId = req.query.id;
-        console.log("This is sellerId: " + sellerId);
+        console.log("sellerId in getListing: " + sellerId);
         /* Get all phone list sold by sellerID */
         let user_related_phonelist = await _phonesQuery.getPhoneBySeller(sellerId);
         console.log(user_related_phonelist);
         res.json(user_related_phonelist);
     },
 
-    async changePhoneList(req, res) {
-        let sellerId = req.session.sid;
-
-        /*The phone list need to be processed*/
-        phoneList = req.body.phoneList;
-
-        /*The required operation on sent phone list*/
-        /*Possible data are "remove", "add", "disable", "enable"*/
-        listOperation = req.body.listOperation;
-
-        //Extract the used information from sent phone list
-        if(listOperation != "add") {
-            phoneId = phoneList['_id'];
-        }
-        phoneTitle = phoneList['title'];
-        phoneBrand = phoneList['brand'];
-        phoneImage = phoneList['image'];
-        phoneStock = phoneList['stock'];
-        phonePrice = phoneList['price'];
-
-        /*Set sellername to new added list*/
-        sellerName = `${req.session.firstname} ${req.session.lastname}`
-
-        addedList = '';
-
-        //Do the operation to the list in database
-        switch (listOperation) {
-            case "remove" :
-                await Phonelisting.RemovePhoneInMongo(phoneId);
-                break;
-            case "add" :
-                addedList = await Phonelisting.AddPhoneInMongo(phoneTitle, phoneBrand, phoneImage, phoneStock, sellerId, phonePrice,sellerName);
-                break;
-            case "disable" :
-                await Phonelisting.disablePhone(phoneId);
-                break;
-            case "enable" :
-                await Phonelisting.enablePhone(phoneId);
-                break;
-        }
-
-        res.json(addedList);
-    },
 }

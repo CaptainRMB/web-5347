@@ -184,7 +184,8 @@ router.get('/userinfo', _userController.sendSessionInfo);
 router.post('/changeProfile', _userController.changeProfile);
 router.post('/changePassword', _userController.changePassword);
 router.get('/userListing', _userController.getListing);
-router.post('/changePhoneList', _userController.changePhoneList)
+router.post('/changePhoneList', _phoneController.changePhoneList)
 router.post('/signOut', _userController.signOut)
+router.get('/getAllBrands', _phoneController.getAllBrands)
 
 module.exports = router;
