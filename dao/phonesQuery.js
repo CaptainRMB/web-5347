@@ -236,6 +236,28 @@ module.exports = {
                 })
         })
     },
+
+    checkOutChangeStock(id, quantity){
+        return new Promise((resolve, reject) => {
+            phonesModel
+                .update(
+                    {
+                        _id: id,
+                    },
+                    {
+                        $inc: {
+                            stock: 0 - quantity
+                        }
+                    }
+                )
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    }
 }
 
 

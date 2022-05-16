@@ -187,4 +187,6 @@ router.get('/userListing', _userController.getListing);
 router.post('/changePhoneList', _userController.changePhoneList)
 router.post('/signOut', _userController.signOut)
 
+router.post("/checkOutChangeStock",_phoneController.checkOutChangeStock);
+
 module.exports = router;
