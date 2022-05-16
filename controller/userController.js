@@ -17,14 +17,16 @@ var mp=new Map();
 module.exports = {
 
     async userLogin(req, res) {
-        // console.log(req.body)
-        let {email, password} = req.body;
-        console.log(email, password)
-        // let password =_util.md5(req.body.password); //TODO currently it's using unhashed password for testing, not sure if I can add salt in the case of the new data set during demo
-        let result = await _usersQuery.login(email, password);
-        console.log(result)
+        console.log(req.body)
+        //let {email, password} = req.body;
+       
+        let email = req.body.email;
+         let password =_util.md5(req.body.password); //TODO currently it's using unhashed password for testing, not sure if I can add salt in the case of the new data set during demo
+         console.log(email, password);
+         let result = await _usersQuery.login(email, password);
+         console.log(result[0].password );
         try {
-            if (result[0].password === password && result[0].password !== undefined) {//TODO wrong condition, boundary case might exist
+            if (result[0].password === password || result[0].password !== undefined) {//TODO wrong condition, boundary case might exist
                 await setTimeout(function () {
                     req.session.data = {id: result[0]._id.toString()};
                     // console.log(req.session, 'SAVED!')
@@ -126,9 +128,7 @@ module.exports = {
            password = _util.md5(mp.get('id').Password);
             //let result = await _usersQuery.signUp(email, password, firstName, lastName);
             if (permission===true&&mail===true) {
-    
-    
-                
+
                 if(await _usersQuery.signUp(mp.get('id').Email,password,mp.get('id').FirstName,mp.get('id').LastName)===true){
                 // res.send("Sign Up Successfully!")
                 res.render("checkMail.html");
