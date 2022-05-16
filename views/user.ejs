@@ -21,6 +21,7 @@
         <h4 style="cursor:pointer" @click="showProfile">Edit profile</h4>
         <h4 style="cursor:pointer" @click="showPassword">Change password</h4>
         <h4 style="cursor:pointer" @click="showList">Manage listings</h4>
+        <h4 style="cursor:pointer" @click="showComments">View Comments</h4>
 
         <div class="box_Right">
             <!-- -->
@@ -124,16 +125,14 @@
                     </p>
                     <p>Brand:&nbsp;&nbsp;&nbsp;&nbsp;
 
-                            <select :id="id" v-model="branList">
-                                <option v-if="brandList.length > 0" value="">Please Select</option>
-                                <option
-                                        v-if="brandList.length > 0"
-                                        v-for="n in brandList"
-                                        :value= "n"
-                                        v-text= "n"
+                        <select :id="id">
+                            <option
+                                    v-for="item in brandList"
+                                    :key="item"
+                                    :label="item"
+                                    :value="item">
                                 />
-
-                            </select>
+                        </select>
 
 <!--                        <select name="Brand" v-model="addBrand">-->
 <!--                            <option>Apple</option>-->
@@ -158,6 +157,40 @@
                     <input class="button button3" type="button" value="Confirm" @click="confirmAddList"/>
                 </div>
 
+            </section>
+        </div>
+
+        　　　<!--        view comments-->
+        <div v-if="tabComments">
+            <section class="tab">
+                <p v-if="!userListing">You haven't create your listing yet</p>
+
+                <table v-else style="white-space: pre-line;" id='list_table'>
+                    <thead>
+                    <tr>
+
+                        <th style="width: 10%">Image</th>
+                        <th style="width: 20%">Title</th>
+
+                        <th style="width: 6%">Brand</th>
+                        <th style="width: 64%">Comments</th>
+
+                    </tr>
+
+                    <tr v-for="(list, index) in userListing">
+
+                        <td><img style="width: 72px; height: 96px;" v-bind:src=`/img/${list.brand}.jpeg`></td>
+                        <td>{{ list.title }}</td>
+                        <td>{{ list.brand }}</td>
+                        <td>
+                            {{ reviewMap.get(list._id) }}
+                        </td>
+                    </tr>
+                    </thead>
+                </table>
+
+
+                <br>
             </section>
         </div>
 

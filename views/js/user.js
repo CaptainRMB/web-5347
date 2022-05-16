@@ -9,6 +9,7 @@ const app = new Vue({
         tabProfile: true,
         tabPassword: false,
         tabList: false,
+        tabComments: false,
         pwdChanged: false,
         updateClicked: false,
         ifViewClicked: false,
@@ -18,7 +19,8 @@ const app = new Vue({
         currentPwd: '',
         newPwd: '',
         userListing: '',
-        branList: [],
+        brandList: [],
+        reviewMap: {},
         addTitle: '',
         addBrand: 'Apple',
         addQuantity: '',
@@ -187,7 +189,8 @@ const app = new Vue({
             console.log(searchResult.get("id"));
             this.tabProfile = true,
                 this.tabPassword = false,
-                this.tabList = false
+                this.tabList = false,
+                this.tabComments = false
         },
 
         showPassword: function () {
@@ -195,13 +198,22 @@ const app = new Vue({
             console.log(searchResult.get("id"));
             this.tabProfile = false,
                 this.tabPassword = true,
-                this.tabList = false
+                this.tabList = false,
+                this.tabComments = false
         },
 
         showList: function () {
             this.tabProfile = false,
                 this.tabPassword = false,
-                this.tabList = true
+                this.tabList = true,
+                this.tabComments = false
+        },
+
+        showComments: function () {
+            this.tabProfile = false,
+                this.tabPassword = false,
+                this.tabList = false,
+                this.tabComments = true
         },
 
 
@@ -244,7 +256,7 @@ const app = new Vue({
         //     });
 
         //get the user added list from database
-
+        this.reviewMap = new Map()
         let url2 = new URL(window.location.origin + "/userListing")
         url2.searchParams.append("id", this.id);
         console.log(url2);
@@ -255,9 +267,19 @@ const app = new Vue({
                 console.log(response);
                 if (response["data"].length != 0) {
                     this.userListing = response["data"]
+                    // console.log("this.userListing" + this.userListing[0])
+                    this.userListing.forEach(item=>{
+                        let str = ""
+                        item.reviews.forEach(n => {
+                            str += "Rating: " + n.rating +  '\n' + "Comment: " + n.comment +  '\n\n'
+                        })
+                        this.reviewMap.set(item._id, str);
+                    })
+                    // console.log(this.reviewMap.get("626cf7f2a60beeed9ece0068"));
+                    // console.log(this.reviewMap.keys())
                 }
             })
-
+        // console.log("this.reviewMap "+ this.reviewMap.get(this.userListing[0]._id));
         let url3 = new URL(window.location.origin + "/getAllBrands")
         //url3.searchParams.append("id", this.id);
         axios.get(url3)
@@ -265,7 +287,21 @@ const app = new Vue({
             .then(response => {
                 console.log(response);
                 if (response.length != 0) {
-                    this.branList = response
+
+                    this.brandList = response.data
+                    console.log(this.brandList);
+                }
+            })
+
+        let url4 = new URL(window.location.origin + "/getReviewByID")
+        axios.get(url4)
+            //axios.get('userListing')
+            .then(response => {
+                console.log(response);
+                if (response.length != 0) {
+
+                    this.reviewMap = response.data
+
                 }
             })
 

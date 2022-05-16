@@ -145,7 +145,7 @@ router.get("/getPhonesByBrand",_phoneController.getPhoneByBrand);
 router.get("/getAllBrands",_phoneController.getAllBrands);
 
 /**
- * @route GET /getReviewByTitle
+ * @route GET /getReviewByID
  * @group phone - Operations about phone
  * @param {string} id.query.required - phone id
  * @returns {boolean} 200 - Array of Review objects in json
