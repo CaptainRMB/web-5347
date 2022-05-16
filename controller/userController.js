@@ -118,25 +118,32 @@ module.exports = {
         res.send("Sign Up failed: " + "THE PASSWORD OR EMAIL_IS_INVALID");
         },
 
-    async userSignUp(req, res) {
-        let Code = Math.random().toString().substr(2, 4);
-        console.log(mp);
-       var permission= isPwdValidated(mp.get('id').Password);
-       var mail = isEmail(mp.get('id').Email);
-       password = _util.md5(mp.get('id').Password);
-        if (permission===true&&mail===true) {
-        if (await _usersQuery.signUp(email, password, firstName, lastName) === true) {
-            res.send("Sign Up Successfully!")}
-            // await setTimeout( function(){
-            //     res.redirect(302, '/login.html');
-            // }, 2 * 1000 );
-        }
-        else {
-            res.status(403)
-            if(await _usersQuery.signUp(email, password, firstName, lastName).code !== 11000)
-            res.send("Sign Up failed: " + "THE PASSWORD OR EMAIL_IS_INVALID");
-            else
-            res.send("Sign Up failed: " + await _usersQuery.signUp(email, password, firstName, lastName).name + await _usersQuery.signUp(email, password, firstName, lastName).message);
+        async userSignUp(req, res) {
+            let Code = Math.random().toString().substr(2, 4);
+            console.log(mp);
+           var permission= isPwdValidated(mp.get('id').Password);
+           var mail = isEmail(mp.get('id').Email);
+           password = _util.md5(mp.get('id').Password);
+            //let result = await _usersQuery.signUp(email, password, firstName, lastName);
+            if (permission===true&&mail===true) {
+    
+    
+                
+                if(await _usersQuery.signUp(mp.get('id').Email,password,mp.get('id').FirstName,mp.get('id').LastName)===true){
+                // res.send("Sign Up Successfully!")
+                res.render("checkMail.html");
+            
+            }
+                // await setTimeout( function(){
+                //     res.redirect(302, '/login.html');
+                // }, 2 * 1000 );
+            }
+            else {
+                res.status(403);
+                // console.log(await _usersQuery.signUp(email, password, firstName, lastName).code);
+                // console.log("THE PASSWORD OR EMAIL_IS_INVALID");
+            if(await _usersQuery.signUp(mp.get('id').Email, mp.get('id').Password, mp.get('id').FirstName, mp.get('id').LastName).code !== 11000)
+                res.send("Sign Up failed: " + "THE PASSWORD OR EMAIL_IS_INVALID");
         }
 
         // const mailTransport = nodemailer.createTransport({
