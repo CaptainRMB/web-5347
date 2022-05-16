@@ -237,6 +237,82 @@ module.exports = {
         })
     },
 
+
+    postPhone(title, brand, image, stock, seller, price, sellerName) {
+        return new Promise((resolve, reject) => {
+            phonesModel.create(
+                {
+                    seller: seller,
+                    title: title,
+                    brand: brand,
+                    image: image,
+                    stock: stock,
+                    price: price,
+                    sellerName: sellerName
+                },
+            )
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    removePhone(pid) {
+        return new Promise((resolve, reject) => {
+            phonesModel
+                // .findOne({
+                //     _id: pid
+                // })
+                .findOneAndDelete(
+                    {_id: pid},
+                    {}
+                )
+                .then(doc => {
+                    console.log(doc);
+                    resolve(doc);
+                })
+                .catch(err => {
+                    console.error(err);
+                    reject(err)
+                })
+        })
+    },
+
+    updateDisablePhone(pid) {
+        return new Promise((resolve, reject) => {
+            phonesModel
+                // .findOne({
+                //     _id: pid
+                // })
+                .update(
+                    {_id: pid},
+                    {
+                        $set: {'disabled': ''}
+                    }
+                )
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    updateEnablePhone(pid) {
+        return new Promise((resolve, reject) => {
+            phonesModel
+                // .findOne({
+                //     _id: pid
+                // })
+                .update(
+                    {_id: pid},
+                    {
+                        $unset: {'disabled': ''}
+
     checkOutChangeStock(id, quantity){
         return new Promise((resolve, reject) => {
             phonesModel
@@ -248,6 +324,7 @@ module.exports = {
                         $inc: {
                             stock: 0 - quantity
                         }
+
                     }
                 )
                 .then(doc => {
@@ -257,7 +334,12 @@ module.exports = {
                     reject(err)
                 })
         })
+
+    },
+
+
     }
+
 }
 
 

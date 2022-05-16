@@ -26,7 +26,9 @@ form{
 }
 section.tab {
     padding: 25px;
+
 }
+
 
 /* -- button -- */
 .button {
@@ -108,5 +110,28 @@ input[type=password], select {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+table {
+    table-layout: fixed;
+    word-break: break-all;
+    word-wrap: break-word;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+thead{
+    background-color: #66B1FF;
+}
+th,
+td {
+    text-align: left;
+    padding: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background-color: #fff;
 }
 
