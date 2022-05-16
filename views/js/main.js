@@ -294,7 +294,9 @@ function onRowClicked(row) {
             let quan = 0;
             console.log(cart);
             for (let i = 0; i < cart.length; i++) {
-                if (cart[i].id === phoneID) {
+                if(user.data._id==undefined){
+                    quan = 0;
+                }else if (cart[i].id === phoneID && cart[i].userId===user.data._id) {
                     quan = cart[i].quantity;
                 }
             }
@@ -442,6 +444,10 @@ function onRowClicked(row) {
             })
 
             $("#btn_add_to_cart").unbind().click(function () {
+                if(user.data._id==undefined){
+                    window.location.href="login.html"
+                }else{
+                let uid = user.data._id;
                 let q = prompt("Please enter the quantity:", 1);
                 if (q === "" || q<=0 || isNaN(q)) {
                     alert("Illegal input!")
@@ -454,18 +460,18 @@ function onRowClicked(row) {
                     alert("Item is Added to Cart!")
                     let flag = false;
                     for (let i = 0; i < cart.length; i++) {
-                        if (cart[i].id === phoneID) {
+                        if (cart[i].id === phoneID&&cart[i].userId===uid) {
                             cart[i].quantity += parseInt(q);
                             flag = true;
                         }
                     }
                     if (flag === false) {
-                        cart.push({id: phoneID, quantity: parseInt(q)});
+                        cart.push({id: phoneID, quantity: parseInt(q),userId:uid});
                     }
                     sessionStorage.setItem("cart", JSON.stringify(cart));
                     let quan1;
                     for (let i = 0; i < cart.length; i++) {
-                        if (cart[i].id === phoneID) {
+                        if (cart[i].id === phoneID&&cart[i].userId===uid) {
                             quan1 = cart[i].quantity;
                         }
                     }
@@ -473,7 +479,7 @@ function onRowClicked(row) {
                     console.log(cart,"12121212122")
                     updateCartQty()
                 }
-
+            }
             })
         })
         .catch(function (error) {
@@ -578,18 +584,23 @@ function getCartTotalQty() {
     if (cart1!=null){
         cart=cart1
     }
+    if(user.data._id!==undefined){
     for (let i = 0; i < cart.length; i++) {
+        if(cart[i].userId==user.data._id){
         let qty = Number(cart[i].quantity);
         totalQty += qty;
-    }
+        }
+    }}
     return totalQty;
 }
 
 function checkout() {
     if(user.data._id===undefined){
         window.location.href="login.html"
+        
     }else{
-        window.location.href="checkout.html"
+        console.log(user.data._id,"Userid!!!!!!")
+        window.location.href="checkout.html?id="+user.data._id;
     }
 }
 

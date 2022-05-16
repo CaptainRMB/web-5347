@@ -1,11 +1,20 @@
 cart=[];
 phoneBill=[];
+var uid=''
 window.onload=function(){
     cart= JSON.parse(sessionStorage.getItem('cart'))
     console.log(cart)
+    console.log(location.href,"user.data._id")
+    var loc=location.href
+    	var n1 = loc.length;//地址的总长
+	var n2 = loc.indexOf("?");//取得=号的位置
+	var parameter = decodeURI(loc.substr(n2+1, n1-n2));//截取从?号后面的内容,也就是参数列表
+    console.log(parameter,"PPPPPP")
+    uid=parameter.slice(3)
     if(cart!==null&&cart!==[]){
         var promise = new Promise(function(){
             cart.forEach(item => {
+                if(item.userId==uid){
                 let phoneID = item.id;
                 let url = new URL(window.location.origin + "/getPhoneByID")
                 url.searchParams.append("id", phoneID)
@@ -13,11 +22,12 @@ window.onload=function(){
                 ).then(function (doc) {
                     console.log(doc.data)
                     console.log(doc.data.title);
-                    phoneBill.push({['title']:doc.data.title,['price']:doc.data.price,['quantity']:item.quantity,['stock']:doc.data.stock,['id']:item.id})
+                    phoneBill.push({['title']:doc.data.title,['price']:doc.data.price,['quantity']:item.quantity,['stock']:doc.data.stock,['id']:item.id,['userId']:uid})
                     console.log(phoneBill,"phoneBill")
                 }).finally(function(){
                     loadBill(phoneBill);
                 })
+            }
             })
         })
     };
@@ -34,7 +44,9 @@ function calculate(){
         if(cart!==null&&cart!==[]){
             let pCart=[]
             cart.forEach(item => {
+                if(item.userId==uid){
                 pCart.push({['pId']:item.id,['pQuantity']:item.quantity})
+                }
             });
             console.log(pCart,"pCart!!!!!!!")
             axios.post(window.location.origin + '/checkOutChangeStock', {
@@ -44,7 +56,15 @@ function calculate(){
                     console.log(response.data);
                     if (response.data.isSuccess === true) {
                         alert("Check Out Successfully!")
-                        sessionStorage.removeItem("cart");
+                        // sessionStorage.removeItem("cart");
+                        var k=0;
+                        cart.forEach(item => {
+                            if(item.userId==uid){
+                                cart.splice(k,1)
+                            }
+                            k++;
+                        });
+                        sessionStorage.setItem("cart",JSON.stringify(cart));
                         console.log("this item success!!!")
                         document.getElementsByTagName('tbody')[0].innerHTML = '';
                         document.getElementById("total_price").innerHTML='';
@@ -82,7 +102,7 @@ function loadBill(phoneBill){
             row +='<tr>';
             row +='<td colspan="4">'+item.title+'</td>';
             row +='<td colspan="1">'+item.price+'</td>';
-            row +='<td colspan="1">'+'<input type="number" value='+item.quantity+' onchange="changeMoney(this.value,'+rowNum+','+item.price+')">'+'</td>';
+            row +='<td colspan="1">'+'<input type="number" value='+item.quantity+' onchange="changeMoney(this.value,'+rowNum+',&quot;'+item.price+'&quot;,&quot;'+item.id+'&quot;)">'+'</td>';
             money=item.price*item.quantity;
             totalMoney=money+totalMoney
             row +='<td colspan="1">'+money+'</td>'
@@ -108,7 +128,7 @@ function removeItem(id){
         cart= JSON.parse(sessionStorage.getItem('cart'))
         i=0
         cart.forEach(item => {
-            if(item.id==id){
+            if(item.id==id&&item.userId==uid){
                 cart.splice(i,1);
             }
             i++;
@@ -127,7 +147,7 @@ function removeItem(id){
     }
 }
 
-function changeMoney(quantity,rowNumber,price){
+function changeMoney(quantity,rowNumber,price,pid){
     var oldQuantity=phoneBill[rowNumber].quantity
     console.log(quantity,rowNumber,price)
     if(quantity>phoneBill[rowNumber].stock){
@@ -147,7 +167,11 @@ function changeMoney(quantity,rowNumber,price){
             document.getElementById("total_price").innerHTML = "Total Price: " + totalMoney.toFixed(2) + " $";
         }
         cart= JSON.parse(sessionStorage.getItem('cart'))
-        cart[rowNumber].quantity=parseInt(quantity)
+        cart.forEach(item => {
+            if(item.id==pid&&item.userId==uid){
+                item.quantity=parseInt(quantity)
+            }
+        });
         sessionStorage.setItem("cart",JSON.stringify(cart));
     }
     console.log(phoneBill,"phoneBillChange")
