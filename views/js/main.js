@@ -105,7 +105,7 @@ function onLoad() {
     let slider_value = document.getElementById("range_slider_value");
     slider.setAttribute("max", maxPrice);
     slider_value.innerHTML = 'Max Price:' + maxPrice;
-    ; // Display the default slider value
+     // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function () {

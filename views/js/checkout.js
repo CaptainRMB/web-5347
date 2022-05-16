@@ -9,7 +9,7 @@ window.onload=function(){
     	var n1 = loc.length;//地址的总长
 	var n2 = loc.indexOf("?");//取得=号的位置
 	var parameter = decodeURI(loc.substr(n2+1, n1-n2));//截取从?号后面的内容,也就是参数列表
-    console.log(parameter,"PPPPPP")
+    console.log(parameter,"Para")
     uid=parameter.slice(3)
     if(cart!==null&&cart!==[]){
         var promise = new Promise(function(){
@@ -33,10 +33,12 @@ window.onload=function(){
     };
 }
 
+// press go back home button
 function gobackhome(){
     window.location.href="main";
 }
 
+// press check out button
 function calculate(){
     var cal=confirm("Are you sure you want to check out?")
     if (cal==true){
@@ -83,22 +85,24 @@ function calculate(){
     }
 }
 
+// update total price
 function updateAllPrice(totalMoney) {
-    console.log(totalMoney,"11111")
+    console.log(totalMoney,"totalmoney")
     document.getElementById("total_price").innerHTML = "Total Price: " + totalMoney.toFixed(2) + " $";
 
 }
 
+// load all bills
 function loadBill(phoneBill){
     cart= JSON.parse(sessionStorage.getItem('cart'))
     row=''
     money=0;
     totalMoney=0;
     if(cart!==null){
-        console.log(phoneBill,"asdfasdf");
+        console.log(phoneBill,"phonebill");
         let rowNum=0;
         phoneBill.forEach(item => {
-            console.log(phoneBill,"asdfasdfasdfsadfasdfsdfasdfasdfasdfasdfasdfd")
+            console.log(phoneBill,"phonebill")
             row +='<tr>';
             row +='<td colspan="4">'+item.title+'</td>';
             row +='<td colspan="1">'+item.price+'</td>';
@@ -117,12 +121,13 @@ function loadBill(phoneBill){
         document.getElementsByTagName('tbody')[0].innerHTML = '';
     }else{
         document.getElementsByTagName('tbody')[0].innerHTML = row;
-        console.log(row,"row...")
+        // console.log(row,"row...")
     }
 }
 
+// delete one item
 function removeItem(id){
-    console.log("ssssssssssssssss")
+    
     var r=confirm("Are you sure you want to delete this item?")
     if(r==true){
         cart= JSON.parse(sessionStorage.getItem('cart'))
@@ -133,7 +138,7 @@ function removeItem(id){
             }
             i++;
         });
-        console.log(cart,"111111111111111111111111111")
+        // console.log(cart,"111111111111111111111111111")
         // sessionStorage.removeItem("cart");
         sessionStorage.setItem("cart",JSON.stringify(cart));
         i=0;
@@ -147,14 +152,26 @@ function removeItem(id){
     }
 }
 
+// change quantity so the money and total price also change
 function changeMoney(quantity,rowNumber,price,pid){
     var oldQuantity=phoneBill[rowNumber].quantity
     console.log(quantity,rowNumber,price)
     if(quantity>phoneBill[rowNumber].stock){
         alert("More than stock number");
-    }else if(quantity<0){
+        var t=document.getElementsByTagName('input')[rowNumber]
+        console.log(t.value,'t.value!!!!!')
+        t.value=phoneBill[rowNumber].stock
+        quantity=phoneBill[rowNumber].stock
+
+
+    }else if(quantity<=0){
         alert("Illegal Input!");
-    }else{
+        var t=document.getElementsByTagName('input')[rowNumber]
+        console.log(t.value,'t.value!!!!!')
+        t.value=1
+        quantity=1
+
+    }
         phoneBill[rowNumber].quantity=quantity;
         document.getElementsByTagName('td')[rowNumber*5+3].innerHTML = quantity*price;
         var oldTotalPrice=document.getElementById("total_price").innerHTML.slice(13,-2)
@@ -173,7 +190,7 @@ function changeMoney(quantity,rowNumber,price,pid){
             }
         });
         sessionStorage.setItem("cart",JSON.stringify(cart));
-    }
+    
     console.log(phoneBill,"phoneBillChange")
 
 }
