@@ -36,7 +36,7 @@ app.use(_session({
     secret: "1234",
     resave: true,
     rolling: true,
-    cookie: {maxAge: 30 * 60 * 1000},
+    cookie: {maxAge: 24 * 60 * 60 * 1000},
     saveUninitialized: true,
 }))
 //parsing middleware
