@@ -124,7 +124,7 @@ module.exports = {
         }
         res.status(200).send({isSuccess:true})
 
-    }
+    },
 
 
   async changePhoneList(req, res) {
