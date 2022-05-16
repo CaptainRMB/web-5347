@@ -2,7 +2,8 @@ cart=[];
 phoneBill=[];
 window.onload=function(){
     cart= JSON.parse(sessionStorage.getItem('cart'))
-    if(cart!=null||cart!=[]){
+    console.log(cart)
+    if(cart!==null&&cart!==[]){
         var promise = new Promise(function(){
             cart.forEach(item => {
                 let phoneID = item.id;
@@ -30,7 +31,7 @@ function calculate(){
     var cal=confirm("Are you sure you want to check out?")
     if (cal==true){
         cart= JSON.parse(sessionStorage.getItem('cart'))
-        if(cart!=null||cart!=[]){
+        if(cart!==null&&cart!==[]){
             let pCart=[]
             cart.forEach(item => {
                 pCart.push({['pId']:item.id,['pQuantity']:item.quantity})
@@ -42,16 +43,20 @@ function calculate(){
                 .then(function (response) {
                     console.log(response.data);
                     if (response.data.isSuccess === true) {
-                        // alert("Check Out Successfully!")
+                        alert("Check Out Successfully!")
+                        sessionStorage.removeItem("cart");
                         console.log("this item success!!!")
+                        document.getElementsByTagName('tbody')[0].innerHTML = '';
+                        document.getElementById("total_price").innerHTML='';
+
                     }
                     else {
-                        //  alert("Check Out Failed!")
+                        alert("Check Out Failed!")
                         console.log("this item fail!!!")
                     }
                 })
                 .catch(function (error) {
-                    //alert("Check Out Failed!")
+                    alert("Check Out Failed!")
                     console.log(error);
                 });
         }
@@ -69,7 +74,7 @@ function loadBill(phoneBill){
     row=''
     money=0;
     totalMoney=0;
-    if(cart!=null){
+    if(cart!==null){
         console.log(phoneBill,"asdfasdf");
         let rowNum=0;
         phoneBill.forEach(item => {

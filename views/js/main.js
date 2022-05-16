@@ -443,24 +443,37 @@ function onRowClicked(row) {
 
             $("#btn_add_to_cart").unbind().click(function () {
                 let q = prompt("Please enter the quantity:", 1);
-                if (q === null || q === "") {
-                    alert("Input Error!")
+                if (q === "" || q<=0 || isNaN(q)) {
+                    alert("Illegal input!")
+                }else if (q > doc.data.stock){
+                    alert("More than stock number!")
+                }else if(q===null){
+                    alert("Illegal input!")
                 }
                 else {
                     alert("Item is Added to Cart!")
-                }
-                let flag = false;
-                for (let i = 0; i < cart.length; i++) {
-                    if (cart[i].id === phoneID) {
-                        cart[i].quantity += parseInt(q);
-                        flag = true;
+                    let flag = false;
+                    for (let i = 0; i < cart.length; i++) {
+                        if (cart[i].id === phoneID) {
+                            cart[i].quantity += parseInt(q);
+                            flag = true;
+                        }
                     }
-                }
-                if (flag === false) {
-                    cart.push({id: phoneID, quantity: parseInt(q)});
+                    if (flag === false) {
+                        cart.push({id: phoneID, quantity: parseInt(q)});
+                    }
+                    sessionStorage.setItem("cart", JSON.stringify(cart));
+                    let quan1;
+                    for (let i = 0; i < cart.length; i++) {
+                        if (cart[i].id === phoneID) {
+                            quan1 = cart[i].quantity;
+                        }
+                    }
+                    $("#table_productInfo_quantity").html(quan1);
+                    console.log(cart,"12121212122")
+                    updateCartQty()
                 }
 
-                console.log(cart);
             })
         })
         .catch(function (error) {
@@ -553,6 +566,7 @@ function getTop5RatedPhones() {
 
 function updateCartQty() {
     let qty = getCartTotalQty();
+    console.log(qty,"11111")
     document.getElementById("cart_qty").innerHTML = "(" + qty.toString() + ")";
 
 }
@@ -560,22 +574,22 @@ function updateCartQty() {
 
 function getCartTotalQty() {
     var totalQty = 0;
+    var cart1= JSON.parse(sessionStorage.getItem('cart'))
+    if (cart1!=null){
+        cart=cart1
+    }
     for (let i = 0; i < cart.length; i++) {
-        let qty = Number(cart[i].qty);
+        let qty = Number(cart[i].quantity);
         totalQty += qty;
     }
     return totalQty;
 }
 
 function checkout() {
-    let dialog;
-    dialog = confirm("Are you sure to reset the cart?");
-    if (dialog === true) {
-        cart = [];
-        updateCartQty()
-    }
-    else {
-
+    if(user.data._id===undefined){
+        window.location.href="login.html"
+    }else{
+        window.location.href="checkout.html"
     }
 }
 

@@ -104,5 +104,26 @@ module.exports = {
         }
     },
 
+    async checkOutChangeStock(req,res){
+        console.log(req.body,"req.body!!!!!!!")
+        let pCart=req.body.pCart;
+
+        let pMap=new Map();
+        pCart.forEach(item => {
+            pMap.set(item.pId,item.pQuantity)
+        });
+
+        // let doc= await _phonesQuery.checkOutChangeStock(pCart);
+
+        for (const [k, v] of pMap.entries()) {
+            console.log(k, v);
+            let doc = await _phonesQuery.checkOutChangeStock(k, v);
+            console.log(doc)
+
+        }
+        res.status(200).send({isSuccess:true})
+
+    }
+
 
 }
