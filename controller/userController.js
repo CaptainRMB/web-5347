@@ -12,6 +12,7 @@ const { isPromise } = require("util/types");
 const { isPwdValidated } = require("../utils/validator");
 const Phonelisting = require("../dao/phonelisting");
 const Userinfo = require("../dao/userinfo");
+const { map } = require("jquery");
 var mp=new Map();
 module.exports = {
 
@@ -71,7 +72,7 @@ module.exports = {
 
     async userMail(req, res) {
         res.render('wait.html');
-        //let Code = Math.random().toString().substr(2, 4);
+        let Code = Math.random().toString().substr(2, 4);
         var {firstName, lastName, email, password} = req.body;
         function users(Email,Password,Firstname,Lastname){
     
@@ -80,10 +81,7 @@ module.exports = {
         this.Firstname=Firstname;
         this.Lastname=Lastname;
         }
-        
-        // var mp=new Map();
         mp.set('id', new users(email,password,firstName,lastName))
-    
         // console.log(mp);
         var permission= isPwdValidated(mp.get('id').Password);
         var mail = isEmail(mp.get('id').Email);
@@ -105,8 +103,6 @@ module.exports = {
                   html           : '<a href="http://localhost:8080/checkMail.html">sign up successfully</a>',
            
                  };      
-              
-              
               mailTransport.sendMail(options, function(err, msg){
                   if(err){
                       console.log(err);
