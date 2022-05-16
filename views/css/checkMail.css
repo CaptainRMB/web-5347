@@ -1,0 +1,20 @@
+body {
+    width: 500px;
+    height: 500px;
+    background-color: rgb(26, 125, 182);
+    margin: 50px auto;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+} 
+
+h1{
+
+		color: pink;
+
+
+
+}
