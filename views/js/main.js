@@ -105,7 +105,7 @@ function onLoad() {
     let slider_value = document.getElementById("range_slider_value");
     slider.setAttribute("max", maxPrice);
     slider_value.innerHTML = 'Max Price:' + maxPrice;
-    ; // Display the default slider value
+     // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function () {
@@ -421,26 +421,44 @@ function onRowClicked(row) {
                 let uid = user.data._id;
                 let rating = $("#post_review_rating").val();
                 let comment = $("#post_review_comment").val();
-                console.log(pid, uid, rating, comment);
-                axios.post(window.location.origin + `/postReview`, {
-                    'pid': pid,
-                    'post_uid': uid,
-                    'post_rating': rating,
-                    'post_comment': comment
-                })
-                    .then(function (response) {
-                        console.log(response.data);
-                        if (response.data.isSuccess === true) {
-                            alert("Review Posting Successfully!")
-                        }
-                        else {
-                            alert("Review Posting Failed!")
-                        }
+                console.log("POSTING REVIEW: ",pid, uid, rating, comment);
+                if(uid === undefined){
+                    alert("Please login first!")
+                    window.location.href="login.html"
+                }
+                else if(isNaN(parseInt(rating))|| parseInt(rating)>5 ||  parseInt(rating)<1){
+                    console.log(typeof rating, rating)
+                    console.log(parseInt(rating))
+                    alert("Illegal rating!")
+                }
+                else if(comment.length === 0){
+                    alert("Please input Comment!")
+                }
+
+                else {
+                    rating = parseInt(rating);
+                    axios.post(window.location.origin + `/postReview`, {
+                        'pid': pid,
+                        'post_uid': uid,
+                        'post_rating': rating,
+                        'post_comment': comment
                     })
-                    .catch(function (error) {
-                        alert("Review Posting Failed!")
-                        console.log(error);
-                    });
+                        .then(function (response) {
+                            console.log(response.data);
+                            if (response.data.isSuccess === true) {
+                                alert("Review Posting Successfully!")
+                                location.reload();
+                            }
+                            else {
+                                alert("Review Posting Failed!")
+                            }
+                        })
+                        .catch(function (error) {
+                            alert("Review Posting Failed!")
+                            console.log(error);
+                        });
+                }
+
             })
 
             $("#btn_add_to_cart").unbind().click(function () {

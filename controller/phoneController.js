@@ -104,6 +104,7 @@ module.exports = {
         }
     },
 
+
     async checkOutChangeStock(req,res){
         console.log(req.body,"req.body!!!!!!!")
         let pCart=req.body.pCart;
@@ -123,7 +124,53 @@ module.exports = {
         }
         res.status(200).send({isSuccess:true})
 
-    }
+    },
 
 
+  async changePhoneList(req, res) {
+        let sellerId = req.body.id;
+        console.log("sellerId in changePhoneList: " + sellerId);
+        /*The phone list need to be processed*/
+        let phoneList = req.body.phoneList;
+        console.log("phoneList in changePhoneList: " + phoneList);
+
+        /*The required operation on sent phone list*/
+        /*Possible data are "remove", "add", "disable", "enable"*/
+        let listOperation = req.body.listOperation;
+
+        //Extract the used information from sent phone list
+        if(listOperation != "add") {
+            phoneId = phoneList['_id'];
+        }
+        phoneTitle = phoneList['title'];
+        phoneBrand = phoneList['brand'];
+        phoneImage = phoneList['image'];
+        phoneStock = phoneList['stock'];
+        phonePrice = phoneList['price'];
+
+        /*Set sellername to new added list*/
+        sellerName = `${req.query.firstname} ${req.query.lastname}`
+
+        addedList = '';
+
+        //Do the operation to the list in database
+
+        switch (listOperation) {
+            case "remove" :
+                console.log("phoneId in changePhoneList: " + phoneId);
+                await _phonesQuery.removePhone(phoneId);
+                break;
+            case "add" :
+                addedList = await _phonesQuery.postPhone(phoneTitle, phoneBrand, phoneImage, phoneStock, sellerId, phonePrice, sellerName);
+                break;
+            case "disable" :
+                await _phonesQuery.updateDisablePhone(phoneId);
+                break;
+            case "enable" :
+                await _phonesQuery.updateEnablePhone(phoneId);
+                break;
+        }
+
+        res.json(addedList);
+    },
 }

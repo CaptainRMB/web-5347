@@ -3,7 +3,6 @@ const _bodyParser = require('body-parser');
 const _userController = require("../controller/userController")
 const _phoneController = require("../controller/phoneController")
 const _pageController = require("../controller/pageController")
-const _userPageController = require("../controller/profileController")
 
 const jsonParser = _bodyParser.json();
 const urlencodedParser = _bodyParser.urlencoded({extended: false})
@@ -145,7 +144,7 @@ router.get("/getPhonesByBrand",_phoneController.getPhoneByBrand);
 router.get("/getAllBrands",_phoneController.getAllBrands);
 
 /**
- * @route GET /getReviewByTitle
+ * @route GET /getReviewByID
  * @group phone - Operations about phone
  * @param {string} id.query.required - phone id
  * @returns {boolean} 200 - Array of Review objects in json
@@ -184,8 +183,9 @@ router.get('/userinfo', _userController.sendSessionInfo);
 router.post('/changeProfile', _userController.changeProfile);
 router.post('/changePassword', _userController.changePassword);
 router.get('/userListing', _userController.getListing);
-router.post('/changePhoneList', _userController.changePhoneList)
+
 router.post('/signOut', _userController.signOut)
+router.get('/getAllBrands', _phoneController.getAllBrands)
 
 router.post("/checkOutChangeStock",_phoneController.checkOutChangeStock);
 

@@ -2,8 +2,6 @@
 <html>
 <head lang="en">
 
-
-
     <meta charset="utf-8">
     <title>COMP5347 Assignment 2</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
@@ -23,6 +21,7 @@
         <h4 style="cursor:pointer" @click="showProfile">Edit profile</h4>
         <h4 style="cursor:pointer" @click="showPassword">Change password</h4>
         <h4 style="cursor:pointer" @click="showList">Manage listings</h4>
+        <h4 style="cursor:pointer" @click="showComments">View Comments</h4>
 
         <div class="box_Right">
             <!-- -->
@@ -46,11 +45,11 @@
                         <input v-model="firstname" type="text"/>
                     </p>
                     <p>Last name:
-                        <input v-model="lastname" type="text" />
+                        <input v-model="lastname" type="text"/>
                     </p>
 
                     <p>Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input v-model="email" type="text" />
+                        <input v-model="email" type="text"/>
                     </p>
 
                     <div v-if="updateClicked">
@@ -59,7 +58,7 @@
                         </p>
                     </div>
 
-                    <input class="button button3" type="button" value="Update profile"  @click="updateProfile"/>
+                    <input class="button button3" type="button" value="Update profile" @click="updateProfile"/>
 
                     <br>
                 </form>
@@ -85,6 +84,7 @@
             </section>
         </div>
 
+        　　　<!--        Manage listings-->
         <div v-if="tabList">
             <section class="tab">
                 <p v-if="!userListing">You haven't create your listing yet</p>
@@ -106,7 +106,7 @@
                         <td v-if="list.disabled==''"><input type="checkbox" @change="check($event, index)"/></td>
                         <td v-else><input type="checkbox" @change="check($event, index)" checked="checked"/></td>
 
-                        <td><img style="width: 96px; height: 128px; position: center" v-bind:src=`/img/${list.brand}.jpeg`></td>
+                        <td><img style="width: 72px; height: 96px;" v-bind:src=`/img/${list.brand}.jpeg`></td>
                         <td>{{ list.title }}</td>
                         <td>{{ list.price }}</td>
                         <td>{{ list.brand }}</td>
@@ -117,23 +117,34 @@
                 </table>
 
                 <br>
-                <input class="button button3" type="button" value="Add new listing" v-if="!addClicked" @click="addListing"/>
+                <input class="button button3" type="button" value="Add new listing" v-if="!addClicked"
+                       @click="addListing"/>
                 <div v-else>
                     <p>Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="text" v-model="addTitle"/>
                     </p>
                     <p>Brand:&nbsp;&nbsp;&nbsp;&nbsp;
-                        <select name="Brand" v-model="addBrand">
-                            <option>Apple</option>
-                            <option>BlackBerry</option>
-                            <option>HTC</option>
-                            <option>Huawei</option>
-                            <option>LG</option>
-                            <option>Motorola</option>
-                            <option>Nokia</option>
-                            <option>Samsung</option>
-                            <option>Sony</option>
+
+                        <select :id="id">
+                            <option
+                                    v-for="item in brandList"
+                                    :key="item"
+                                    :label="item"
+                                    :value="item">
+                                />
                         </select>
+
+<!--                        <select name="Brand" v-model="addBrand">-->
+<!--                            <option>Apple</option>-->
+<!--                            <option>BlackBerry</option>-->
+<!--                            <option>HTC</option>-->
+<!--                            <option>Huawei</option>-->
+<!--                            <option>LG</option>-->
+<!--                            <option>Motorola</option>-->
+<!--                            <option>Nokia</option>-->
+<!--                            <option>Samsung</option>-->
+<!--                            <option>Sony</option>-->
+<!--                        </select>-->
                     </p>
                     <p>Quantity:
                         <input type="text" v-model="addQuantity"/>
@@ -149,9 +160,44 @@
             </section>
         </div>
 
+        　　　<!--        view comments-->
+        <div v-if="tabComments">
+            <section class="tab">
+                <p v-if="!userListing">You haven't create your listing yet</p>
+
+                <table v-else style="white-space: pre-line;" id='list_table'>
+                    <thead>
+                    <tr>
+
+                        <th style="width: 10%">Image</th>
+                        <th style="width: 20%">Title</th>
+
+                        <th style="width: 6%">Brand</th>
+                        <th style="width: 64%">Comments</th>
+
+                    </tr>
+
+                    <tr v-for="(list, index) in userListing">
+
+                        <td><img style="width: 72px; height: 96px;" v-bind:src=`/img/${list.brand}.jpeg`></td>
+                        <td>{{ list.title }}</td>
+                        <td>{{ list.brand }}</td>
+                        <td>
+                            {{ reviewMap.get(list._id) }}
+                        </td>
+                    </tr>
+                    </thead>
+                </table>
+
+
+                <br>
+            </section>
+        </div>
+
+
     </div>
 </div>
-<link rel="stylesheet" href="../css/checkout.css"/>
+<!--<link rel="stylesheet" href="../css/checkout.css"/>-->
 
 </body>
 </html>

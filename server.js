@@ -1,7 +1,7 @@
 const _ejs=require("ejs");
+const crypto = require('crypto')
 const _http = require('http'), qs = require('querystring');
 const _url = require('url');
-const _util = require('util')
 const _path = require("path");
 const _event = require('events');
 const _logger = require('morgan')
@@ -19,6 +19,7 @@ const _mongo = require("./dao/mongo")
 let _cookieParser = require('cookie-parser');
 const _socket = require('socket.io')
 const _ws = require('./websocketServer')
+// const crypto = require("crypto");
 const app = _express();
 // const ws = require('express-ws')(app);
 
@@ -35,7 +36,7 @@ app.use(_session({
     secret: "1234",
     resave: true,
     rolling: true,
-    cookie: {maxAge: 30 * 60 * 1000},
+    cookie: {maxAge: 24 * 60 * 60 * 1000},
     saveUninitialized: true,
 }))
 //parsing middleware
@@ -58,6 +59,7 @@ app.use(function (req,res){
     res.redirect("/404.html")
 })
 
+// console.log(_crypto.createHash('md5').update("123321").digest('hex').toString())
 
 app.listen(_config.port, ()=>{
     console.log('Express Server running at http://localhost:' + _config.port + '/');

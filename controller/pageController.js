@@ -3,6 +3,7 @@ const _fs = require('fs');
 const _phonesQuery = require("../dao/phonesQuery");
 const _usersQuery = require("../dao/usersQuery")
 const _url = require('url');
+const _util = require("../utils/hashing");
 
 module.exports = {
     // sendHTML(req, res) {
