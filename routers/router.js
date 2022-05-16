@@ -3,7 +3,6 @@ const _bodyParser = require('body-parser');
 const _userController = require("../controller/userController")
 const _phoneController = require("../controller/phoneController")
 const _pageController = require("../controller/pageController")
-const _userPageController = require("../controller/profileController")
 
 const jsonParser = _bodyParser.json();
 const urlencodedParser = _bodyParser.urlencoded({extended: false})

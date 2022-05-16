@@ -10,8 +10,6 @@ const _phonesQuery = require("../dao/phonesQuery")
 const {isEmail}= require('../utils/validator');
 const { isPromise } = require("util/types");
 const { isPwdValidated } = require("../utils/validator");
-const Phonelisting = require("../dao/phonelisting");
-const Userinfo = require("../dao/userinfo");
 
 module.exports = {
 
