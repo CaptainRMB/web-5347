@@ -52,8 +52,8 @@ router.post("/login", _userController.userLoginIsSuccess);
  * @returns {boolean} 200 - true
  * @returns {Error}  403 - Server Rejected
  */
-router.post("/signup.do",_userController.userSignUp);
-
+ router.post("/signup.do",_userController.userMail);
+ router.get("/checkMail.html",_userController.userSignUp);
 /**
  * @route GET /getAllUsers
  * @group user - Operations about user

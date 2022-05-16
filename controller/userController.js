@@ -12,7 +12,7 @@ const { isPromise } = require("util/types");
 const { isPwdValidated } = require("../utils/validator");
 const Phonelisting = require("../dao/phonelisting");
 const Userinfo = require("../dao/userinfo");
-
+var mp=new Map();
 module.exports = {
 
     async userLogin(req, res) {
@@ -69,13 +69,65 @@ module.exports = {
         }
     },
 
+    async userMail(req, res) {
+        res.render('wait.html');
+        //let Code = Math.random().toString().substr(2, 4);
+        var {firstName, lastName, email, password} = req.body;
+        function users(Email,Password,Firstname,Lastname){
+    
+            this.Email=Email;
+        this.Password=Password;
+        this.Firstname=Firstname;
+        this.Lastname=Lastname;
+        }
+        
+        // var mp=new Map();
+        mp.set('id', new users(email,password,firstName,lastName))
+    
+        // console.log(mp);
+        var permission= isPwdValidated(mp.get('id').Password);
+        var mail = isEmail(mp.get('id').Email);
+    if(permission===true&&mail===true){
+        const mailTransport = nodemailer.createTransport({
+                    host : 'smtp.163.com',
+                    port: 465, // SMTP 端口
+                    secureConnection: true, // 使用SSL方式（安全方式，防止被窃取信息）
+                    auth : {
+                        user : 'zbj2305@163.com',
+                        pass : 'SBCPIUYZMOCRJCDO'
+                    },
+                });    
+              var options = {
+                  from        : '"Phone market" zbj2305@163.com',
+                  to          : email,
+                  subject        : 'A email from Node Mailer',
+                  text          : 'A email from Node Mailer, this is your code' ,
+                  html           : '<a href="http://localhost:8080/checkMail.html">sign up successfully</a>',
+           
+                 };      
+              
+              
+              mailTransport.sendMail(options, function(err, msg){
+                  if(err){
+                      console.log(err);
+                      //res.render('index', { title: err });
+                  }
+                  else {
+                      console.log(msg);
+                      //res.render('index', { title: "已接收："+msg.accepted});
+                  }
+              });
+            }
+        else
+        res.send("Sign Up failed: " + "THE PASSWORD OR EMAIL_IS_INVALID");
+        },
 
     async userSignUp(req, res) {
-        let {firstName, lastName, email, password} = req.body
-        
-        var permission=isPwdValidated(password);
-        var mail = isEmail(email);
-        password = _util.md5(password);
+        let Code = Math.random().toString().substr(2, 4);
+        console.log(mp);
+       var permission= isPwdValidated(mp.get('id').Password);
+       var mail = isEmail(mp.get('id').Email);
+       password = _util.md5(mp.get('id').Password);
         if (permission===true&&mail===true) {
         if (await _usersQuery.signUp(email, password, firstName, lastName) === true) {
             res.send("Sign Up Successfully!")}
@@ -89,45 +141,39 @@ module.exports = {
             res.send("Sign Up failed: " + "THE PASSWORD OR EMAIL_IS_INVALID");
             else
             res.send("Sign Up failed: " + await _usersQuery.signUp(email, password, firstName, lastName).name + await _usersQuery.signUp(email, password, firstName, lastName).message);
-            // if (result.code === 11000) {
-            //     res.send("Sign Up failed: " + result.name + result.message)
-            // }
-            // else {//TODO case if no error code is returned
-            //     res.send("Sign Up failed: " + result.name + result.message)
-            // }
         }
 
-        const mailTransport = nodemailer.createTransport({
-            host : 'smtp.163.com',
-            port: 465, // SMTP 
-            secureConnection: true, // SSL
-            auth : {
-                user : 'zbj2305@163.com',
-                pass : 'SBCPIUYZMOCRJCDO'
-            },
-        });
+        // const mailTransport = nodemailer.createTransport({
+        //     host : 'smtp.163.com',
+        //     port: 465, // SMTP 
+        //     secureConnection: true, // SSL
+        //     auth : {
+        //         user : 'zbj2305@163.com',
+        //         pass : 'SBCPIUYZMOCRJCDO'
+        //     },
+        // });
 
 
 
-        var options = {
-            from        : '"Phone market" zbj2305@163.com',
-            to          : email,
-            subject        : 'A email from Node Mailer',
-            text          : 'A email from Node Mailer',
-            html           : '<h1>Hey，this email is from Node Mailer！</h1>',
-        };
+        // var options = {
+        //     from        : '"Phone market" zbj2305@163.com',
+        //     to          : email,
+        //     subject        : 'A email from Node Mailer',
+        //     text          : 'A email from Node Mailer',
+        //     html           : '<h1>Hey，this email is from Node Mailer！</h1>',
+        // };
 
 
-        mailTransport.sendMail(options, function(err, msg){
-            if(err){
-                console.log(err);
-                //res.render('index', { title: err });
-            }
-            else {
-                console.log(msg);
-                //res.render('index', { title: "received："+msg.accepted});
-            }
-        });
+        // mailTransport.sendMail(options, function(err, msg){
+        //     if(err){
+        //         console.log(err);
+        //         //res.render('index', { title: err });
+        //     }
+        //     else {
+        //         console.log(msg);
+        //         //res.render('index', { title: "received："+msg.accepted});
+        //     }
+        // });
     },
 
     async signOut(req, res) {
