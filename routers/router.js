@@ -3,7 +3,6 @@ const _bodyParser = require('body-parser');
 const _userController = require("../controller/userController")
 const _phoneController = require("../controller/phoneController")
 const _pageController = require("../controller/pageController")
-const _userPageController = require("../controller/profileController")
 
 const jsonParser = _bodyParser.json();
 const urlencodedParser = _bodyParser.urlencoded({extended: false})
@@ -52,8 +51,8 @@ router.post("/login", _userController.userLoginIsSuccess);
  * @returns {boolean} 200 - true
  * @returns {Error}  403 - Server Rejected
  */
-router.post("/signup.do",_userController.userSignUp);
-
+ router.post("/signup.do",_userController.userMail);
+ router.get("/checkMail.html",_userController.userSignUp);
 /**
  * @route GET /getAllUsers
  * @group user - Operations about user
@@ -187,5 +186,7 @@ router.get('/userListing', _userController.getListing);
 router.post('/changePhoneList', _phoneController.changePhoneList)
 router.post('/signOut', _userController.signOut)
 router.get('/getAllBrands', _phoneController.getAllBrands)
+
+router.post("/checkOutChangeStock",_phoneController.checkOutChangeStock);
 
 module.exports = router;

@@ -105,7 +105,7 @@ function onLoad() {
     let slider_value = document.getElementById("range_slider_value");
     slider.setAttribute("max", maxPrice);
     slider_value.innerHTML = 'Max Price:' + maxPrice;
-    ; // Display the default slider value
+     // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function () {
@@ -294,7 +294,9 @@ function onRowClicked(row) {
             let quan = 0;
             console.log(cart);
             for (let i = 0; i < cart.length; i++) {
-                if (cart[i].id === phoneID) {
+                if(user.data._id==undefined){
+                    quan = 0;
+                }else if (cart[i].id === phoneID && cart[i].userId===user.data._id) {
                     quan = cart[i].quantity;
                 }
             }
@@ -442,25 +444,42 @@ function onRowClicked(row) {
             })
 
             $("#btn_add_to_cart").unbind().click(function () {
+                if(user.data._id==undefined){
+                    window.location.href="login.html"
+                }else{
+                let uid = user.data._id;
                 let q = prompt("Please enter the quantity:", 1);
-                if (q === null || q === "") {
-                    alert("Input Error!")
+                if (q === "" || q<=0 || isNaN(q)) {
+                    alert("Illegal input!")
+                }else if (q > doc.data.stock){
+                    alert("More than stock number!")
+                }else if(q===null){
+                    alert("Illegal input!")
                 }
                 else {
                     alert("Item is Added to Cart!")
-                }
-                let flag = false;
-                for (let i = 0; i < cart.length; i++) {
-                    if (cart[i].id === phoneID) {
-                        cart[i].quantity += parseInt(q);
-                        flag = true;
+                    let flag = false;
+                    for (let i = 0; i < cart.length; i++) {
+                        if (cart[i].id === phoneID&&cart[i].userId===uid) {
+                            cart[i].quantity += parseInt(q);
+                            flag = true;
+                        }
                     }
+                    if (flag === false) {
+                        cart.push({id: phoneID, quantity: parseInt(q),userId:uid});
+                    }
+                    sessionStorage.setItem("cart", JSON.stringify(cart));
+                    let quan1;
+                    for (let i = 0; i < cart.length; i++) {
+                        if (cart[i].id === phoneID&&cart[i].userId===uid) {
+                            quan1 = cart[i].quantity;
+                        }
+                    }
+                    $("#table_productInfo_quantity").html(quan1);
+                    console.log(cart,"12121212122")
+                    updateCartQty()
                 }
-                if (flag === false) {
-                    cart.push({id: phoneID, quantity: parseInt(q)});
-                }
-
-                console.log(cart);
+            }
             })
         })
         .catch(function (error) {
@@ -553,6 +572,7 @@ function getTop5RatedPhones() {
 
 function updateCartQty() {
     let qty = getCartTotalQty();
+    console.log(qty,"11111")
     document.getElementById("cart_qty").innerHTML = "(" + qty.toString() + ")";
 
 }
@@ -560,22 +580,27 @@ function updateCartQty() {
 
 function getCartTotalQty() {
     var totalQty = 0;
-    for (let i = 0; i < cart.length; i++) {
-        let qty = Number(cart[i].qty);
-        totalQty += qty;
+    var cart1= JSON.parse(sessionStorage.getItem('cart'))
+    if (cart1!=null){
+        cart=cart1
     }
+    if(user.data._id!==undefined){
+    for (let i = 0; i < cart.length; i++) {
+        if(cart[i].userId==user.data._id){
+        let qty = Number(cart[i].quantity);
+        totalQty += qty;
+        }
+    }}
     return totalQty;
 }
 
 function checkout() {
-    let dialog;
-    dialog = confirm("Are you sure to reset the cart?");
-    if (dialog === true) {
-        cart = [];
-        updateCartQty()
-    }
-    else {
-
+    if(user.data._id===undefined){
+        window.location.href="login.html"
+        
+    }else{
+        console.log(user.data._id,"Userid!!!!!!")
+        window.location.href="checkout.html?id="+user.data._id;
     }
 }
 

@@ -1,5 +1,5 @@
 const _webSocket = require("ws");
-const socket = new _webSocket.Server({port: 8000});
+const socket = new _webSocket.Server({port: 4568});
 var ws;
 socket.on('connection', function (_ws) {
     console.log('客户端已连接');

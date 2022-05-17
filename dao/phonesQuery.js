@@ -237,6 +237,7 @@ module.exports = {
         })
     },
 
+
     postPhone(title, brand, image, stock, seller, price, sellerName) {
         return new Promise((resolve, reject) => {
             phonesModel.create(
@@ -311,6 +312,19 @@ module.exports = {
                     {_id: pid},
                     {
                         $unset: {'disabled': ''}
+
+    checkOutChangeStock(id, quantity){
+        return new Promise((resolve, reject) => {
+            phonesModel
+                .update(
+                    {
+                        _id: id,
+                    },
+                    {
+                        $inc: {
+                            stock: 0 - quantity
+                        }
+
                     }
                 )
                 .then(doc => {
@@ -320,7 +334,11 @@ module.exports = {
                     reject(err)
                 })
         })
+
     },
+
+
+    }
 
 }
 
