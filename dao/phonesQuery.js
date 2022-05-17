@@ -312,6 +312,16 @@ module.exports = {
                     {_id: pid},
                     {
                         $unset: {'disabled': ''}
+                    }
+                )
+                .then(doc => {
+                    resolve(doc);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
 
     checkOutChangeStock(id, quantity){
         return new Promise((resolve, reject) => {
@@ -337,8 +347,6 @@ module.exports = {
 
     },
 
-
-    }
 
 }
 
