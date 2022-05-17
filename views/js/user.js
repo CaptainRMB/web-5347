@@ -44,6 +44,7 @@ const app = new Vue({
                     axios.post(window.location.origin + `/changeProfile`,
                         {
                             id: this.id, email: this.email, firstname: this.firstname, lastname: this.lastname,
+                            //Todo: md5
                             // password: md5(this.verifiedPassword),
                             password: this.verifiedPassword
                         })
@@ -77,6 +78,7 @@ const app = new Vue({
                 id: this.id,
                 currentPwd: this.currentPwd,
                 newPwd: this.newPwd
+                //Todo: md5
                 // currentPwd: md5(this.currentPwd),
                 // newPwd: md5(this.newPwd)
             })

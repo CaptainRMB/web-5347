@@ -15,8 +15,7 @@ module.exports = {
         let doc = await _phonesQuery.getPhoneByID(id);
         if (doc.length > 0) {
             res.status(200).send(doc[0])
-        }
-        else {
+        } else {
             res.status(403).send("ID not found")
         }
     },
@@ -26,8 +25,7 @@ module.exports = {
         let doc = await _phonesQuery.getPhoneBySeller(seller);
         if (doc.length > 0) {
             res.send(200, doc)
-        }
-        else {
+        } else {
             res.send(403, "Seller not found")
         }
     },
@@ -37,8 +35,7 @@ module.exports = {
         let doc = await _phonesQuery.getPhoneByBrand(brand);
         if (doc.length > 0) {
             res.send(200, doc)
-        }
-        else {
+        } else {
             res.send(403, "Brand not found")
         }
     },
@@ -54,8 +51,7 @@ module.exports = {
         let doc = await _phonesQuery.getReviewByID(id);
         if (doc.length > 0) {
             res.send(200, doc)
-        }
-        else {
+        } else {
             res.send(403, "ID not found")
         }
     },
@@ -66,8 +62,7 @@ module.exports = {
         if (doc.length > 0) {
             let avgRating = doc[0].rating;
             res.send(200, avgRating)
-        }
-        else {
+        } else {
             res.send(403, "ID not found")
         }
 
@@ -98,20 +93,19 @@ module.exports = {
         console.log(doc)
         if (doc.acknowledged === true && doc.modifiedCount === 1) {
             res.status(200).send({isSuccess: true})
-        }
-        else {
+        } else {
             res.status(403).send({isSuccess: false})
         }
     },
 
 
-    async checkOutChangeStock(req,res){
-        console.log(req.body,"req.body!!!!!!!")
-        let pCart=req.body.pCart;
+    async checkOutChangeStock(req, res) {
+        console.log(req.body, "req.body!!!!!!!")
+        let pCart = req.body.pCart;
 
-        let pMap=new Map();
+        let pMap = new Map();
         pCart.forEach(item => {
-            pMap.set(item.pId,item.pQuantity)
+            pMap.set(item.pId, item.pQuantity)
         });
 
         // let doc= await _phonesQuery.checkOutChangeStock(pCart);
@@ -122,12 +116,12 @@ module.exports = {
             console.log(doc)
 
         }
-        res.status(200).send({isSuccess:true})
+        res.status(200).send({isSuccess: true})
 
     },
 
 
-  async changePhoneList(req, res) {
+    async changePhoneList(req, res) {
         let sellerId = req.body.id;
         console.log("sellerId in changePhoneList: " + sellerId);
         /*The phone list need to be processed*/
@@ -139,7 +133,7 @@ module.exports = {
         let listOperation = req.body.listOperation;
 
         //Extract the used information from sent phone list
-        if(listOperation != "add") {
+        if (listOperation != "add") {
             phoneId = phoneList['_id'];
         }
         phoneTitle = phoneList['title'];
