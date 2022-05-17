@@ -12,7 +12,7 @@
 | Name        | Developing(Requirement)              |
 |-------------|--------------------------------------|
 | Bojia Zhang | [Sign In/Out page](#Sign-in/up-Page) |
-| Linrui Chen | [User Page](#User-Page)              |
+| Linrui Chen | [User Page](#User-Page)              |    
 | Yubo Zhang  | [Checkout Page](#Checkout-Page)           |
 | Yizhen Xu   | [Main Page](#Main-Page)        |
 
