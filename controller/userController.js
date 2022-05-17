@@ -17,7 +17,8 @@ module.exports = {
         //let {email, password} = req.body;
        
         let email = req.body.email;
-         let password =_util.md5(req.body.password); //TODO currently it's using unhashed password for testing, not sure if I can add salt in the case of the new data set during demo
+        let password =req.body.password;
+         //let password =_util.md5(req.body.password); //TODO md5
          console.log(email, password);
          let result = await _usersQuery.login(email, password);
          console.log(result[0].password );
