@@ -87,8 +87,8 @@ module.exports = {
     if(permission===true&&mail===true){
         const mailTransport = nodemailer.createTransport({
                     host : 'smtp.163.com',
-                    port: 465, // SMTP 端口
-                    secureConnection: true, // 使用SSL方式（安全方式，防止被窃取信息）
+                    port: 465, 
+                    secureConnection: true, 
                     auth : {
                         user : 'zbj2305@163.com',
                         pass : 'SBCPIUYZMOCRJCDO'
@@ -109,7 +109,7 @@ module.exports = {
                   }
                   else {
                       console.log(msg);
-                      //res.render('index', { title: "已接收："+msg.accepted});
+                    
                   }
               });
             }
