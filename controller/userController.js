@@ -41,7 +41,7 @@ module.exports = {
             }
         } catch (e) {
             console.log("ERROR\n", e);
-            res.status(200).send({error: e.toString()})
+            res.status(200).send("please input correct information");
 
             // _ws.send(JSON.stringify({
             //     msg :"Login Failed:" + e.name + e.message
