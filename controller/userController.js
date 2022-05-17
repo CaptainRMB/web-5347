@@ -126,7 +126,7 @@ module.exports = {
             //let result = await _usersQuery.signUp(email, password, firstName, lastName);
             if (permission===true&&mail===true) {
 
-                if(await _usersQuery.signUp(mp.get('id').Email,password,mp.get('id').FirstName,mp.get('id').LastName)===true){
+                if(await _usersQuery.signUp(mp.get('id').Email,password,mp.get('id').Firstname,mp.get('id').Lastname)===true){
                 // res.send("Sign Up Successfully!")
                 res.render("checkMail.html");
             
@@ -139,7 +139,7 @@ module.exports = {
                 res.status(403);
                 // console.log(await _usersQuery.signUp(email, password, firstName, lastName).code);
                 // console.log("THE PASSWORD OR EMAIL_IS_INVALID");
-            if(await _usersQuery.signUp(mp.get('id').Email, mp.get('id').Password, mp.get('id').FirstName, mp.get('id').LastName).code !== 11000)
+            if(await _usersQuery.signUp(mp.get('id').Email, mp.get('id').Password, mp.get('id').Firstname, mp.get('id').Lastname).code !== 11000)
                 res.send("Sign Up failed: " + "THE PASSWORD OR EMAIL_IS_INVALID");
         }
 
