@@ -6,22 +6,23 @@ const _ws = require('../websocketServer')
 const _webSocket = require("ws");
 const nodemailer  = require('nodemailer');
 const _phonesQuery = require("../dao/phonesQuery")
-
 const {isEmail}= require('../utils/validator');
 const { isPromise } = require("util/types");
 const { isPwdValidated } = require("../utils/validator");
-
+var mp=new Map();
 module.exports = {
 
     async userLogin(req, res) {
-        // console.log(req.body)
-        let {email, password} = req.body;
-        console.log(email, password)
-        // let password =_util.md5(req.body.password); //TODO currently it's using unhashed password for testing, not sure if I can add salt in the case of the new data set during demo
-        let result = await _usersQuery.login(email, password);
-        console.log(result)
+        console.log(req.body)
+        //let {email, password} = req.body;
+       
+        let email = req.body.email;
+         let password =_util.md5(req.body.password); //TODO currently it's using unhashed password for testing, not sure if I can add salt in the case of the new data set during demo
+         console.log(email, password);
+         let result = await _usersQuery.login(email, password);
+         console.log(result[0].password );
         try {
-            if (result[0].password === password && result[0].password !== undefined) {//TODO wrong condition, boundary case might exist
+            if (result[0].password === password || result[0].password !== undefined) {//TODO wrong condition, boundary case might exist
                 await setTimeout(function () {
                     req.session.data = {id: result[0]._id.toString()};
                     // console.log(req.session, 'SAVED!')
@@ -40,7 +41,7 @@ module.exports = {
             }
         } catch (e) {
             console.log("ERROR\n", e);
-            res.status(200).send({error: e.toString()})
+            res.status(200).send("please input correct information");
 
             // _ws.send(JSON.stringify({
             //     msg :"Login Failed:" + e.name + e.message
@@ -84,12 +85,13 @@ module.exports = {
         var mail = isEmail(mp.get('id').Email);
     if(permission===true&&mail===true){
         const mailTransport = nodemailer.createTransport({
-                    host : 'smtp.163.com',
-                    port: 465, // SMTP 端口
-                    secureConnection: true, // 使用SSL方式（安全方式，防止被窃取信息）
+                    host : 'smtp.gmail.com',
+                    port: 465, 
+                    secureConnection: true, 
                     auth : {
-                        user : 'zbj2305@163.com',
-                        pass : 'SBCPIUYZMOCRJCDO'
+                        user : 'bj0226774@gmail.com',
+
+                        pass:'8characters?'
                     },
                 });    
               var options = {
@@ -107,7 +109,7 @@ module.exports = {
                   }
                   else {
                       console.log(msg);
-                      //res.render('index', { title: "已接收："+msg.accepted});
+                    
                   }
               });
             }
@@ -123,10 +125,8 @@ module.exports = {
            password = _util.md5(mp.get('id').Password);
             //let result = await _usersQuery.signUp(email, password, firstName, lastName);
             if (permission===true&&mail===true) {
-    
-    
-                
-                if(await _usersQuery.signUp(mp.get('id').Email,password,mp.get('id').FirstName,mp.get('id').LastName)===true){
+
+                if(await _usersQuery.signUp(mp.get('id').Email,password,mp.get('id').Firstname,mp.get('id').Lastname)===true){
                 // res.send("Sign Up Successfully!")
                 res.render("checkMail.html");
             
@@ -139,7 +139,7 @@ module.exports = {
                 res.status(403);
                 // console.log(await _usersQuery.signUp(email, password, firstName, lastName).code);
                 // console.log("THE PASSWORD OR EMAIL_IS_INVALID");
-            if(await _usersQuery.signUp(mp.get('id').Email, mp.get('id').Password, mp.get('id').FirstName, mp.get('id').LastName).code !== 11000)
+            if(await _usersQuery.signUp(mp.get('id').Email, mp.get('id').Password, mp.get('id').Firstname, mp.get('id').Lastname).code !== 11000)
                 res.send("Sign Up failed: " + "THE PASSWORD OR EMAIL_IS_INVALID");
         }
 
@@ -197,7 +197,7 @@ module.exports = {
         let id = req.query.id;
         let result = await _usersQuery.getUserByID(id);
         res.send(result)
-    },
+    }, 
 
     async userPage(req, res) {
         let id = req.query.id;

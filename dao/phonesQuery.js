@@ -302,6 +302,7 @@ module.exports = {
         })
     },
 
+
     updateEnablePhone(pid) {
         return new Promise((resolve, reject) => {
             phonesModel
@@ -346,7 +347,6 @@ module.exports = {
         })
 
     },
-
 
 }
 

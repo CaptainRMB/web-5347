@@ -26,6 +26,7 @@ p#login_toggle {
 body {
     font-family: "Lucida Sans", Verdana, Arial, sans-serif;
     font-size: 80%;
+    text-align:center;
     background-color: var(--bg-color);
     color: var(--text-color);
 }
