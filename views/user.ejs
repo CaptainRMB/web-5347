@@ -4,10 +4,13 @@
 
     <meta charset="utf-8">
     <title>COMP5347 Assignment 2</title>
+    <!--    <script type='text/javascript'>-->
+    <!--        const _util = require('../utils/hashing')-->
+    <!--    </script>-->
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-<!--    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>-->
-    <script src="https://unpkg.com/axios/dist/axios.min.js">
-    <script src="http://www.myersdaily.org/joseph/javascript/md5.js"></script>
+<!--        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="../utils/hashing.js" defer></script>
     <script src="/js/user.js" defer></script>
     <link rel="stylesheet" href="/css/user.css" type="text/css"/>
 
@@ -136,17 +139,17 @@
                                 />
                         </select>
 
-<!--                        <select name="Brand" v-model="addBrand">-->
-<!--                            <option>Apple</option>-->
-<!--                            <option>BlackBerry</option>-->
-<!--                            <option>HTC</option>-->
-<!--                            <option>Huawei</option>-->
-<!--                            <option>LG</option>-->
-<!--                            <option>Motorola</option>-->
-<!--                            <option>Nokia</option>-->
-<!--                            <option>Samsung</option>-->
-<!--                            <option>Sony</option>-->
-<!--                        </select>-->
+                        <!--                        <select name="Brand" v-model="addBrand">-->
+                        <!--                            <option>Apple</option>-->
+                        <!--                            <option>BlackBerry</option>-->
+                        <!--                            <option>HTC</option>-->
+                        <!--                            <option>Huawei</option>-->
+                        <!--                            <option>LG</option>-->
+                        <!--                            <option>Motorola</option>-->
+                        <!--                            <option>Nokia</option>-->
+                        <!--                            <option>Samsung</option>-->
+                        <!--                            <option>Sony</option>-->
+                        <!--                        </select>-->
                     </p>
                     <p>Quantity:
                         <input type="text" v-model="addQuantity"/>

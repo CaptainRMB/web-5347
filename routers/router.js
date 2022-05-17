@@ -52,7 +52,7 @@ router.post("/login", _userController.userLoginIsSuccess);
  * @returns {Error}  403 - Server Rejected
  */
  router.post("/signup.do",_userController.userMail);
- router.get("/checkMail.html",_userController.userSignUp);
+ router.get("/checkMail",_userController.userSignUp);
 /**
  * @route GET /getAllUsers
  * @group user - Operations about user
@@ -183,7 +183,7 @@ router.get('/userinfo', _userController.sendSessionInfo);
 router.post('/changeProfile', _userController.changeProfile);
 router.post('/changePassword', _userController.changePassword);
 router.get('/userListing', _userController.getListing);
-
+router.post('/changePhoneList', _phoneController.changePhoneList)
 router.post('/signOut', _userController.signOut)
 router.get('/getAllBrands', _phoneController.getAllBrands)
 

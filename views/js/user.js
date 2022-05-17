@@ -18,7 +18,7 @@ const app = new Vue({
         noticePwdChange: '',
         currentPwd: '',
         newPwd: '',
-        userListing: '',
+        userListing: [],
         brandList: [],
         reviewMap: {},
         addTitle: '',
@@ -38,13 +38,15 @@ const app = new Vue({
             if (!this.updateClicked) {
                 this.updateClicked = true;
                 this.noticeProfile = "Please enter your password first";
-            } else {
+            }
+            else {
                 if (this.verifiedPassword) {
                     console.log(this.email, this.firstname, this.lastname, this.verifiedPassword);
                     axios.post(window.location.origin + `/changeProfile`,
                         {
                             id: this.id, email: this.email, firstname: this.firstname, lastname: this.lastname,
                             //Todo: md5
+
                             // password: md5(this.verifiedPassword),
                             password: this.verifiedPassword
                         })
@@ -54,17 +56,20 @@ const app = new Vue({
                                 // console.log(response);
                                 this.noticeProfile = "The profile has been successfully changed ";
                                 this.updateClicked = false;
-                            } else {
+                            }
+                            else {
                                 if (response.data.reason === 'pwd') {
                                     console.log(4);
                                     this.noticeProfile = "The password is incorrect";
-                                } else {
+                                }
+                                else {
                                     this.noticeProfile = "The email is used";
                                 }
                             }
                             this.verifiedPassword = ''
                         })
-                } else {
+                }
+                else {
                     this.noticeProfile = "Please enter the password to verify identity"
                 }
             }
@@ -79,8 +84,8 @@ const app = new Vue({
                 currentPwd: this.currentPwd,
                 newPwd: this.newPwd
                 //Todo: md5
-                // currentPwd: md5(this.currentPwd),
-                // newPwd: md5(this.newPwd)
+                // currentPwd: _util.md5(this.currentPwd),
+                // newPwd: _util.md5(this.newPwd)
             })
                 .then(response => (
                     console.log(this.currentPwd, this.newPwd),
@@ -128,22 +133,12 @@ const app = new Vue({
             if (this.addTitle && this.addQuantity && this.addPrice) {
                 if (Number.isInteger(parseFloat(this.addQuantity))
                     && parseFloat(this.addPrice)
-                    && Math.sign(parseFloat(this.addQuantity)) != -1) {
-                    if (!this.userListing) {
-                        this.userListing = []
-                    }
+                    && Math.sign(parseFloat(this.addQuantity)) !== -1) {
+                    // if (!this.userListing) {
+                    //     this.userListing = []
+                    // }
 
-                    this.userListing.push({
-                        "id": this.id,
-                        "title": this.addTitle,
-                        "brand": this.addBrand,
-                        "image": `../img/${this.addBrand}.jpeg`,
-                        "stock": this.addQuantity,
-                        "price": this.addPrice,
-                        "review": [],
-                        "sellername": `${this.firstname} ${this.lastname}`
-                    });
-                    console.log(this.addTitle, this.addBrand, this.addQuantity, this.addPrice)
+
                     let url = new URL(window.location.origin + `/changePhoneList`);
                     console.log(this.id);
                     url.searchParams.append("id", this.id);
@@ -154,9 +149,21 @@ const app = new Vue({
                     })
                         .then(response => {
                             console.log(response);
-                            listWithId = response.data;
-                            console.log(listWithId);
+                            let listWithId = response.data;
+                            console.log("listWithId", listWithId);
                             this.userListing[this.userListing.length - 1] = listWithId;
+
+                            this.userListing.push({
+                                "id": this.id,
+                                "title": this.addTitle,
+                                "brand": this.addBrand,
+                                "image": `../img/${this.addBrand}.jpeg`,
+                                "stock": this.addQuantity,
+                                "price": this.addPrice,
+                                "review": [],
+                                "sellername": `${this.firstname} ${this.lastname}`
+                            });
+                            console.log(this.addTitle, this.addBrand, this.addQuantity, this.addPrice)
                         });
 
                     this.addClicked = false;
@@ -164,11 +171,13 @@ const app = new Vue({
                     this.addBrand = 'Apple';
                     this.addQuantity = '';
                     this.addPrice = '';
-                } else {
+                }
+                else {
                     alert("Please enter the positive integer in quantity and valid number in price!")
                 }
 
-            } else {
+            }
+            else {
                 alert("Please fill in all content!")
             }
 
@@ -227,7 +236,8 @@ const app = new Vue({
                 axios.post(window.location.origin + `/signOut`);
                 console.log("Sign out Success")
                 window.location.href = '/';
-            } else {
+            }
+            else {
                 console.log("Sign out canceled")
             }
         },
@@ -249,7 +259,9 @@ const app = new Vue({
                 this.firstname = response.data[0].firstname;
                 this.lastname = response.data[0].lastname;
                 console.log(response.data[0].firstname, response.data[0].lastname, response.data[0].email);
-            })
+            }).catch(function (error) {
+            console.log(error)
+        })
         // axios.get('userinfo')
         //     .then(response => {
         //         this.email = response.data.email,
@@ -270,10 +282,10 @@ const app = new Vue({
                 if (response["data"].length != 0) {
                     this.userListing = response["data"]
                     // console.log("this.userListing" + this.userListing[0])
-                    this.userListing.forEach(item=>{
+                    this.userListing.forEach(item => {
                         let str = ""
                         item.reviews.forEach(n => {
-                            str += "Rating: " + n.rating +  '\n' + "Comment: " + n.comment +  '\n\n'
+                            str += "Rating: " + n.rating + '\n' + "Comment: " + n.comment + '\n\n'
                         })
                         this.reviewMap.set(item._id, str);
                     })
@@ -293,7 +305,9 @@ const app = new Vue({
                     this.brandList = response.data
                     console.log(this.brandList);
                 }
-            })
+            }).catch(function (error) {
+            console.log(error)
+        })
 
         let url4 = new URL(window.location.origin + "/getReviewByID")
         axios.get(url4)
@@ -305,8 +319,9 @@ const app = new Vue({
                     this.reviewMap = response.data
 
                 }
-            })
-
+            }).catch(function (error) {
+            console.log(error)
+        })
     }
 
 });

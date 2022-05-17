@@ -5,5 +5,11 @@ module.exports = {
         console.log(str)
         let salt = "salt".toString('base64');
         return crypto.createHash('md5').update(str+salt).digest('hex').toString();
-    }
+    },
+
+    testMD5(str) {
+        console.log(str)
+        let salt = "salt".toString('base64');
+        return crypto.createHash('md5').update(str+salt).digest('hex').toString();
+    },
 }
