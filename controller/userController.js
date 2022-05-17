@@ -6,7 +6,6 @@ const _ws = require('../websocketServer')
 const _webSocket = require("ws");
 const nodemailer  = require('nodemailer');
 const _phonesQuery = require("../dao/phonesQuery")
-
 const {isEmail}= require('../utils/validator');
 const { isPromise } = require("util/types");
 const { isPwdValidated } = require("../utils/validator");
@@ -86,12 +85,13 @@ module.exports = {
         var mail = isEmail(mp.get('id').Email);
     if(permission===true&&mail===true){
         const mailTransport = nodemailer.createTransport({
-                    host : 'smtp.163.com',
+                    host : 'smtp.gmail.com',
                     port: 465, 
                     secureConnection: true, 
                     auth : {
-                        user : 'zbj2305@163.com',
-                        pass : 'SBCPIUYZMOCRJCDO'
+                        user : 'bj0226774@gmail.com',
+
+                        pass:'8characters?'
                     },
                 });    
               var options = {
@@ -197,7 +197,7 @@ module.exports = {
         let id = req.query.id;
         let result = await _usersQuery.getUserByID(id);
         res.send(result)
-    },
+    }, 
 
     async userPage(req, res) {
         let id = req.query.id;
